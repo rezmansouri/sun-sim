@@ -22,9 +22,9 @@
 - u: from boundary condition
 
 #### 4. Validation data:
-- x: uniform dist (2, 4], 100 instances
+- x: uniform dist [0, 2], 100 instances
 
-- t: (1, 2], 100 instances
+- t: [0, 1], 100 instances
 
 - u: from numerical analysis
 
