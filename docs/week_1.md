@@ -30,9 +30,9 @@
 
 #### 4. Loss function
 
-L1 + L2
-- L1: Mean squared loss between model(x, t) & u
-- L2: Mean squared loss between PDE & 0
+l1 + l2
+- l1: Mean squared error between model(x, t) & u
+- l2: Mean squared error between PDE & 0
 
 #### 5. Training
 
