@@ -1,3 +1,5 @@
+<h1>Week One: 16 July - 23 July</h1>
+
 ## 1. [My comprehensive notebook of preliminary info](what_is_the_sun.md)
 
 ## 2. An experiment with PINNs
