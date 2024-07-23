@@ -13,16 +13,16 @@
 <img src="resources/week_1/boundary.png"/>
 
 #### 3. Training data:
-- x: uniform dist [0, 2]
+- x: uniform dist [0, 2], 400 instances
 
-- t: 0 for boundary condition, [0, 1] for PDE
+- t: 0 for boundary condition, [0, 1] for PDE, 400 instances
 
 - u: from boundary condition
 
 #### 4. Validation data:
-- x: uniform dist [0, 2]
+- x: uniform dist (2, 4], 100 instances
 
-- t: [0, 1]
+- t: (1, 2], 100 instances
 
 - u: from numerical analysis
 
@@ -36,7 +36,7 @@ l1 + l2
 
 #### 5. Training
 
-Trained for 1000 iterations
+Trained for 10000 iterations
 
 <img src="resources/week_1/curve.svg">
 
