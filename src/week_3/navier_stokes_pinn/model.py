@@ -23,7 +23,7 @@ class NavierStokes():
         
         self.net = self.network().to(device)
 
-        self.optimizer = torch.optim.LBFGS(self.net.parameters(), lr=1, max_iter=200_000, max_eval=50_000,
+        self.optimizer = torch.optim.LBFGS(self.net.parameters(), lr=1, max_iter=50_000, max_eval=50_000,
                                            history_size=50, tolerance_grad=1e-05, tolerance_change=1.0 * np.finfo(float).eps,
                                            line_search_fn="strong_wolfe")
 
