@@ -53,6 +53,3 @@ Doing regression, thus, no activation for the output layer.
 #### 7. Inference
 
 <img src="resources/week_1/inf.svg">
-
-
-
