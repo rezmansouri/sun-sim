@@ -76,21 +76,19 @@ MLP
 <div class="image-row">
         <img src="resources/week_3/pressure_gt.gif" alt="Image 1">
         <img src="resources/week_3/pressure_pred.gif" alt="Image 2">
-    </div>
-
-<img src="resources/week_3/pressure_gt.gif">
-
-<img src="resources/week_3/pressure_pred.gif">
+</div>
 
 #### 1.4.3. Velocity (u) t: [1, 20]
 
-<img src="resources/week_3/u_gt.gif">
-
-<img src="resources/week_3/u_pred.gif">
+<div class="image-row">
+        <img src="resources/week_3/u_gt.gif" alt="Image 1">
+        <img src="resources/week_3/u_pred.gif" alt="Image 2">
+</div>
 
 
 #### 1.4.4. Velocity (v) t: [1, 20]
 
-<img src="resources/week_3/v_gt.gif">
-
-<img src="resources/week_3/v_pred.gif">
+<div class="image-row">
+        <img src="resources/week_3/v_gt.gif" alt="Image 1">
+        <img src="resources/week_3/v_pred.gif" alt="Image 2">
+</div>
