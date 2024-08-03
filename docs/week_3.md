@@ -8,11 +8,12 @@
 
 ### 1.1. Equations
 Incompressible fluid flow in a cylinder-like environment
-$x, y, t -> p, (u, v)$
 
-$f =  u_t + \lambda_1 (u u_x + v u_y) + p_x - \lambda_2  (u_{xx} + u_{yy})$
+x, y, t -> p, (u, v)
 
-$g = v_t + \lambda_1 (u v_x + v  v_y) + p_y - \lambda_2  (v_{xx} + v_{yy})$
+<img src="resources/week_3/f.svg">
+
+<img src="resources/week_3/g.svg">
 
 
 ### 1.2. Data
