@@ -52,7 +52,7 @@ MLP
 - 2 output nodes
 - lambda 1 and lambda 2 (initialized with 0)
 
-<img src="resources/week_3/nn.png">
+<img src="resources/week_3/arch.png">
 
 #### 1.3.2. Optimizer
 
