@@ -50,6 +50,7 @@ MLP
 - 3 input nodes
 - 8 x 20 hidden layers with tanh
 - 2 output nodes
+- lambda 1 and lambda 2 (initiialized with 0)
 
 <img src="resources/week_3/nn.png">
 
@@ -92,3 +93,10 @@ MLP
         <img src="resources/week_3/v_gt.gif" alt="Image 1">
         <img src="resources/week_3/v_pred.gif" alt="Image 2">
 </div>
+
+#### 1.4.5. PDE Solutions
+|  | f | g|
+|----------|----------|----------|
+| Correct PDE | <img src="resources/week_3/org_f.svg"> | <img src="resources/week_3/org_g.svg"> |
+| Identified PDE (clean data) | <img src="resources/week_3/clean_f.svg"> | <img src="resources/week_3/clean_g.svg"> |
+| Identified PDE (1% noise) | <img src="resources/week_3/noisy_f.svg"> | <img src="resources/week_3/noisy_g.svg"> |
