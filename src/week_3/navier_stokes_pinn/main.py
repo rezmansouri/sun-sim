@@ -20,9 +20,10 @@ def main():
 
     os.mkdir(output_path)
 
-    losses = pinn.train()
+    losses, lambda_1, lambda_2 = pinn.train()
 
     np.save(os.path.join(output_path, 'training_losses.npy'), np.array(losses))
+    np.save(os.path.join(output_path, 'lambdas.npy'), np.array([lambda_1, lambda_2]))
     torch.save(pinn.net.state_dict(), os.path.join(output_path, 'model.pt'))
     # x_train_tensor = torch.tensor(
     #     x_train, dtype=torch.float32, device=device, requires_grad=True)

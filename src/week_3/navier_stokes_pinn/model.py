@@ -5,13 +5,16 @@ import torch.nn as nn
 nu = 0.01
 
 
-class NavierStokes():
+class NavierStokes(nn.Module):
     def __init__(self, X, Y, T, u, v, device):
-        
+        super(NavierStokes, self).__init__()
         self.training_losses = []
-        self.x = torch.tensor(X, dtype=torch.float32, requires_grad=True).to(device)
-        self.y = torch.tensor(Y, dtype=torch.float32, requires_grad=True).to(device)
-        self.t = torch.tensor(T, dtype=torch.float32, requires_grad=True).to(device)
+        self.x = torch.tensor(X, dtype=torch.float32,
+                              requires_grad=True).to(device)
+        self.y = torch.tensor(Y, dtype=torch.float32,
+                              requires_grad=True).to(device)
+        self.t = torch.tensor(T, dtype=torch.float32,
+                              requires_grad=True).to(device)
 
         self.u = torch.tensor(u, dtype=torch.float32).to(device)
         self.v = torch.tensor(v, dtype=torch.float32).to(device)
@@ -20,10 +23,13 @@ class NavierStokes():
         self.null = torch.zeros((self.x.shape[0], 1)).to(device)
 
         # initialize network:
-        
+
         self.net = self.network().to(device)
 
-        self.optimizer = torch.optim.LBFGS(self.net.parameters(), lr=1, max_iter=50_000, max_eval=50_000,
+        self.lambda_1 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32))
+        self.lambda_2 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32))
+
+        self.optimizer = torch.optim.LBFGS(self.parameters(), lr=1, max_iter=50_000, max_eval=50_000,
                                            history_size=50, tolerance_grad=1e-05, tolerance_change=1.0 * np.finfo(float).eps,
                                            line_search_fn="strong_wolfe")
 
@@ -87,8 +93,10 @@ class NavierStokes():
         p_y = torch.autograd.grad(
             p, y, grad_outputs=torch.ones_like(p), create_graph=True)[0]
 
-        f = u_t + u * u_x + v * u_y + p_x - nu * (u_xx + u_yy)
-        g = v_t + u * v_x + v * v_y + p_y - nu * (v_xx + v_yy)
+        f = u_t + self.lambda_1*(u*u_x + v*u_y) + \
+            p_x - self.lambda_2*(u_xx + u_yy)
+        g = v_t + self.lambda_1*(u*v_x + v*v_y) + \
+            p_y - self.lambda_2*(v_xx + v_yy)
 
         return u, v, p, f, g
 
@@ -109,21 +117,22 @@ class NavierStokes():
 
         # derivative with respect to net's weights:
         self.ls.backward()
-        
+
         self.training_losses.append(self.ls.item())
 
         self.iter += 1
         if not self.iter % 1:
-            print('Iteration: {:}, Loss: {:0.6f}'.format(self.iter, self.ls))
+            print('Iteration: {:}, Loss: {:0.6f}, lambda_1: {:0.6f}, lambda_2: {:0.6f}'.format(
+                self.iter, self.ls, float(self.lambda_1), float(self.lambda_2)))
 
         return self.ls
 
     def train(self):
-        
+
         # training loop
         self.net.train()
         self.optimizer.step(self.closure)
-        return self.training_losses
+        return self.training_losses, self.lambda_1.detach().numpy()[0], self.lambda_2.detach().numpy()[0]
 
 
 # class PINN(nn.Module):
