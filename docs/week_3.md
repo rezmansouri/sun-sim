@@ -31,7 +31,7 @@ And we'll try to minimize:
 ### 1.2.2. Train / test split
 5000 random instances from 5000 x 200 instances for training.
 
-Using the whole 5000 x 200 for plotting comparisons.
+Using 100 consecutive instances from the whole 5000 x 200 for plotting comparisons.
 
 
 ### 1.3. Methods
@@ -58,4 +58,25 @@ MLP
 
 ### 1.4. Results
 
+#### 1.4.1. Learning curve
+
 <img src="resources/week_3/curve.svg">
+
+#### 1.4.2. Pressure t: [1, 20]
+
+<img src="resources/week_3/pressure_gt.gif">
+
+<img src="resources/week_3/pressure_pred.gif">
+
+#### 1.4.3. Velocity (u) t: [1, 20]
+
+<img src="resources/week_3/u_gt.gif">
+
+<img src="resources/week_3/u_pred.gif">
+
+
+#### 1.4.4. Velocity (v) t: [1, 20]
+
+<img src="resources/week_3/v_gt.gif">
+
+<img src="resources/week_3/v_pred.gif">
