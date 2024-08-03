@@ -26,8 +26,8 @@ class NavierStokes(nn.Module):
 
         self.net = self.network().to(device)
 
-        self.lambda_1 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32))
-        self.lambda_2 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32))
+        self.lambda_1 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32)).to(device)
+        self.lambda_2 = nn.Parameter(torch.tensor([0.0], dtype=torch.float32)).to(device)
 
         self.optimizer = torch.optim.LBFGS(self.parameters(), lr=1, max_iter=50_000, max_eval=50_000,
                                            history_size=50, tolerance_grad=1e-05, tolerance_change=1.0 * np.finfo(float).eps,
