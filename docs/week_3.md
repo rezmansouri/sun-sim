@@ -5,7 +5,7 @@
             margin: 20px 0;
         }
         .image-row img {
-            width: 300px; /* Adjust the width as needed */
+            width: 100%; /* Adjust the width as needed */
             height: auto;
             margin: 0px; /* Optional: space between images */
         }
