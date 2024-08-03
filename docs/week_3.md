@@ -1,6 +1,15 @@
-<script type="text/javascript" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
+<style>
+        .image-row {
+            display: flex;
+            justify-content: space-around; /* Distribute space around the images */
+            margin: 20px 0;
+        }
+        .image-row img {
+            width: 300px; /* Adjust the width as needed */
+            height: auto;
+            margin: 10px; /* Optional: space between images */
+        }
+    </style>
 
 <h1>Week two/three: 23 July - 7 August</h1>
 
@@ -63,6 +72,11 @@ MLP
 <img src="resources/week_3/curve.svg">
 
 #### 1.4.2. Pressure t: [1, 20]
+
+<div class="image-row">
+        <img src="resources/week_3/pressure_gt.gif" alt="Image 1">
+        <img src="resources/week_3/pressure_pred.gif" alt="Image 2">
+    </div>
 
 <img src="resources/week_3/pressure_gt.gif">
 
