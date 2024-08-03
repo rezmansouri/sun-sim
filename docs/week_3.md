@@ -15,6 +15,11 @@ Incompressible fluid flow in a cylinder-like 2D environment x, y, t -> p, (u, v)
 
 <img src="resources/week_3/assm.svg">
 
+So our PINN will output: <img src="resources/week_3/psi and p.svg">
+
+And we'll try to minimize:
+
+<img src="resources/week_3/loss.svg">
 
 ### 1.2. Data
 #### 1.2.1 Specs
