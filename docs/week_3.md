@@ -120,8 +120,7 @@ MLP
 </table>
 
 
-<!-- |  | f | g|
-|----------|----------|----------|
-| Correct PDE | <img src="resources/week_3/new_org_f.svg"> | <img src="resources/week_3/new_org_g.svg"> |
-| Identified PDE (clean data) | <img src="resources/week_3/new_clean_f.svg"> | <img src="resources/week_3/new_clean_g.svg"> |
-| Identified PDE (1% noise) | <img src="resources/week_3/new_noisy_f.svg"> | <img src="resources/week_3/new_noisy_g.svg"> | -->
+#### References
+- <a href="https://maziarraissi.github.io/PINNs/">Maziar Raissi's GitHub (TensorFlow)</a>
+- <a href="https://github.com/rezaakb/pinns-torch/tree/main">Reza Akbari PINNsTorch Package</a>
+- <a href="https://github.com/ComputationalDomain/PINNs/tree/main/Cylinder-Wake">ComputationDomain Navier-Stokes in Torch</a>
