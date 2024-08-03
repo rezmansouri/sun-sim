@@ -50,7 +50,7 @@ MLP
 - 3 input nodes
 - 8 x 20 hidden layers with tanh
 - 2 output nodes
-- lambda 1 and lambda 2 (initiialized with 0)
+- lambda 1 and lambda 2 (initialized with 0)
 
 <img src="resources/week_3/nn.png">
 
@@ -95,8 +95,33 @@ MLP
 </div>
 
 #### 1.4.5. PDE Solutions
-|  | f | g|
+
+<table>
+  <tr>
+    <th></th>
+    <th>f</th>
+    <th>g</th>
+  </tr>
+  <tr>
+    <td>Correct PDE</td>
+    <td><img src="resources/week_3/org_f.svg" alt="Correct PDE f"></td>
+    <td><img src="resources/week_3/org_g.svg" alt="Correct PDE g"></td>
+  </tr>
+  <tr>
+    <td>Identified PDE (clean data)</td>
+    <td><img src="resources/week_3/clean_f.svg" alt="Identified PDE (clean data) f"></td>
+    <td><img src="resources/week_3/clean_g.svg" alt="Identified PDE (clean data) g"></td>
+  </tr>
+  <tr>
+    <td>Identified PDE (1% noise)</td>
+    <td><img src="resources/week_3/noisy_f.svg" alt="Identified PDE (1% noise) f"></td>
+    <td><img src="resources/week_3/noisy_g.svg" alt="Identified PDE (1% noise) g"></td>
+  </tr>
+</table>
+
+
+<!-- |  | f | g|
 |----------|----------|----------|
 | Correct PDE | <img src="resources/week_3/org_f.svg"> | <img src="resources/week_3/org_g.svg"> |
 | Identified PDE (clean data) | <img src="resources/week_3/clean_f.svg"> | <img src="resources/week_3/clean_g.svg"> |
-| Identified PDE (1% noise) | <img src="resources/week_3/noisy_f.svg"> | <img src="resources/week_3/noisy_g.svg"> |
+| Identified PDE (1% noise) | <img src="resources/week_3/noisy_f.svg"> | <img src="resources/week_3/noisy_g.svg"> | -->
