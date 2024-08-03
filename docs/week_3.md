@@ -18,17 +18,17 @@
 ### 1.1. Equations
 Incompressible fluid flow in a cylinder-like 2D environment x, y, t -> p, (u, v)
 
-<img src="resources/week_3/f.svg">
+<img src="resources/week_3/new_f.svg">
 
-<img src="resources/week_3/g.svg">
+<img src="resources/week_3/new_g.svg">
 
-<img src="resources/week_3/assm.svg">
+<img src="resources/week_3/new_assm.svg">
 
-So our PINN will output: <img src="resources/week_3/psi and p.svg">
+So our PINN will output: <img src="resources/week_3/new_psi and p.svg">
 
 And we'll try to minimize:
 
-<img src="resources/week_3/loss.svg">
+<img src="resources/week_3/new_loss.svg">
 
 ### 1.2. Data
 #### 1.2.1 Specs
@@ -52,7 +52,7 @@ MLP
 - 2 output nodes
 - lambda 1 and lambda 2 (initialized with 0)
 
-<img src="resources/week_3/arch.png">
+<img src="resources/week_3/new_arch.png">
 
 #### 1.3.2. Optimizer
 
@@ -70,28 +70,28 @@ MLP
 
 #### 1.4.1. Learning curve
 
-<img src="resources/week_3/curve.svg">
+<img src="resources/week_3/new_curve.svg">
 
 #### 1.4.2. Pressure t: [1, 20]
 
 <div class="image-row">
-        <img src="resources/week_3/pressure_gt.gif" alt="Image 1">
-        <img src="resources/week_3/pressure_pred.gif" alt="Image 2">
+        <img src="resources/week_3/new_pressure_gt.gif" alt="Image 1">
+        <img src="resources/week_3/new_pressure_pred.gif" alt="Image 2">
 </div>
 
 #### 1.4.3. Velocity (u) t: [1, 20]
 
 <div class="image-row">
-        <img src="resources/week_3/u_gt.gif" alt="Image 1">
-        <img src="resources/week_3/u_pred.gif" alt="Image 2">
+        <img src="resources/week_3/new_u_gt.gif" alt="Image 1">
+        <img src="resources/week_3/new_u_pred.gif" alt="Image 2">
 </div>
 
 
 #### 1.4.4. Velocity (v) t: [1, 20]
 
 <div class="image-row">
-        <img src="resources/week_3/v_gt.gif" alt="Image 1">
-        <img src="resources/week_3/v_pred.gif" alt="Image 2">
+        <img src="resources/week_3/new_v_gt.gif" alt="Image 1">
+        <img src="resources/week_3/new_v_pred.gif" alt="Image 2">
 </div>
 
 #### 1.4.5. PDE Solutions
@@ -104,24 +104,24 @@ MLP
   </tr>
   <tr>
     <td>Correct PDE</td>
-    <td><img src="resources/week_3/org_f.svg" alt="Correct PDE f"></td>
-    <td><img src="resources/week_3/org_g.svg" alt="Correct PDE g"></td>
+    <td><img src="resources/week_3/new_org_f.svg" alt="Correct PDE f"></td>
+    <td><img src="resources/week_3/new_org_g.svg" alt="Correct PDE g"></td>
   </tr>
   <tr>
     <td>Identified PDE (clean data)</td>
-    <td><img src="resources/week_3/clean_f.svg" alt="Identified PDE (clean data) f"></td>
-    <td><img src="resources/week_3/clean_g.svg" alt="Identified PDE (clean data) g"></td>
+    <td><img src="resources/week_3/new_clean_f.svg" alt="Identified PDE (clean data) f"></td>
+    <td><img src="resources/week_3/new_clean_g.svg" alt="Identified PDE (clean data) g"></td>
   </tr>
   <tr>
     <td>Identified PDE (1% noise)</td>
-    <td><img src="resources/week_3/noisy_f.svg" alt="Identified PDE (1% noise) f"></td>
-    <td><img src="resources/week_3/noisy_g.svg" alt="Identified PDE (1% noise) g"></td>
+    <td><img src="resources/week_3/new_noisy_f.svg" alt="Identified PDE (1% noise) f"></td>
+    <td><img src="resources/week_3/new_noisy_g.svg" alt="Identified PDE (1% noise) g"></td>
   </tr>
 </table>
 
 
 <!-- |  | f | g|
 |----------|----------|----------|
-| Correct PDE | <img src="resources/week_3/org_f.svg"> | <img src="resources/week_3/org_g.svg"> |
-| Identified PDE (clean data) | <img src="resources/week_3/clean_f.svg"> | <img src="resources/week_3/clean_g.svg"> |
-| Identified PDE (1% noise) | <img src="resources/week_3/noisy_f.svg"> | <img src="resources/week_3/noisy_g.svg"> | -->
+| Correct PDE | <img src="resources/week_3/new_org_f.svg"> | <img src="resources/week_3/new_org_g.svg"> |
+| Identified PDE (clean data) | <img src="resources/week_3/new_clean_f.svg"> | <img src="resources/week_3/new_clean_g.svg"> |
+| Identified PDE (1% noise) | <img src="resources/week_3/new_noisy_f.svg"> | <img src="resources/week_3/new_noisy_g.svg"> | -->
