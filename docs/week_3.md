@@ -11,7 +11,7 @@
         }
     </style>
 
-<h1>Week two/three: 23 July - 7 August</h1>
+<h1>Week two/three: 23 July - 6 August</h1>
 
 ## 1. Navier-Stokes with PINNs
 
@@ -124,3 +124,26 @@ MLP
 - <a href="https://maziarraissi.github.io/PINNs/">Maziar Raissi's GitHub (TensorFlow)</a>
 - <a href="https://github.com/rezaakb/pinns-torch/tree/main">Reza Akbari PINNsTorch Package</a>
 - <a href="https://github.com/ComputationalDomain/PINNs/tree/main/Cylinder-Wake">ComputationDomain Navier-Stokes in Torch</a>
+
+
+## 2. CMCC Models Study
+
+Went after
+
+- WSA by Arge
+- GAMERA by Provornikova
+- SEPMOD by Palmerio
+- Linker from Predictive Science (CORHEL-CME)
+
+MHD solvers (?)
+
+Requiring magnetohydrodynamics knowledge (?)
+
+### 2.1. MHD Resources
+- Computational astrophysics \
+<a href="https://youtu.be/YBBWpQ4EvFM?si=Xycnp4P5CyOQSkNE">Intro to MHD videos</a>
+
+- Article from Warwick university of England \
+<a href="https://warwick.ac.uk/fac/sci/physics/research/cfsa/people/valery/teaching/khu_mhd/KHU_mhd_handout.pdf">Magentohydrodynamics</a>
+
+
