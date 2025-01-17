@@ -6,3 +6,5 @@
 [Week 1: 16 July - 23 July 2024](week_1.md)
 
 [Week 2 & 3: 23 July - 6 August 2024](week_3.md)
+
+[Week 4](week_4.md)
