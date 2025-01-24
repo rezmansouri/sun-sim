@@ -12,7 +12,7 @@
 ### Data
 
 - 6 cubes for training, 1 for validation
-- Each `x` has a shape of `(sequence_length, n_channels, width, height)` i.e., `(K=140, 1, I=128, J=111)` leading to `(n_cubes, sequence_length, n_channels, width, height)` for the whole `X`
+- Each `x` has a shape of `(sequence_length, n_channels, width, height)` i.e., `(K=140, 1, I=128, J=111)` leading to `(n_cubes, K=140, 1, I=128, J=111)` for the whole `X`
 - Min-max normalized the training set for each `K`
 - Resized each slice with bicubic interpolation to `(128, 128)` squares -> `(K=140, 1, I=128, J=128)`
 - Min-max normalized the validation set using min and max from training set
