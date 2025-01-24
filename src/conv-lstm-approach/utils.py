@@ -50,15 +50,19 @@ class TrainDataset(torch.utils.data.Dataset):
 
 
 class TestDataset(torch.utils.data.Dataset):
-    def __init__(self, cubes_path, min_k_wise, max_k_wise):
+    def __init__(self, cubes_path, min_k_wise, max_k_wise, starting_slice=1):
         super().__init__()
         cubes = get_cubes(cubes_path)
         self.cubes = cubes - min_k_wise / (max_k_wise - min_k_wise)
+        self.starting_slice = starting_slice
 
     def __getitem__(self, index):
         cube = self.cubes[index]
         # without teacher forcing
-        return cube[:1, :, :, :], cube[1:, :, :, :]
+        return (
+            cube[self.starting_slice : self.starting_slice + 1, :, :, :],
+            cube[self.starting_slice + 1 :, :, :, :],
+        )
 
     def __len__(self):
         return len(self.cubes)

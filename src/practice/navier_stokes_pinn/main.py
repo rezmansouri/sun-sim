@@ -11,6 +11,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def main():
     x_train, y_train, t_train, u_train, v_train, x_test, y_test, t_test, u_test, v_test, p_test = utils.get_data(
         './data/cylinder_nektar_wake.mat', 5000)
+    
+    # noise = 0.01        
+    # u_train = u_train + noise*np.std(u_train)*np.random.randn(u_train.shape[0], u_train.shape[1])
+    # v_train = v_train + noise*np.std(v_train)*np.random.randn(v_train.shape[0], v_train.shape[1]) 
 
     pinn = model.NavierStokes(
         x_train, y_train, t_train, u_train, v_train, device)
