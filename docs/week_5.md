@@ -12,7 +12,7 @@
 ### Data
 
 - 6 cubes for training, 1 for validation
-- Each $x$ has a shape of `(sequence_length, n_channels, width, height)` i.e., `(K=140, 1, I=128, J=111)` leading to `(n_cubes, sequence_length, n_channels, width, height)` for the whole $X$
+- Each `x` has a shape of `(sequence_length, n_channels, width, height)` i.e., `(K=140, 1, I=128, J=111)` leading to `(n_cubes, sequence_length, n_channels, width, height)` for the whole `X`
 - Min-max normalized the training set for each `K`
 - Resized each slice with bicubic interpolation to `(128, 128)` squares -> `(K=140, 1, I=128, J=128)`
 - Min-max normalized the validation set using min and max from training set
@@ -46,7 +46,7 @@
     - What are `kpo_mas_mas_std_0101, mdi_mas_mas_std_0101, ...`? Which one to use in `/helio/` paths?
     - How can I augment this data? Is it even possible?
     - Generate train/val/test sets and tune the hyperparams on val
-- Same experiment for magnetic field $B$?
+- Same experiment for magnetic field `B`?
 
 ## Questions:
 
