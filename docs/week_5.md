@@ -1,4 +1,4 @@
-## Experiment configurations
+## ConvLSTM for velocity: PgNN
 
 ### Model
 
