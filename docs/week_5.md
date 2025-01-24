@@ -55,5 +55,5 @@
     - Was it `kpo_mas_mas_std_0101`, `mdi_mas_mas_std_0101`, or?
 
 - On Predsci website, some explanation for metadata is required.
-    - <a href="https://predsci.com/data/runs/cr2240-medium/hmi_masp_mas_std_0201/corona/omas">Example one</a>
-    - <a href="https://predsci.com/data/runs/cr2240-medium/hmi_masp_mas_std_0201/helio/vmasip">Example two</a>
+    - <a href="https://predsci.com/data/runs/cr2240-medium/hmi_masp_mas_std_0201/corona/omas" target="_blank">Example one</a>
+    - <a href="https://predsci.com/data/runs/cr2240-medium/hmi_masp_mas_std_0201/helio/vmasip" target="_blank">Example two</a>
