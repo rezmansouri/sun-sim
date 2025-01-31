@@ -12,6 +12,15 @@
 </video>
 
 
+## Distributions
+
+<img src="resources/week_6/v0.png"/>
+<img src="resources/week_6/v.png"/>
+
+<img src="resources/week_6/b0.png"/>
+<img src="resources/week_6/b.png"/>
+
+
 ## Another experiment
 
 - Convolutional LSTM
