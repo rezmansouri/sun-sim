@@ -10,3 +10,5 @@
 [Week 4](week_4.md)
 
 [Week 5 - ConvLSTM for velocity: PgNN](week_5.md)
+
+[Week 6 - ConvLSTM for velocity and flux: PgNN](week_6.md)
