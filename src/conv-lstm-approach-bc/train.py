@@ -26,9 +26,7 @@ def main():
     ]
     variables = [v for v in variables]
     subdir_paths = sorted(os.listdir(data_path))
-    cr_paths = [
-        os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")
-    ]
+    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
     split_ix = int(len(cr_paths) * 0.75)
     train_dataset = TrainDataset(cr_paths=cr_paths[:split_ix], variables=variables)
     train_min, train_max = train_dataset.get_min_max()
@@ -51,7 +49,7 @@ def main():
         bias=True,
         return_all_layers=False,
         output_dim=1,
-    )
+    ).to(device)
     optimizer = Adam(model.parameters())
     loss_fn = nn.MSELoss()
 
@@ -72,7 +70,7 @@ def main():
         model.train()
         for x, y in train_loader:
 
-            yhat, _ = model(x)
+            yhat, _ = model(x.to(device))
             loss = loss_fn(yhat, y)
             t_loss.append(loss.item())
 
@@ -86,7 +84,7 @@ def main():
         model.eval()
         for x, y in test_loader:
             with torch.no_grad():
-                yhat, _ = model(x, teacher_forcing=False, seq_len=seq_len)
+                yhat, _ = model(x.to(device), teacher_forcing=False, seq_len=seq_len)
             loss = loss_fn(yhat, y)
             v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
