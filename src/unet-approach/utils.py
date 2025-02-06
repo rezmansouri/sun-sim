@@ -131,7 +131,7 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         alpha = np.stack(
             [
-                np.ones((1, self.i, self.j), dtype=np.float32) * a / self.k
+                np.ones((1, self.i, self.j), dtype=np.float32) * a / (self.k - 1)
                 for a in range(1, self.k)
             ]
         )
