@@ -38,6 +38,8 @@ def main():
         "test_crs": [cr_paths[split_ix], cr_paths[-1]],
         "instruments": train_dataset.instruments,
         **min_max_dict,
+        "num_layers": num_layers,
+        "hidden_dim": hidden_dim,
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
