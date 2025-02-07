@@ -148,7 +148,7 @@
 
 - FNOs depend on DFT
     - Assume a flat geometry
-    - Cause visual and spectral artifacts as well as pronounced dissipa- tion when learning operators in spherical coordi-nates
+    - Cause visual and spectral artifacts as well as pronounced dissipa- tion when learning operators in spherical coordinates
 
 - Sphericial FNO is proposed
 
