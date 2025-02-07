@@ -85,7 +85,7 @@ def main():
         for x, y in train_loader:
 
             yhat, _ = model(x.to(device))
-            loss = loss_fn(yhat, y)
+            loss = loss_fn(yhat, y.to(device))
             t_loss.append(loss.item())
 
             optimizer.zero_grad()
@@ -99,7 +99,7 @@ def main():
         for x, y in test_loader:
             with torch.no_grad():
                 yhat, _ = model(x.to(device), teacher_forcing=False, seq_len=seq_len)
-            loss = loss_fn(yhat, y)
+            loss = loss_fn(yhat, y.to(device))
             v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
