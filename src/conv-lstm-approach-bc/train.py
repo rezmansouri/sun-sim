@@ -1,13 +1,14 @@
 import os
 import sys
 import torch
+import json
 import numpy as np
 import torch.nn as nn
 from tqdm import tqdm
 from model import ConvLSTM
 import matplotlib.pyplot as plt
 from torch.optim.adam import Adam
-from utils import TrainDataset, TestDataset
+from utils import Dataset
 from torch.utils.data.dataloader import DataLoader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -20,35 +21,46 @@ def main():
     # num_layers = 1
     # hidden_dim = 4
     # n_epochs = 10
-    data_path, variables, batch_size, num_layers, hidden_dim, n_epochs = sys.argv[1:]
+    data_path, batch_size, num_layers, hidden_dim, n_epochs = sys.argv[1:]
     batch_size, num_layers, hidden_dim, n_epochs = [
         int(i) for i in [batch_size, num_layers, hidden_dim, n_epochs]
     ]
-    variables = [v for v in variables]
     subdir_paths = sorted(os.listdir(data_path))
     cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
     split_ix = int(len(cr_paths) * 0.75)
-    train_dataset = TrainDataset(cr_paths=cr_paths[:split_ix], variables=variables)
-    train_min, train_max = train_dataset.get_min_max()
-    test_dataset = TestDataset(
+    train_dataset = Dataset(cr_paths=cr_paths[:split_ix])
+    min_max_dict = train_dataset.get_min_max()
+    cfg = {
+        'data_path': data_path,
+        'batch_size': batch_size,
+        'n_epochs': n_epochs,
+        'train_crs': [cr_paths[0], cr_paths[split_ix]],
+        'test_crs': [cr_paths[split_ix], cr_paths[-1]],
+        'instruments': train_dataset.instruments,
+        **min_max_dict
+    }
+    with open('cfg.json', 'w', encoding='utf-8') as f:
+        json.dump(cfg, f)
+    test_dataset = Dataset(
         cr_paths=cr_paths[split_ix:],
-        train_min=train_min,
-        train_max=train_max,
-        variables=variables,
+        v_min=min_max_dict["v_min"],
+        v_max=min_max_dict["v_max"],
+        rho_min=min_max_dict["rho_min"],
+        rho_max=min_max_dict["rho_max"],
     )
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     print("train dataset", "cr" + cr_paths[0], "to", cr_paths[split_ix])
     print("test dataset", "cr" + cr_paths[split_ix], "to", cr_paths[-1])
     model = ConvLSTM(
-        input_dim=1,
+        input_dim=2,
         hidden_dim=hidden_dim,
         kernel_size=(3, 3),
         num_layers=num_layers,
         batch_first=True,
         bias=True,
         return_all_layers=False,
-        output_dim=1,
+        output_dim=2,
     ).to(device)
     optimizer = Adam(model.parameters())
     loss_fn = nn.MSELoss()
@@ -60,9 +72,7 @@ def main():
 
     seq_len = train_dataset[0][0].shape[0]
 
-    result_path = os.path.join(".", "-".join(variables))
-
-    os.makedirs(result_path, exist_ok=True)
+    result_path = os.path.join(".")
 
     for epoch in range(1, n_epochs + 1):
         print("epoch:", f"{epoch}/{n_epochs}", end="\t")
