@@ -49,22 +49,22 @@ def main():
         starting_slice=0,
         v_min=min_max_dict["v_min"],
         v_max=min_max_dict["v_max"],
-        rho_min=min_max_dict["rho_min"],
-        rho_max=min_max_dict["rho_max"],
+        # rho_min=min_max_dict["rho_min"],
+        # rho_max=min_max_dict["rho_max"],
     )
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     print("train dataset", "cr" + cr_paths[0], "to", cr_paths[split_ix])
     print("test dataset", "cr" + cr_paths[split_ix], "to", cr_paths[-1])
     model = ConvLSTM(
-        input_dim=2,
+        input_dim=1,
         hidden_dim=hidden_dim,
         kernel_size=(3, 3),
         num_layers=num_layers,
         batch_first=True,
         bias=True,
         return_all_layers=False,
-        output_dim=2,
+        output_dim=1,
     ).to(device)
     optimizer = Adam(model.parameters())
     loss_fn = nn.MSELoss()

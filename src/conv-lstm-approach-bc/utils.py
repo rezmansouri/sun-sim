@@ -6,7 +6,10 @@ from pyhdf.SD import SD, SDC
 from os.path import join as path_join
 
 
-FILE_NAMES = ["vr_r0.hdf", "vr002.hdf", "rho002.hdf"]  # , "br_r0.hdf", "br002.hdf"]
+FILE_NAMES = [
+    "vr_r0.hdf",
+    "vr002.hdf",
+]  # , "rho002.hdf"]  # , "br_r0.hdf", "br002.hdf"]
 
 
 def read_hdf(hdf_path, dataset_names):
@@ -48,31 +51,32 @@ def resize(two_d_array, size):
 
 
 def get_sim(sim_path):
-    v_bc_path, v_path, rho_path = [
+    v_bc_path, v_path = [  # rho_path = [
         path_join(sim_path, file_name) for file_name in FILE_NAMES
     ]
     v_bc, v_bc_i, v_bc_j = read_hdf(v_bc_path, ["Data-Set-2", "fakeDim0", "fakeDim1"])
     v, v_i, v_j, v_k = read_hdf(
         v_path, ["Data-Set-2", "fakeDim0", "fakeDim1", "fakeDim2"]
     )
-    rho, rho_i, rho_j, rho_k = read_hdf(
-        rho_path, ["Data-Set-2", "fakeDim0", "fakeDim1", "fakeDim2"]
-    )
+    # rho, rho_i, rho_j, rho_k = read_hdf(
+    #     rho_path, ["Data-Set-2", "fakeDim0", "fakeDim1", "fakeDim2"]
+    # )
 
     v_bc = pad_2d_array_to_square(v_bc)
     v_bc = resize(v_bc, v.shape[0])
     v = pad_3d_array_to_square(v)
 
-    rho = pad_3d_array_to_square(rho)
+    # rho = pad_3d_array_to_square(rho)
 
     # Reshape to (K, I, J)
     v = np.transpose(v, (2, 0, 1))
-    rho = np.transpose(rho, (2, 0, 1))
+    # rho = np.transpose(rho, (2, 0, 1))
 
     v_bc = np.expand_dims(v_bc, axis=0)
     v = np.concatenate([v_bc, v], axis=0)
 
-    sim = np.stack([v, rho], axis=1)
+    v = np.expand_dims(v, axis=1)
+    sim = v  # np.stack([v, rho], axis=1)
 
     return sim
 
@@ -124,9 +128,9 @@ class Dataset(torch.utils.data.Dataset):
         sims[:, :, 0, :, :], self.v_min, self.v_max = min_max_normalize(
             sims[:, :, 0, :, :], v_min, v_max
         )
-        sims[:, :, 1, :, :], self.rho_min, self.rho_max = min_max_normalize(
-            sims[:, :, 1, :, :], rho_min, rho_max
-        )
+        # sims[:, :, 1, :, :], self.rho_min, self.rho_max = min_max_normalize(
+        #     sims[:, :, 1, :, :], rho_min, rho_max
+        # )
         _, self.k, _, self.i, self.j = sims.shape
         self.sims = sims
 
@@ -148,6 +152,6 @@ class Dataset(torch.utils.data.Dataset):
         return {
             "v_min": float(self.v_min),
             "v_max": float(self.v_max),
-            "rho_min": float(self.rho_min),
-            "rho_max": float(self.rho_max),
+            # "rho_min": float(self.rho_min),
+            # "rho_max": float(self.rho_max),
         }
