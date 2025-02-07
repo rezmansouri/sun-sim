@@ -12,3 +12,5 @@
 [Week 5 - ConvLSTM for velocity: PgNN](week_5.md)
 
 [Week 6 - ConvLSTM for velocity and flux: PgNN](week_6.md)
+
+[Week 7 - Four experiments and start of PINNs](week_7.md)
