@@ -134,9 +134,9 @@
 
 - So far, everything has been PgNN. These were my PINN practice projects:
 
-    - <a href="week_1.md" target="_blank">Heat equation experiment</a>
+    - <a href="https://rezmansouri.github.io/sun-sim/week_1.html" target="_blank">Heat equation experiment</a>
 
-    - <a href="week_2.md" target="_blank">Navier-Stokes equation experiment</a>
+    - <a href="https://rezmansouri.github.io/sun-sim/week_3.html" target="_blank">Navier-Stokes equation experiment</a>
 
 - Using PINNs, what will be my additional loss terms (rules to enforce)?
 
