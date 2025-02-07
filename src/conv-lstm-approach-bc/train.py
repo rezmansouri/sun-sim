@@ -31,18 +31,20 @@ def main():
     train_dataset = Dataset(cr_paths=cr_paths[:split_ix])
     min_max_dict = train_dataset.get_min_max()
     cfg = {
-        'data_path': data_path,
-        'batch_size': batch_size,
-        'n_epochs': n_epochs,
-        'train_crs': [cr_paths[0], cr_paths[split_ix]],
-        'test_crs': [cr_paths[split_ix], cr_paths[-1]],
-        'instruments': train_dataset.instruments,
-        **min_max_dict
+        "data_path": data_path,
+        "batch_size": batch_size,
+        "n_epochs": n_epochs,
+        "train_crs": [cr_paths[0], cr_paths[split_ix]],
+        "test_crs": [cr_paths[split_ix], cr_paths[-1]],
+        "instruments": train_dataset.instruments,
+        **min_max_dict,
     }
-    with open('cfg.json', 'w', encoding='utf-8') as f:
+    with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
     test_dataset = Dataset(
         cr_paths=cr_paths[split_ix:],
+        teacher_forcing=False,
+        starting_slice=0,
         v_min=min_max_dict["v_min"],
         v_max=min_max_dict["v_max"],
         rho_min=min_max_dict["rho_min"],

@@ -135,6 +135,7 @@ class Dataset(torch.utils.data.Dataset):
         # with teacher forcing
         if self.teacher_forcing:
             return cube[:-1, :, :, :], cube[1:, :, :, :]
+        # without teacher forcing
         return (
             cube[self.starting_slice : self.starting_slice + 1, :, :, :],
             cube[self.starting_slice + 1 :, :, :, :],
