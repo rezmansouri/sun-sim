@@ -140,7 +140,7 @@
 
 - Using PINNs, what will be my additional loss terms (rules to enforce)?
 
-<img src="resources/week_7/nn.svg">
+<img src="resources/week_7/nn.png">
 
 <img src="resources/week_7/laplace_equations.png">
 
