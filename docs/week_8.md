@@ -49,14 +49,14 @@
         2. Decoder will predict slice `d+1`
         3. Append it to the predicted slices
         4. Feed the `cube[:d]` to the encoder
-        5. Go to 2
+        5. Go to b
         6. Calculate the loss between predicted slices and `cube[1:]` and backpropagate
     - Testing:
         1. Feed the bc (i.e., slice 0) with shape (batch_size, channels, depth, height, width) to the encoder.
         2. Decoder will predict slice `d+1`
         3. Append it to the predicted slices
         4. Feed the `[bc, **predictions]` to the encoder
-        5. Go to 2
+        5. Go to b
     
     <img src="resources/week_8/3d-2d.jpg">
 
