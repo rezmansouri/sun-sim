@@ -33,15 +33,16 @@ def main():
     batch_size, base_channels, latent_dim, n_epochs = [
         int(i) for i in [batch_size, base_channels, latent_dim, n_epochs]
     ]
-    subdir_paths = sorted(os.listdir(data_path))
+    subdir_names = sorted(os.listdir(data_path))
     cr_paths = []
-    for subdir_path in subdir_paths:
-        p = os.path.join(data_path, subdir_path)
-        if not p.startswith("cr"):
+    for subdir_name in subdir_names:
+        if not subdir_name.startswith("cr"):
             continue
+        p = os.path.join(data_path, subdir_name)
         all_present = True
         for instrument in instruments:
             if not os.path.exists(os.path.join(p, instrument)):
+                print(os.path.join(p, instrument))
                 all_present = False
                 break
         if all_present:

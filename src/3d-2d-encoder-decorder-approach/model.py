@@ -10,17 +10,14 @@ class Encoder3D(nn.Module):
 
         self.conv1 = nn.Sequential(
             nn.Conv3d(in_channels, base_channels, kernel_size=3, padding=1),
-            nn.BatchNorm3d(base_channels),
             nn.ReLU(inplace=True),
         )
         self.conv2 = nn.Sequential(
             nn.Conv3d(base_channels, base_channels * 2, kernel_size=3, padding=1),
-            nn.BatchNorm3d(base_channels * 2),
             nn.ReLU(inplace=True),
         )
         self.conv3 = nn.Sequential(
             nn.Conv3d(base_channels * 2, base_channels * 4, kernel_size=3, padding=1),
-            nn.BatchNorm3d(base_channels * 4),
             nn.ReLU(inplace=True),
         )
 
@@ -68,14 +65,12 @@ class Decoder2D(nn.Module):
             nn.ConvTranspose2d(
                 base_channels * 4, base_channels * 2, kernel_size=4, stride=2, padding=1
             ),
-            nn.BatchNorm2d(base_channels * 2),
             nn.ReLU(inplace=True),
         )
         self.deconv2 = nn.Sequential(
             nn.ConvTranspose2d(
                 base_channels * 2, base_channels, kernel_size=4, stride=2, padding=1
             ),
-            nn.BatchNorm2d(base_channels),
             nn.ReLU(inplace=True),
         )
         self.deconv3 = nn.Sequential(
