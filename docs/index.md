@@ -16,3 +16,5 @@
 [Week 7 - Four experiments and start of PINNs](week_7.md)
 
 [Week 8 - New approach and some questions](week_8.md)
+
+[Week 9 - Start of spherical approaches](week_9.md)
