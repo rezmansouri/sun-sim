@@ -144,7 +144,7 @@ def main():
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
-    model = GNNModel(1, int(hidden_dim), 1)
+    model = GNNModel(1, int(hidden_dim), 1).to(device)
     optimizer = torch.optim.Adam(model.parameters())
     loss_fn = torch.nn.MSELoss()
 
