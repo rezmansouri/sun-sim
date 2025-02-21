@@ -27,6 +27,8 @@ Your browser does not support the video tag.
 
 <img src="resources/week_9/graph_rep.png">
 
+<img src="resources/week_9/gnn.png">
+
 ## An experiment
 - GraphConv encoder decoder
 - slice[i]->128->256->512->256->128->slice[i+1]
