@@ -75,7 +75,7 @@ def get_sim(sim_path):
 def get_sims(sim_paths):
     sims = []
     for sim_path in sim_paths:
-        sims.append(get_sim(sim_paths))
+        sims.append(get_sim(sim_path))
     sims = np.stack(sims, axis=0)
     return sims
 
