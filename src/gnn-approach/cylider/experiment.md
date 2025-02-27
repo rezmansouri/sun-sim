@@ -1,0 +1,4 @@
+- PFSS Br solutions
+- Create graph representations of cylinder
+- Consecuitvely take slice i and predict slice i + 1
+- My own GraphUNet

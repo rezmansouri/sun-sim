@@ -1,0 +1,4 @@
+- Use as much as data as you can from predsci (MHD Helio solutions, Br)
+- Create graph representations of sphere
+- Take boundary condition and predict slice 70 only
+- Use GraphUNet
