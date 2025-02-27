@@ -129,7 +129,7 @@ def spherical_grid_edges(rows, cols):
 class GraphDataset(Dataset):
     def __init__(
         self,
-        cr_paths,
+        sim_paths,
         target_slice=70,
         instruments=[
             "kpo_mas_mas_std_0101",
@@ -145,6 +145,7 @@ class GraphDataset(Dataset):
         super().__init__()
         self.instruments = instruments
         self.target_slice = target_slice
+        sims = get_sims(sim_paths)
         sims, self.b_min, self.b_max = min_max_normalize(sims, b_min, b_max)
         _, self.k, _, self.i, self.j = sims.shape
         self.edge_index = spherical_grid_edges(self.i, self.j)
