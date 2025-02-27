@@ -72,14 +72,10 @@ def get_sim(sim_path):
     return cube
 
 
-def get_sims(cr_paths, instruments):
+def get_sims(sim_paths):
     sims = []
-    for cr_path in cr_paths:
-        for instrument in instruments:
-            instrument_path = os.path.join(cr_path, instrument)
-            if not os.path.exists(instrument_path):
-                continue
-            sims.append(get_sim(instrument_path))
+    for sim_path in sim_paths:
+        sims.append(get_sim(sim_paths))
     sims = np.stack(sims, axis=0)
     return sims
 
@@ -149,7 +145,6 @@ class GraphDataset(Dataset):
         super().__init__()
         self.instruments = instruments
         self.target_slice = target_slice
-        sims = get_sims(cr_paths, self.instruments)
         sims, self.b_min, self.b_max = min_max_normalize(sims, b_min, b_max)
         _, self.k, _, self.i, self.j = sims.shape
         self.edge_index = spherical_grid_edges(self.i, self.j)

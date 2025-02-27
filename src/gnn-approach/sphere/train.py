@@ -21,26 +21,41 @@ def main():
         int(batch_size),
         int(n_epochs),
     )
+    instruments = [
+        "kpo_mas_mas_std_0101",
+        # "mdi_mas_mas_std_0101",
+        # "hmi_mast_mas_std_0101",
+        # "hmi_mast_mas_std_0201",
+        # "hmi_masp_mas_std_0201",
+        # "mdi_mas_mas_std_0201",
+    ]
     subdir_paths = sorted(os.listdir(data_path))
     cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
-    split_ix = int(len(cr_paths) * 0.75)
-    train_dataset = GraphDataset(cr_paths[:split_ix], target_slice=1)
+    sim_paths = []
+    for cr_path in cr_paths:
+        for instrument in instruments:
+            instrument_path = os.path.join(cr_path, instrument)
+            if os.path.exists(instrument_path):
+                sim_paths.append(instrument_path)
+    split_ix = int(len(sim_paths) * 0.75)
+    train_dataset = GraphDataset(sim_paths[:split_ix], target_slice=1)
     min_max_dict = train_dataset.get_min_max()
     val_dataset = GraphDataset(
-        cr_paths[split_ix:],
+        sim_paths[split_ix:],
         target_slice=1,
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
     cfg = {
+        "instruments": instruments,
         "target_slice": target_slice,
         "depth": depth,
         "hidden_dim": hidden_dim,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 1e-3,
-        "train_files": cr_paths[:split_ix],
-        "val_files": cr_paths[split_ix:],
+        "train_files": sim_paths[:split_ix],
+        "val_files": sim_paths[split_ix:],
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
     }
