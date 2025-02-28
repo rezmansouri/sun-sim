@@ -81,7 +81,7 @@ def main():
     result_path = os.path.join(".")
 
     edge_index = train_dataset.edge_index.to(device)
-    batch = torch.arange(batch_size).repeat_interleave(train_dataset[0][0].shape[0])
+    batch = torch.arange(batch_size).repeat_interleave(train_dataset[0][0].shape[0]).to(device)
 
     for epoch in range(1, int(n_epochs) + 1):
         t_loss = []
