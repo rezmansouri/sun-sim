@@ -18,3 +18,5 @@
 [Week 8 - New approach and some questions](week_8.md)
 
 [Week 9 - Correct data representation & Spherical CNNs/GNNs](week_9.md)
+
+[Week 10 - GraphUNet](week_10.md)
