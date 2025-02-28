@@ -104,10 +104,14 @@ class GraphUNet(torch.nn.Module):
         edge_weights = [edge_weight]
         perms = []
 
+        device = x.device
         for i in range(1, self.depth + 1):
             edge_index, edge_weight = self.augment_adj(
                 edge_index, edge_weight, x.size(0)
             )
+            edge_index = edge_index.to(device)
+            edge_weight = edge_weight.to(device)
+            batch = batch.to(device)
             x, edge_index, edge_weight, batch, perm, _ = self.pools[i - 1](
                 x, edge_index, edge_weight, batch
             )
