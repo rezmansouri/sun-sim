@@ -81,12 +81,15 @@ def main():
     result_path = os.path.join(".")
 
     edge_index = train_dataset.edge_index.to(device)
+    batch = torch.arange(batch_size).repeat_interleave(train_dataset[0][0].shape[0])
 
     for epoch in range(1, int(n_epochs) + 1):
         t_loss = []
         model.train()
         for x, y in tqdm(train_loader):
-            yhat = model(x.to(device), edge_index=edge_index)
+            x = x.view(-1, 1)
+            yhat = model(x.to(device), edge_index=edge_index, batch=batch)
+            yhat = yhat.view(batch_size, -1, 1)
             loss = loss_fn(yhat, y.to(device))
             t_loss.append(loss.item())
             optimizer.zero_grad()
@@ -98,7 +101,9 @@ def main():
         model.eval()
         for x, y in tqdm(val_loader):
             with torch.no_grad():
-                yhat = model(x.to(device), edge_index=edge_index)
+                x = x.view(-1, 1)
+                yhat = model(x.to(device), edge_index=edge_index, batch=batch)
+                yhat = yhat.view(batch_size, -1, 1)
                 loss = loss_fn(yhat, y.to(device))
                 v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
