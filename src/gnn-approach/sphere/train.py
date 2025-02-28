@@ -80,7 +80,7 @@ def main():
 
     result_path = os.path.join(".")
 
-    edge_index = train_dataset.edge_index
+    edge_index = train_dataset.edge_index.to(device)
 
     for epoch in range(1, int(n_epochs) + 1):
         t_loss = []
