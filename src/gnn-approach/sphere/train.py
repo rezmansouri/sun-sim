@@ -81,14 +81,22 @@ def main():
     result_path = os.path.join(".")
 
     edge_index = train_dataset.edge_index.to(device)
-    batch = torch.arange(batch_size).repeat_interleave(train_dataset[0][0].shape[0]).to(device)
+    edge_index_batch = edge_index.clone()
+
+    n_nodes = train_dataset[0][0].shape[0]
+
+    for i in range(1, batch_size):
+        edge_index_batch = torch.cat(
+            [edge_index_batch, edge_index + i * n_nodes], dim=1
+        )
+    batch = torch.arange(batch_size).repeat_interleave(n_nodes).to(device)
 
     for epoch in range(1, int(n_epochs) + 1):
         t_loss = []
         model.train()
         for x, y in tqdm(train_loader):
             x = x.view(-1, 1)
-            yhat = model(x.to(device), edge_index=edge_index, batch=batch)
+            yhat = model(x.to(device), edge_index=edge_index_batch, batch=batch)
             yhat = yhat.view(batch_size, -1, 1)
             loss = loss_fn(yhat, y.to(device))
             t_loss.append(loss.item())
@@ -102,7 +110,7 @@ def main():
         for x, y in tqdm(val_loader):
             with torch.no_grad():
                 x = x.view(-1, 1)
-                yhat = model(x.to(device), edge_index=edge_index, batch=batch)
+                yhat = model(x.to(device), edge_index=edge_index_batch, batch=batch)
                 yhat = yhat.view(batch_size, -1, 1)
                 loss = loss_fn(yhat, y.to(device))
                 v_loss.append(loss.item())
