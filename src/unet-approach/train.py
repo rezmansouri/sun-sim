@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import torch
 import numpy as np
 import torch.nn as nn
@@ -8,6 +9,7 @@ from model import UNet
 import matplotlib.pyplot as plt
 from torch.optim.adam import Adam
 from utils import Dataset
+from pprint import pprint
 from torch.utils.data.dataloader import DataLoader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -22,10 +24,23 @@ def main():
     data_path, batch_size, n_epochs = sys.argv[1:]
     batch_size, n_epochs = [int(i) for i in [batch_size, n_epochs]]
     subdir_paths = sorted(os.listdir(data_path))
-    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
+    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")][:100]
     split_ix = int(len(cr_paths) * 0.75)
     train_dataset = Dataset(cr_paths=cr_paths[:split_ix])
     min_max_dict = train_dataset.get_min_max()
+    channels = [32, 64, 128]
+    cfg = {
+        'data_path': data_path,
+        'batch_size': batch_size,
+        'n_epochs': n_epochs,
+        'train_crs': [cr_paths[0], cr_paths[split_ix]],
+        'test_crs': [cr_paths[split_ix], cr_paths[-1]],
+        'instruments': train_dataset.instruments,
+        'channels': channels,
+        **min_max_dict
+    }
+    with open('cfg.json', 'w') as f:
+        json.dump(cfg, f)
     test_dataset = Dataset(
         cr_paths=cr_paths[split_ix:],
         v_min=min_max_dict["v_min"],
@@ -51,7 +66,6 @@ def main():
         "size",
         len(test_dataset),
     )
-    channels = [64, 128, 256, 512]
     model = UNet(n_channels=3, output_ch=2, channels=channels).to(device)
     optimizer = Adam(model.parameters())
     loss_fn = nn.MSELoss()

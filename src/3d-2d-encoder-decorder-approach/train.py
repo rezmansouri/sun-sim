@@ -24,15 +24,15 @@ instruments = [
 
 
 def main():
-    # data_path = "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample"
-    # batch_size = 1
-    # base_channels = 2
-    # latent_dim = 256
-    # n_epochs = 10
-    data_path, batch_size, base_channels, latent_dim, n_epochs = sys.argv[1:]
-    batch_size, base_channels, latent_dim, n_epochs = [
-        int(i) for i in [batch_size, base_channels, latent_dim, n_epochs]
-    ]
+    data_path = "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample"
+    batch_size = 1
+    base_channels = 2
+    latent_dim = 2
+    n_epochs = 10
+    # data_path, batch_size, base_channels, latent_dim, n_epochs = sys.argv[1:]
+    # batch_size, base_channels, latent_dim, n_epochs = [
+    #     int(i) for i in [batch_size, base_channels, latent_dim, n_epochs]
+    # ]
     subdir_names = sorted(os.listdir(data_path))
     cr_paths = []
     for subdir_name in subdir_names:
@@ -109,8 +109,8 @@ def main():
         for cubes in tqdm(test_loader):
             with torch.no_grad():
                 x = cubes[:, :, 0, :, :]
-                y = x[:, :, 1:, :, :]
-                yhat = model.predict(cubes.to(device), n_slices=seq_len)
+                y = cubes[:, :, 1:, :, :]
+                yhat = model.predict(x.to(device), n_slices=seq_len)
             loss = loss_fn(yhat, y.to(device))
             v_loss.append(loss.item())
         v_loss = np.mean(v_loss)

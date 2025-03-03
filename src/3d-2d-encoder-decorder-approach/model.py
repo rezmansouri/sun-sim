@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from tqdm import trange
 
 
 class Encoder3D(nn.Module):
@@ -156,7 +157,7 @@ class EncoderDecoder(nn.Module):
         """
         predicted_slices = [x]  # Store initial input
 
-        for _ in range(1, n_slices + 1):
+        for _ in trange(1, n_slices + 1):
             # Stack previous predictions into (batch, channels, T, h, w)
             input_sequence = torch.stack(
                 predicted_slices, dim=2

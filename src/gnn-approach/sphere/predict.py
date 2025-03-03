@@ -30,6 +30,10 @@ def main():
         depth=cfg["depth"],
         pool_ratios=0.5,
     ).to(device)
+    
+    state = torch.load('')
+    
+    model.load_state_dict(state)
 
     edge_index = val_dataset.edge_index.to(device)
     edge_index_batch = edge_index.clone()

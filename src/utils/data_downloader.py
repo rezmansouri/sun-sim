@@ -16,14 +16,16 @@ class Constants:
         # "br_r0": "helio/br_r0.hdf",  # ground truth of flux, 1 image
         # "br002": "helio/br002.hdf",  # Simulations of flux, 140 imges
         # "vr_r0": "helio/vr_r0.hdf",  # ground truth of velocity, 1 image
-        "vr002": "helio/vr002.hdf",
+        # "vr002": "helio/vr002.hdf",
+        'rho002': 'helio/rho002.hdf'
     }  # Simulations of velocity, 140 images
 
     FILES_SEQUENCE = [
         #   "br_r0",
         #   "br002",
         #   "vr_r0",
-        "vr002"
+        # "vr002"
+        'rho002'
     ]
 
 
@@ -174,11 +176,11 @@ def main():
     # list of simulations which will be downloaded
     dwnld_list = [
         "kpo_mas_mas_std_0101",
-        # "mdi_mas_mas_std_0101",
-        # "hmi_mast_mas_std_0101",
-        # "hmi_mast_mas_std_0201",
-        # "hmi_masp_mas_std_0201",
-        # "mdi_mas_mas_std_0201",
+        "mdi_mas_mas_std_0101",
+        "hmi_mast_mas_std_0101",
+        "hmi_mast_mas_std_0201",
+        "hmi_masp_mas_std_0201",
+        "mdi_mas_mas_std_0201",
     ]
 
     # creating a new dict of simulations which needs to be downloaded
