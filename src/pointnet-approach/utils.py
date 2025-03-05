@@ -92,7 +92,6 @@ class PointDataset(Dataset):
         cube = self.sims[index]
         input_slice = cube[:, :, self.input_slice_ix].ravel()
         target_slice = cube[:, :, self.target_slice_ix].ravel()
-        print(self.xx.shape, self.yy.shape, self.zz.shape, input_slice.shape)
         input_points = np.row_stack((self.xx, self.yy, self.zz, input_slice))
         target_points = np.expand_dims(target_slice.ravel(), axis=-1)
         return torch.tensor(input_points, dtype=torch.float32), torch.tensor(
