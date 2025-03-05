@@ -66,19 +66,10 @@ class PointDataset(Dataset):
         sim_paths,
         input_slice_ix=0,
         target_slice_ix=70,
-        instruments=[
-            "kpo_mas_mas_std_0101",
-            # "mdi_mas_mas_std_0101",
-            # "hmi_mast_mas_std_0101",
-            # "hmi_mast_mas_std_0201",
-            # "hmi_masp_mas_std_0201",
-            # "mdi_mas_mas_std_0201",
-        ],
         b_min=None,
         b_max=None,
     ):
         super().__init__()
-        self.instruments = instruments
         self.input_slice_ix = input_slice_ix
         self.target_slice_ix = target_slice_ix
         sims = get_sims(sim_paths)

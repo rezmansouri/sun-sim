@@ -22,11 +22,11 @@ def main():
     )
     instruments = [
         "kpo_mas_mas_std_0101",
-        # "mdi_mas_mas_std_0101",
-        # "hmi_mast_mas_std_0101",
-        # "hmi_mast_mas_std_0201",
-        # "hmi_masp_mas_std_0201",
-        # "mdi_mas_mas_std_0201",
+        "mdi_mas_mas_std_0101",
+        "hmi_mast_mas_std_0101",
+        "hmi_mast_mas_std_0201",
+        "hmi_masp_mas_std_0201",
+        "mdi_mas_mas_std_0201",
     ]
     subdir_paths = sorted(os.listdir(data_path))
     cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
