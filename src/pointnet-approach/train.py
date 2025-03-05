@@ -44,7 +44,7 @@ def main():
     val_dataset = PointDataset(
         sim_paths[split_ix:],
         input_slice_ix=0,
-        target_slice=target_slice,
+        target_slice_ix=target_slice,
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
