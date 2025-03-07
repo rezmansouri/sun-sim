@@ -87,7 +87,7 @@ Take slice 0, predict slice k.
 
 - kpo instrument
 - original complexity of pointnet
-- 75-25 train-test split
+- 75:25 train-test split 206:69
 
 <img src="resources/week_11/loss_pointnet_1.png">
 <img src="resources/week_11/result_pointnet_1.png">
@@ -96,7 +96,7 @@ Take slice 0, predict slice k.
 
 - all instruments
 - original complexity of pointnet
-- 75-25 train-test split
+- 75:25 train-test split 680:227
 
 <img src="resources/week_11/loss_pointnet_2.png">
 <img src="resources/week_11/result_pointnet_2.png">
