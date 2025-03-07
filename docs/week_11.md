@@ -83,7 +83,7 @@ Problem: why are helio solutions magnetic field's boundary condition and simulat
 - br002: `(128, 110)`
 
 For now I will only use br002 simulations.
-Take slice 0, predict slice k.
+Take slice 0's (x,y,z,intensity), predict slice k (intensity).
 
 #### Experiment 1 - Small dataset
 
