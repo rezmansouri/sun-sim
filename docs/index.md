@@ -20,3 +20,5 @@
 [Week 9 - Correct data representation & Spherical CNNs/GNNs](week_9.md)
 
 [Week 10 - GraphUNet](week_10.md)
+
+[Week 11 - PointNet](week_11.md)
