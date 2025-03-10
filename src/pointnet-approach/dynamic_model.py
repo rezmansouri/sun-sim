@@ -34,8 +34,6 @@ class PointNetfeat(nn.Module):
         x = torch.max(x, 2, keepdim=True)[0]
         x = x.view(-1, self.dims[-1])
 
-        print(self.dims, x.shape, point_feat.shape)
-
         if self.global_feat:
             return x  # No transformation matrix returned
         else:
