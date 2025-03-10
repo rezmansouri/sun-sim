@@ -17,8 +17,8 @@ class PointNetfeat(nn.Module):
             bns.append(nn.BatchNorm1d(dims[i]))
         bns.append(nn.BatchNorm1d(dims[-1]))
         self.convs, self.bns, self.dims, self.depth = (
-            convs,
-            bns,
+            nn.ModuleList(convs),
+            nn.ModuleList(bns),
             dims,
             len(dims),
         )
@@ -55,9 +55,9 @@ class PointNetModel(nn.Module):
         bns.append(nn.BatchNorm1d(self.dims[-1]))
         convs.append(nn.Conv1d(self.dims[-1], 1, 1))
         self.convs, self.bns, self.depth = (
-            convs,
-            bns,
-            len(self.dims)
+            nn.ModuleList(convs),
+            nn.ModuleList(bns),
+            len(self.dims),
         )
 
     def forward(self, x):
