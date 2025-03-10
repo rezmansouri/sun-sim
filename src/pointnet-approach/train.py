@@ -17,7 +17,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def main():
     data_path, target_slice, batch_size, n_epochs, depth = sys.argv[1:]
-    target_slice, batch_size, n_epochs = (
+    target_slice, batch_size, n_epochs, depth = (
         int(target_slice),
         int(batch_size),
         int(n_epochs),
@@ -71,6 +71,8 @@ def main():
     model = PointNetModel(dims=dims).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = nn.MSELoss()
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.9)
+    scheduler_counter = 0
 
     best_val_loss = torch.inf
     best_state = None
@@ -92,6 +94,7 @@ def main():
         t_loss = np.mean(t_loss)
         train_loss.append(t_loss)
         v_loss = []
+        scheduler_counter += 1
         model.eval()
         for x, y in tqdm(val_loader):
             with torch.no_grad():
@@ -100,6 +103,7 @@ def main():
                 v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
+            scheduler_counter = 0
             best_epoch = epoch
             best_state = model.state_dict()
             best_val_loss = v_loss
@@ -107,6 +111,10 @@ def main():
         print("epoch:", f"{epoch}/{n_epochs}", end="\t")
         print("training loss:", t_loss, end="\t")
         print("validation loss:", v_loss)
+        if scheduler_counter > 5:
+            lr_scheduler.step()
+            print(f"\nlowering learning rate to {optimizer.param_groups[0]['lr']}")
+            scheduler_counter = 0
 
     np.save(os.path.join(result_path, "train_loss.npy"), np.array(train_loss))
     np.save(os.path.join(result_path, "val_loss.npy"), np.array(val_loss))
