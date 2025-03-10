@@ -6,7 +6,9 @@ import numpy as np
 import torch.nn as nn
 from tqdm import tqdm
 from utils import PointDataset
-from model import PointNetModel
+
+# from static_model import PointNetModel
+from dynamic_model import PointNetModel
 from torch.utils.data import DataLoader
 
 
@@ -14,11 +16,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, target_slice, batch_size, n_epochs = sys.argv[1:]
+    data_path, target_slice, batch_size, n_epochs, depth = sys.argv[1:]
     target_slice, batch_size, n_epochs = (
         int(target_slice),
         int(batch_size),
         int(n_epochs),
+        int(depth),
     )
     instruments = [
         "kpo_mas_mas_std_0101",
@@ -48,6 +51,7 @@ def main():
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
+    dims = [64 * 2**i for i in range(depth + 1)]
     cfg = {
         "instruments": instruments,
         "target_slice": target_slice,
@@ -58,12 +62,13 @@ def main():
         "val_files": sim_paths[split_ix:],
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
+        "dims": dims,
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-    model = PointNetModel().to(device)
+    model = PointNetModel(dims=dims).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = nn.MSELoss()
 
