@@ -66,7 +66,7 @@ class PointNetModel(nn.Module):
             x = F.relu(self.bns[i](self.convs[i](x)))
         x = self.convs[-1](x)
         x = x.transpose(2, 1).contiguous()
-        x = F.sigmoid(x)
+        # x = F.sigmoid(x)
         x = x.view(batchsize, n_pts, 1)
         return x
 
