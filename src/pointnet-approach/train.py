@@ -16,12 +16,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, target_slice, batch_size, n_epochs, depth = sys.argv[1:]
-    target_slice, batch_size, n_epochs, depth = (
+    data_path, target_slice, batch_size, n_epochs, depth, starting_dim = sys.argv[1:]
+    target_slice, batch_size, n_epochs, depth, starting_dim = (
         int(target_slice),
         int(batch_size),
         int(n_epochs),
         int(depth),
+        int(starting_dim),
     )
     instruments = [
         "kpo_mas_mas_std_0101",
@@ -51,7 +52,7 @@ def main():
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
-    dims = [64 * 2**i for i in range(depth + 1)]
+    dims = [starting_dim * 2**i for i in range(depth + 1)]
     cfg = {
         "instruments": instruments,
         "target_slice": target_slice,
