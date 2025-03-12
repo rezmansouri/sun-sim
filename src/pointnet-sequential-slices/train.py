@@ -109,13 +109,20 @@ def main():
                         val_dataset.ii, val_dataset.jj, val_dataset.kk[k]
                     )
                     xx, yy, zz = (
-                        torch.tensor(xx, dtype=torch.float32),
-                        torch.tensor(yy, dtype=torch.float32),
-                        torch.tensor(zz, dtype=torch.float32),
+                        np.tile(xx, (cube.shape[0], 1)),
+                        np.tile(yy, (cube.shape[0], 1)),
+                        np.tile(zz, (cube.shape[0], 1)),
                     )
-                    x = torch.row_stack((xx, yy, zz, yhat))
+                    print(xx.shape, yy.shape, zz.shape, yhat.shape)
+                    xx, yy, zz = (
+                        torch.tensor(xx, dtype=torch.float32).to(device),
+                        torch.tensor(yy, dtype=torch.float32).to(device),
+                        torch.tensor(zz, dtype=torch.float32).to(device),
+                    )
+                    x = torch.stack((xx, yy, zz, yhat.squeeze()), dim=1)
                 yhats = torch.stack(yhats, dim=1)
                 loss = loss_fn(yhats.squeeze(), cube[:, 1:K, 3, :].to(device))
+                v_loss.append(loss)
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
