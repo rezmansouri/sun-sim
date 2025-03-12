@@ -107,7 +107,7 @@ def main():
                     yhats.append(yhat)
                     x = yhat
                 yhats = torch.stack(yhats, dim=1)
-                loss = loss_fn(yhats, cube[:, 1:, 3, :].to(device))
+                loss = loss_fn(yhats.squeeze(), cube[:, 1:, 3, :].to(device))
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
