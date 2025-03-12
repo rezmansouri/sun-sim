@@ -5,7 +5,7 @@ import torch
 import numpy as np
 import torch.nn as nn
 from tqdm import tqdm
-from utils import PointDataset
+from utils import PointDataset, get_xyz
 
 # from static_model import PointNetModel
 from dynamic_model import PointNetModel
@@ -80,9 +80,9 @@ def main():
         t_loss = []
         model.train()
         for cube in tqdm(train_loader):
-            K = 9#cube.shape[1]
+            K = 9  # cube.shape[1]
             yhats = []
-            for k in range(K-1):
+            for k in range(K - 1):
                 x = cube[:, k, :, :]
                 yhat = model(x.to(device))
                 yhats.append(yhat)
@@ -99,13 +99,21 @@ def main():
         model.eval()
         for cube in tqdm(val_loader):
             with torch.no_grad():
-                K = 9#cube.shape[1]
+                K = 9  # cube.shape[1]
                 yhats = []
                 x = cube[:, 0, :, :]
-                for k in range(K-1):
+                for k in range(K - 1):
                     yhat = model(x.to(device))
                     yhats.append(yhat)
-                    x = yhat
+                    xx, yy, zz = get_xyz(
+                        val_dataset.ii, val_dataset.jj, val_dataset.kk[k]
+                    )
+                    xx, yy, zz = (
+                        torch.tensor(xx, dtype=torch.float32),
+                        torch.tensor(yy, dtype=torch.float32),
+                        torch.tensor(zz, dtype=torch.float32),
+                    )
+                    x = torch.row_stack((xx, yy, zz, yhat))
                 yhats = torch.stack(yhats, dim=1)
                 loss = loss_fn(yhats.squeeze(), cube[:, 1:K, 3, :].to(device))
         v_loss = np.mean(v_loss)
