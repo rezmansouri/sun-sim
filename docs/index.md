@@ -22,3 +22,5 @@
 [Week 10 - GraphUNet](week_10.md)
 
 [Week 11 - PointNet](week_11.md)
+
+[Week 12 - DeepSphere and Pointnet pt.2](week_12.md)
