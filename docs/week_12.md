@@ -59,6 +59,14 @@ Exp 8:
 | 5      |`[128, 256, 512, 1024]`| 0.0066780968   |
 | 3      |`[64, 128, 256, 512, 1024]` with sigmoid| 0.0067507107   |
 
+More results from exp 8:
+
+<img src="resources/week_12/exp_8_result_2.png">
+<img src="resources/week_12/exp_8_result_3.png">
+<img src="resources/week_12/exp_8_result_4.png">
+<img src="resources/week_12/exp_8_result_5.png">
+<img src="resources/week_12/exp_8_result_6.png">
+
 
 
 ## Resources
