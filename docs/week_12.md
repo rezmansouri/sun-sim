@@ -68,7 +68,12 @@ More results from exp 8:
 <img src="resources/week_12/exp_8_result_6.png">
 
 
+### What's next?
+
+DeepSphere
+<img src="https://github.com/deepsphere/deepsphere-weather/blob/main/figs/Forecast_State_Errors.gif?raw=true">
 
 ## Resources
 - DeepSphere paper: https://arxiv.org/abs/2012.15000
-- DeepSphere: https://github.com/deepsphere/deepsphere-weather?tab=readme-ov-file
+- DeepSphere: https://github.com/deepsphere/deepsphere-cosmo-tf2
+- Recurrent UNet: https://arxiv.org/pdf/1606.00487v2
