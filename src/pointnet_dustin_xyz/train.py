@@ -82,14 +82,12 @@ def main():
         t_loss = []
         model.train()
         for x, y in tqdm(train_loader):
-            yhats = []
             for i in range(140):
                 xx = x[:, i, :, :]
+                yy = y[:, i, :, :]
                 yhat = model(xx.to(device))
-                yhats.append(yhat)
-            yhats = torch.stack(yhats, dim=1)
-            loss = loss_fn(yhats, y.to(device))
-            t_loss.append(loss.item())
+                loss = loss_fn(yhat, yy.to(device))
+                t_loss.append(loss.item())
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -99,14 +97,12 @@ def main():
         scheduler_counter += 1
         model.eval()
         for x, y in tqdm(val_loader):
-            yhats = []
             for i in range(140):
                 xx = x[:, i, :, :]
+                yy = y[:, i, :, :]
                 yhat = model(xx.to(device))
-                yhats.append(yhat)
-            yhats = torch.stack(yhats, dim=1)
-            loss = loss_fn(yhats, y.to(device))
-            v_loss.append(loss.item())
+                loss = loss_fn(yhat, yy.to(device))
+                v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
