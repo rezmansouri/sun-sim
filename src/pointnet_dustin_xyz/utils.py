@@ -75,7 +75,6 @@ class PointDataset(Dataset):
 
     def __getitem__(self, index):
         cube = self.sims[index]
-        print(cube.shape)
         x, y = [], []
         i, j, k = get_ijk(self.sim_paths[index])
         x_intensity = cube[:, :, 0].ravel()
@@ -83,7 +82,6 @@ class PointDataset(Dataset):
             radius = k[slice_ix]
             xx, yy, zz = get_xyz(i, j, radius)
             intensity = cube[:, :, slice_ix].ravel()
-            print(xx.shape, yy.shape, zz.shape, x_intensity.shape)
             slc = np.row_stack((xx, yy, zz, x_intensity))
             y.append(np.expand_dims(intensity, axis=-1))
             x.append(slc)

@@ -16,9 +16,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, target_slice, batch_size, n_epochs, depth, starting_dim = sys.argv[1:]
-    target_slice, batch_size, n_epochs, depth, starting_dim = (
-        int(target_slice),
+    data_path, batch_size, n_epochs, depth, starting_dim = sys.argv[1:]
+    batch_size, n_epochs, depth, starting_dim = (
         int(batch_size),
         int(n_epochs),
         int(depth),
@@ -42,20 +41,17 @@ def main():
                 sim_paths.append(instrument_path)
     split_ix = int(len(sim_paths) * 0.75)
     train_dataset = PointDataset(
-        sim_paths[:split_ix], input_slice_ix=0, target_slice_ix=target_slice
+        sim_paths[:split_ix],
     )
     min_max_dict = train_dataset.get_min_max()
     val_dataset = PointDataset(
         sim_paths[split_ix:],
-        input_slice_ix=0,
-        target_slice_ix=target_slice,
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
     dims = [starting_dim * 2**i for i in range(depth + 1)]
     cfg = {
         "instruments": instruments,
-        "target_slice": target_slice,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 1e-3,
@@ -86,8 +82,13 @@ def main():
         t_loss = []
         model.train()
         for x, y in tqdm(train_loader):
-            yhat = model(x.to(device))
-            loss = loss_fn(yhat, y.to(device))
+            yhats = []
+            for i in range(140):
+                xx = x[:, i, :, :]
+                yhat = model(xx.to(device))
+                yhats.append(yhat)
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, y.to(device))
             t_loss.append(loss.item())
             optimizer.zero_grad()
             loss.backward()
@@ -98,10 +99,14 @@ def main():
         scheduler_counter += 1
         model.eval()
         for x, y in tqdm(val_loader):
-            with torch.no_grad():
-                yhat = model(x.to(device))
-                loss = loss_fn(yhat, y.to(device))
-                v_loss.append(loss.item())
+            yhats = []
+            for i in range(140):
+                xx = x[:, i, :, :]
+                yhat = model(xx.to(device))
+                yhats.append(yhat)
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, y.to(device))
+            v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
