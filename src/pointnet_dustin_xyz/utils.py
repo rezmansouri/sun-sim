@@ -78,7 +78,7 @@ class PointDataset(Dataset):
         x, y = [], []
         i, j, k = get_ijk(self.sim_paths[index])
         x_intensity = cube[:, :, 0].ravel()
-        for slice_ix in range(140):
+        for slice_ix in range(1, 141):
             radius = k[slice_ix]
             xx, yy, zz = get_xyz(i, j, radius)
             intensity = cube[:, :, slice_ix].ravel()
