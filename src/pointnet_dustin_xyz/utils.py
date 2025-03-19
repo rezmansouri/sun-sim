@@ -31,6 +31,12 @@ def read_hdf(hdf_path, dataset_names):
 def get_ijk(sim_path):
     b_path = path_join(sim_path, FILE_NAMES[0])
     i, j, k = read_hdf(b_path, ["fakeDim0", "fakeDim1", "fakeDim2"])
+    min_i, max_i = np.min(i), np.max(i)
+    min_j, max_j = np.min(j), np.max(j)
+    min_k, max_k = np.min(k), np.max(k)
+    i = (i - min_i) / (max_i - min_i)
+    j = (j - min_j) / (max_j - min_j)
+    k = (k - min_k) / (max_k - min_k)
     return i, j, k
 
 
@@ -70,17 +76,17 @@ class PointDataset(Dataset):
         super().__init__()
         sims = get_sims(sim_paths)
         sims, self.b_min, self.b_max = min_max_normalize(sims, b_min, b_max)
+        self.i, self.j, self.k = get_ijk(sim_paths[0])
         self.sim_paths = sim_paths
         self.sims = sims
 
     def __getitem__(self, index):
         cube = self.sims[index]
         x, y = [], []
-        i, j, k = get_ijk(self.sim_paths[index])
         x_intensity = cube[:, :, 0].ravel()
         for slice_ix in range(1, 141):
-            radius = k[slice_ix]
-            xx, yy, zz = get_xyz(i, j, radius)
+            radius = self.k[slice_ix]
+            xx, yy, zz = get_xyz(self.i, self.j, radius)
             intensity = cube[:, :, slice_ix].ravel()
             slc = np.row_stack((xx, yy, zz, x_intensity))
             y.append(np.expand_dims(intensity, axis=-1))
