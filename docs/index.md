@@ -24,3 +24,5 @@
 [Week 11 - PointNet](week_11.md)
 
 [Week 12 - DeepSphere and Pointnet pt.2](week_12.md)
+
+[Week 13 - DeepSphere and Pointnet pt.3](week_13.md)
