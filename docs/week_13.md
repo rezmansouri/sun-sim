@@ -43,6 +43,15 @@
 <img src="resources/week_13/exp10_result_train.gif">
 
 
+### DeepSphere for weather
+
+Uses 
+- SphericalUNet
+- Transforms the data into HEALPix Grid
+<img src="https://healpix.jpl.nasa.gov/images/healpixGridRefinement.jpg">
+<img src="resources/week_13/healpix.png">
+
+
 ### Spherical-CNN from Google
 
 - Written in Jax, Flax and Linen instead of Pytorch and TensorFlow
