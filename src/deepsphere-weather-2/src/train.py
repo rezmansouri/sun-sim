@@ -55,6 +55,7 @@ def main():
         "val_files": sim_paths[split_ix:],
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
+        'n_neighbors': n_neighbors
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
