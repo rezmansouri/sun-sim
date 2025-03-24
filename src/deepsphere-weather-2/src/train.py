@@ -16,7 +16,7 @@ torch.autograd.set_detect_anomaly(True)
 
 def main():
     data_path, batch_size, n_epochs, n_neighbors, seq_len = sys.argv[1:]
-    batch_size, n_epochs, n_neighbors = (
+    batch_size, n_epochs, n_neighbors, seq_len = (
         int(batch_size),
         int(n_epochs),
         int(n_neighbors),
