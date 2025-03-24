@@ -15,11 +15,12 @@ torch.autograd.set_detect_anomaly(True)
 
 
 def main():
-    data_path, batch_size, n_epochs, n_neighbors = sys.argv[1:]
+    data_path, batch_size, n_epochs, n_neighbors, seq_len = sys.argv[1:]
     batch_size, n_epochs, n_neighbors = (
         int(batch_size),
         int(n_epochs),
         int(n_neighbors),
+        int(seq_len)
     )
     instruments = [
         "kpo_mas_mas_std_0101",
@@ -81,7 +82,7 @@ def main():
         model.train()
         for cube in tqdm(train_loader):
             x0 = cube[:, 0, :, :]
-            for i in trange(140, leave=False):
+            for i in trange(seq_len, leave=False):
                 xi = cube[:, i, :, :]
                 y = cube[:, i + 1, :, :]
                 x = torch.cat([x0, xi], dim=-1)
@@ -99,7 +100,7 @@ def main():
         for cube in tqdm(val_loader):
             x0 = cube[:, 0, :, :].to(device)
             xi = cube[:, 0, :, :].to(device)
-            for i in trange(140, leave=False):
+            for i in trange(seq_len, leave=False):
                 x = torch.cat([x0, xi], dim=-1)
                 y = cube[:, i + 1, :, :]
                 with torch.no_grad():
