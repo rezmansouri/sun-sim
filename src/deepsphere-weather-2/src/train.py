@@ -4,7 +4,7 @@ import json
 import torch
 import numpy as np
 import torch.nn as nn
-from tqdm import tqdm
+from tqdm import tqdm, trange
 from utils import SphericalDataset
 from architectures import UNetSpherical
 from torch.utils.data import DataLoader
@@ -78,7 +78,7 @@ def main():
         t_loss = []
         model.train()
         for cube in tqdm(train_loader):
-            for i in range(140):
+            for i in trange(140, leave=False):
                 x = cube[:, i, :, :]
                 y = cube[:, i + 1, :, :]
                 yhat = model(x.to(device))
@@ -94,7 +94,7 @@ def main():
         model.eval()
         for cube in tqdm(val_loader):
             x = cube[:, 0, :, :]
-            for i in range(140):
+            for i in trange(140, leave=False):
                 y = cube[:, i + 1, :, :]
                 yhat = model(x.to(device))
                 loss = loss_fn(yhat, y.to(device))
