@@ -83,7 +83,7 @@ def main():
             for i in trange(140, leave=False):
                 xi = cube[:, i, :, :]
                 y = cube[:, i + 1, :, :]
-                x = torch.cat([x0, xi], dim=1)
+                x = torch.cat([x0, xi], dim=-1)
                 yhat = model(x.to(device))
                 loss = loss_fn(yhat, y.to(device))
                 t_loss += loss.item()
@@ -99,7 +99,7 @@ def main():
             x0 = cube[:, 0, :, :]
             xi = cube[:, 0, :, :]
             for i in trange(140, leave=False):
-                x = torch.cat([x0, xi], dim=1)
+                x = torch.cat([x0, xi], dim=-1)
                 y = cube[:, i + 1, :, :]
                 with torch.no_grad():
                     yhat = model(x.to(device))
