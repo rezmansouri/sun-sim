@@ -79,15 +79,17 @@ def main():
         t_loss = []
         model.train()
         for cube in tqdm(train_loader):
+            yhats = []
             for i in trange(140, leave=False):
                 x = cube[:, i, :, :]
-                y = cube[:, i + 1, :, :]
                 yhat = model(x.to(device))
-                loss = loss_fn(yhat, y.to(device))
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-                t_loss.append(loss.item())
+                yhats.append(yhat)
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
+            t_loss.append(loss.item())
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
         t_loss = np.mean(t_loss)
         train_loss.append(t_loss)
         v_loss = []
@@ -95,12 +97,16 @@ def main():
         model.eval()
         for cube in tqdm(val_loader):
             x = cube[:, 0, :, :]
+            yhats = []
             for i in trange(140, leave=False):
-                y = cube[:, i + 1, :, :]
-                yhat = model(x.to(device))
-                loss = loss_fn(yhat, y.to(device))
-                v_loss.append(loss.item())
-                x = yhat.detach()
+                yhats = []
+                with torch.no_grad():
+                    yhat = model(x.to(device))
+                    yhats.append(yhat)
+                    x = yhat
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
+            v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
