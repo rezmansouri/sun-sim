@@ -37,6 +37,7 @@ def main():
             instrument_path = os.path.join(cr_path, instrument)
             if os.path.exists(instrument_path):
                 sim_paths.append(instrument_path)
+
     split_ix = int(len(sim_paths) * 0.75)
     train_dataset = SphericalDataset(
         sim_paths[:split_ix],
@@ -96,8 +97,8 @@ def main():
         scheduler_counter += 1
         model.eval()
         for cube in tqdm(val_loader):
-            x0 = cube[:, 0, :, :]
-            xi = cube[:, 0, :, :]
+            x0 = cube[:, 0, :, :].to(device)
+            xi = cube[:, 0, :, :].to(device)
             for i in trange(140, leave=False):
                 x = torch.cat([x0, xi], dim=-1)
                 y = cube[:, i + 1, :, :]
