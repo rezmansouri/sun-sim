@@ -13,6 +13,7 @@ from torch.utils.data import DataLoader
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.autograd.set_detect_anomaly(True)
 
+
 def main():
     data_path, batch_size, n_epochs, n_neighbors = sys.argv[1:]
     batch_size, n_epochs, n_neighbors = (
@@ -55,7 +56,7 @@ def main():
         "val_files": sim_paths[split_ix:],
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
-        'n_neighbors': n_neighbors
+        "n_neighbors": n_neighbors,
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
@@ -78,15 +79,18 @@ def main():
         t_loss = []
         model.train()
         for cube in tqdm(train_loader):
+            yhats = []
             for i in trange(140, leave=False):
                 x = cube[:, i, :, :]
                 y = cube[:, i + 1, :, :]
                 yhat = model(x.to(device))
-                loss = loss_fn(yhat, y.to(device))
-                t_loss.append(loss.item())
+                yhats.append(yhat)
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            t_loss.append(loss.item())
         t_loss = np.mean(t_loss)
         train_loss.append(t_loss)
         v_loss = []
@@ -94,12 +98,14 @@ def main():
         model.eval()
         for cube in tqdm(val_loader):
             x = cube[:, 0, :, :]
+            yhats = []
             for i in trange(140, leave=False):
-                y = cube[:, i + 1, :, :]
                 yhat = model(x.to(device))
-                loss = loss_fn(yhat, y.to(device))
-                v_loss.append(loss.item())
                 x = yhat
+                yhats.append(yhat)
+            yhats = torch.stack(yhats, dim=1)
+            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
+            v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
         if v_loss < best_val_loss:
             scheduler_counter = 0
