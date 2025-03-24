@@ -62,7 +62,7 @@ def main():
         json.dump(cfg, f)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-    model = UNetSpherical(32, in_channels=1, out_channels=1, knn=n_neighbors).to(device)
+    model = UNetSpherical(32, in_channels=2, out_channels=1, knn=n_neighbors).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     loss_fn = nn.MSELoss()
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.9)
@@ -76,38 +76,37 @@ def main():
     result_path = os.path.join(".")
 
     for epoch in range(1, int(n_epochs) + 1):
-        t_loss = []
+        t_loss = 0
         model.train()
         for cube in tqdm(train_loader):
-            yhats = []
+            x0 = cube[:, 0, :, :]
             for i in trange(140, leave=False):
-                x = cube[:, i, :, :]
+                xi = cube[:, i, :, :]
+                y = cube[:, i + 1, :, :]
+                x = torch.cat([x0, xi], dim=1)
                 yhat = model(x.to(device))
-                yhats.append(yhat)
-            yhats = torch.stack(yhats, dim=1)
-            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
-            t_loss.append(loss.item())
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-        t_loss = np.mean(t_loss)
+                loss = loss_fn(yhat, y.to(device))
+                t_loss += loss.item()
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+        t_loss = t_loss / len(train_loader)
         train_loss.append(t_loss)
-        v_loss = []
+        v_loss = 0
         scheduler_counter += 1
         model.eval()
         for cube in tqdm(val_loader):
-            x = cube[:, 0, :, :]
-            yhats = []
+            x0 = cube[:, 0, :, :]
+            xi = cube[:, 0, :, :]
             for i in trange(140, leave=False):
-                yhats = []
+                x = torch.cat([x0, xi], dim=1)
+                y = cube[:, i + 1, :, :]
                 with torch.no_grad():
                     yhat = model(x.to(device))
-                    yhats.append(yhat)
-                    x = yhat
-            yhats = torch.stack(yhats, dim=1)
-            loss = loss_fn(yhats, cube[:, 1:, :, :].to(device))
-            v_loss.append(loss.item())
-        v_loss = np.mean(v_loss)
+                    xi = yhat
+                loss = loss_fn(yhat, y.to(device))
+                v_loss += loss.item()
+        v_loss = v_loss / len(val_loader)
         if v_loss < best_val_loss:
             scheduler_counter = 0
             best_epoch = epoch
