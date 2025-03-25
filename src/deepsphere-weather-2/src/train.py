@@ -59,6 +59,7 @@ def main():
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
         "n_neighbors": n_neighbors,
+        "seq_len": seq_len
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
