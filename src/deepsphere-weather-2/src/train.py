@@ -14,13 +14,22 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.autograd.set_detect_anomaly(True)
 
 
+def update_loss_weights(w):
+    for i in range(1, len(w)):
+        len_w = len(w)
+        w[len_w - i] += w[len_w - i - 1] * 0.4
+        w[len_w - i - 1] *= 0.8
+        w = np.array(w) / sum(w)
+    return w
+
+
 def main():
     data_path, batch_size, n_epochs, n_neighbors, seq_len = sys.argv[1:]
     batch_size, n_epochs, n_neighbors, seq_len = (
         int(batch_size),
         int(n_epochs),
         int(n_neighbors),
-        int(seq_len)
+        int(seq_len),
     )
     instruments = [
         "kpo_mas_mas_std_0101",
@@ -49,6 +58,8 @@ def main():
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
+    weights = np.arange(1, seq_len + 1)
+    weights /= sum(weights)
     cfg = {
         "instruments": instruments,
         "num_epochs": n_epochs,
@@ -59,7 +70,8 @@ def main():
         "train_min": float(min_max_dict["b_min"]),
         "train_max": float(min_max_dict["b_max"]),
         "n_neighbors": n_neighbors,
-        "seq_len": seq_len
+        "seq_len": seq_len,
+        "loss_weights": weights.tolist(),
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
@@ -89,11 +101,11 @@ def main():
                 x = torch.cat([x0, xi], dim=-1)
                 yhat = model(x.to(device))
                 loss = loss_fn(yhat, y.to(device))
-                t_loss += loss.item()
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-        t_loss = t_loss / len(train_loader)
+                t_loss += loss * weights[i]
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+        t_loss = t_loss.item() / (len(train_loader) * seq_len * batch_size)
         train_loss.append(t_loss)
         v_loss = 0
         scheduler_counter += 1
@@ -108,8 +120,8 @@ def main():
                     yhat = model(x.to(device))
                     xi = yhat
                 loss = loss_fn(yhat, y.to(device))
-                v_loss += loss.item()
-        v_loss = v_loss / len(val_loader)
+                v_loss += loss.item() * weights[i]
+        v_loss = v_loss / (len(val_loader) * seq_len * batch_size)
         if v_loss < best_val_loss:
             scheduler_counter = 0
             best_epoch = epoch
@@ -123,6 +135,8 @@ def main():
             lr_scheduler.step()
             print(f"\nlowering learning rate to {optimizer.param_groups[0]['lr']}")
             scheduler_counter = 0
+            weights = update_loss_weights(weights)
+            print(f"\nupdated loss weights: {weights}")
 
     np.save(os.path.join(result_path, "train_loss.npy"), np.array(train_loss))
     np.save(os.path.join(result_path, "val_loss.npy"), np.array(val_loss))
