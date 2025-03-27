@@ -8,7 +8,6 @@ from tqdm import tqdm, trange
 from utils import SphericalDataset
 from architectures import UNetSpherical
 from torch.utils.data import DataLoader
-import torch.utils.checkpoint as checkpoint
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -85,8 +84,8 @@ def main():
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.9)
     scheduler_counter = 0
 
-    def forward_with_checkpointing(x):
-        return checkpoint.checkpoint_sequential(model, n_chunks, x)
+    # def forward_with_checkpointing(x):
+    #     return checkpoint.checkpoint_sequential(model, n_chunks, x)
 
     best_val_loss = torch.inf
     best_state = None
@@ -104,7 +103,9 @@ def main():
                 xi = cube[:, i, :, :]
                 y = cube[:, i + 1, :, :]
                 x = torch.cat([x0, xi], dim=-1)
-                yhat = forward_with_checkpointing(x.to(device))  # model(x.to(device))
+                yhat = model(
+                    x.to(device)
+                )  # forward_with_checkpointing(x.to(device))  #
                 loss = loss_fn(yhat, y.to(device))
                 t_loss += loss * weights[i]
             optimizer.zero_grad()
