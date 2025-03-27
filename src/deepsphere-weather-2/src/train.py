@@ -58,7 +58,7 @@ def main():
         b_min=min_max_dict["b_min"],
         b_max=min_max_dict["b_max"],
     )
-    weights = np.arange(1, seq_len + 1)
+    weights = np.arange(1, seq_len + 1, dtype=np.float32)
     weights /= sum(weights)
     cfg = {
         "instruments": instruments,
