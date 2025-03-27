@@ -238,24 +238,24 @@ class UNetSpherical(UNet, torch.nn.Module):
             x = torch.nn.functional.pad(x, [0, 0, 92, 92], mode='constant', value=torch.mean(x).item())
 
         # Block 1
-        x_enc11 = checkpoint.checkpoint(self.conv11(x))
-        x_enc1 = checkpoint.checkpoint(self.conv13(x_enc11))
+        x_enc11 = checkpoint.checkpoint(self.conv11, x_enc11)
+        x_enc1 = checkpoint.checkpoint(self.conv13, x_enc11)
 
-        x_enc1 = x_enc1 + checkpoint.checkpoint(self.conv1_res(x))
+        x_enc1 = x_enc1 + checkpoint.checkpoint(self.conv1_res, x)
 
         # Block 2
         x_enc2_ini, idx1 = self.pool1(x_enc1)
-        x_enc2 = checkpoint.checkpoint(self.conv21(x_enc2_ini))
-        x_enc2 = checkpoint.checkpoint(self.conv23(x_enc2))
+        x_enc2 = checkpoint.checkpoint(self.conv21, x_enc2_ini)
+        x_enc2 = checkpoint.checkpoint(self.conv23, x_enc2)
 
-        x_enc2 = x_enc2 + checkpoint.checkpoint(self.conv2_res(x_enc2_ini))
+        x_enc2 = x_enc2 + checkpoint.checkpoint(self.conv2_res, x_enc2_ini)
 
         # Block 3
         x_enc3_ini, idx2 = self.pool2(x_enc2)
-        x_enc3 = checkpoint.checkpoint(self.conv31(x_enc3_ini))
-        x_enc3 = checkpoint.checkpoint(self.conv33(x_enc3))
+        x_enc3 = checkpoint.checkpoint(self.conv31, x_enc3_ini)
+        x_enc3 = checkpoint.checkpoint(self.conv33, x_enc3)
 
-        x_enc3 = x_enc3 + checkpoint.checkpoint(self.conv3_res(x_enc3_ini))
+        x_enc3 = x_enc3 + checkpoint.checkpoint(self.conv3_res, x_enc3_ini)
 
         return x_enc3, x_enc2, x_enc1, idx2, idx1, x_enc11
 
@@ -264,16 +264,16 @@ class UNetSpherical(UNet, torch.nn.Module):
         # Block 2
         x = self.unpool2(x_enc3, idx2)
         x_cat = torch.cat((x, x_enc2), dim=2)
-        x = checkpoint.checkpoint(self.uconv21(x_cat))
-        x = checkpoint.checkpoint(self.uconv22(x))
+        x = checkpoint.checkpoint(self.uconv21, x_cat)
+        x = checkpoint.checkpoint(self.uconv22, x)
 
         # Block 1
         x = self.unpool1(x, idx1)
         x_cat = torch.cat((x, x_enc1), dim=2)
-        x = checkpoint.checkpoint(self.uconv11(x_cat))
-        x = checkpoint.checkpoint(self.uconv12(x))
+        x = checkpoint.checkpoint(self.uconv11, x_cat)
+        x = checkpoint.checkpoint(self.uconv12, x)
         x_cat = torch.cat((x, x_enc11), dim=2)
-        x = checkpoint.checkpoint(self.uconv13(x_cat))
+        x = checkpoint.checkpoint(self.uconv13, x_cat)
 
         ### Delete in the future
         if self.test_mode:
