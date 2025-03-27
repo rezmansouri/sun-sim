@@ -238,7 +238,7 @@ class UNetSpherical(UNet, torch.nn.Module):
             x = torch.nn.functional.pad(x, [0, 0, 92, 92], mode='constant', value=torch.mean(x).item())
 
         # Block 1
-        x_enc11 = checkpoint.checkpoint(self.conv11, x_enc11)
+        x_enc11 = checkpoint.checkpoint(self.conv11, x)
         x_enc1 = checkpoint.checkpoint(self.conv13, x_enc11)
 
         x_enc1 = x_enc1 + checkpoint.checkpoint(self.conv1_res, x)
