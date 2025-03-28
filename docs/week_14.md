@@ -45,19 +45,19 @@ Log loss
 
 <img src="resources/week_14/pinn2.png">
 
-    - NOAA 11158, 5 days of observations at full cadence (12 minutes) - 12 to 17 Feb. 2011
+- NOAA 11158, 5 days of observations at full cadence (12 minutes) - 12 to 17 Feb. 2011
 
-    - Real-time force-free <u>coronal</u> magnetic-field extrapolations
+- Real-time force-free <u>coronal</u> magnetic-field extrapolations
 
-    - The MLP is called <a href="https://arxiv.org/abs/2006.09661">SIREN (Sinusoidal Representation Networks)</a>
-    <img src="resources/week_14/siren.png">
-    <img src="resources/week_14/siren2.png">
+- The MLP is called <a href="https://arxiv.org/abs/2006.09661">SIREN (Sinusoidal Representation Networks)</a>
+<img src="resources/week_14/siren.png">
+<img src="resources/week_14/siren2.png">
 
-    - Loss: 
-        - divergence and force freedom in volume
-        - B(x,y,0) = B0(x,y)
+- Loss: 
+    - divergence and force freedom in volume
+    - B(x,y,0) = B0(x,y)
 
-    - Predict the whole volume, go to next time-step, use the previous volume as starting condition
+- Predict the whole volume, go to next time-step, use the previous volume as starting condition
 
 
 
