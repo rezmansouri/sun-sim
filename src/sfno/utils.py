@@ -2,6 +2,7 @@ import torch
 import cv2 as cv
 import numpy as np
 from pyhdf.SD import SD, SDC
+from tqdm import tqdm, trange
 from torch.utils.data import Dataset
 from os.path import join as path_join
 
@@ -10,7 +11,6 @@ FILE_NAMES = ["br002.hdf"]
 
 
 def read_hdf(hdf_path, dataset_names):
-    print(f"Reading {hdf_path}")
     f = SD(hdf_path, SDC.READ)
     datasets = []
     for dataset_name in dataset_names:
@@ -20,7 +20,6 @@ def read_hdf(hdf_path, dataset_names):
 
 def resize_3d(array, new_height, new_width):
     resized_array = np.zeros((array.shape[0], new_height, new_width))
-    print(array.shape, new_height, new_width)
 
     for i in range(array.shape[0]):
         resized_array[i] = cv.resize(
@@ -46,7 +45,7 @@ def get_sim(sim_path, new_height, new_width):
 
 def get_sims(sim_paths, new_height, new_width):
     sims = []
-    for sim_path in sim_paths:
+    for sim_path in tqdm(sim_paths):
         sims.append(get_sim(sim_path, new_height, new_width))
     sims = np.stack(sims, axis=0)
     return sims
