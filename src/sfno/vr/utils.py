@@ -60,7 +60,7 @@ def min_max_normalize(slices, cubes, min_=None, max_=None):
         min_ = min(slices_min, cubes_min)
         max_ = max(slices_max, cubes_max)
     slices = (np.array(slices, dtype=np.float32) - min_) / (max_ - min_)
-    cubes = (np.array(slices, dtype=np.float32) - min_) / (max_ - min_)
+    cubes = (np.array(cubes, dtype=np.float32) - min_) / (max_ - min_)
     return slices, cubes, min_, max_
 
 
