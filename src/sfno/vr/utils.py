@@ -18,36 +18,49 @@ def read_hdf(hdf_path, dataset_names):
     return datasets
 
 
-def resize_3d(array, new_height, new_width):
-    resized_array = np.zeros((array.shape[0], new_height, new_width), dtype=array.dtype)
+def resize_3d(array, new_height_y, new_width_y):
+    resized_array = np.zeros(
+        (array.shape[0], new_height_y, new_width_y), dtype=array.dtype
+    )
 
     for i in range(array.shape[0]):
         resized_array[i] = cv.resize(
-            array[i], (new_width, new_height), interpolation=cv.INTER_LINEAR
+            array[i], (new_width_y, new_height_y), interpolation=cv.INTER_LINEAR
         )
 
     return resized_array
 
 
-def get_sim(sim_path, height, width):
+def resize_2d(array, new_height_x, new_width_x):
+    resized_array = cv.resize(
+        array, (new_width_x, new_height_x), interpolation=cv.INTER_LINEAR
+    )
+
+    return resized_array
+
+
+def get_sim(sim_path, height_y, width_y, height_x, width_x):
     (v0_path, v_path) = [path_join(sim_path, file_name) for file_name in FILE_NAMES]
     [v0] = read_hdf(v0_path, ["Data-Set-2"])
     [v] = read_hdf(v_path, ["Data-Set-2"])
 
     v = v.transpose(2, 1, 0)
 
-    if height != v.shape[1] or width != v.shape[0]:
-        v = resize_3d(v, height, width)
+    if height_y != v.shape[1] or width_y != v.shape[2]:
+        v = resize_3d(v, height_y, width_y)
 
     v0 = v0.transpose(1, 0)
+
+    if height_x != v0.shape[0] or width_x != v0.shape[1]:
+        v0 = resize_2d(v0, height_x, width_x)
 
     return v0, v
 
 
-def get_sims(sim_paths, height, width):
+def get_sims(sim_paths, height_y, width_y, height_x, width_x):
     slices, cubes = [], []
     for sim_path in tqdm(sim_paths):
-        slc, cube = get_sim(sim_path, height, width)
+        slc, cube = get_sim(sim_path, height_y, width_y, height_x, width_x)
         slices.append(slc)
         cubes.append(cube)
     return slices, cubes
@@ -68,13 +81,15 @@ class SphericalNODataset(Dataset):
     def __init__(
         self,
         sim_paths,
-        height,
-        width,
+        height_y,
+        width_y,
+        height_x,
+        width_x,
         v_min=None,
         v_max=None,
     ):
         super().__init__()
-        slices, cubes = get_sims(sim_paths, height, width)
+        slices, cubes = get_sims(sim_paths, height_y, width_y, height_x, width_x)
         slices, cubes, self.v_min, self.v_max = min_max_normalize(
             slices, cubes, v_min, v_max
         )

@@ -40,14 +40,18 @@ def main():
             if os.path.exists(instrument_path):
                 sim_paths.append(instrument_path)
     split_ix = int(len(sim_paths) * 0.75)
-    train_dataset = SphericalNODataset(sim_paths[:split_ix], height=111, width=128)
+    train_dataset = SphericalNODataset(
+        sim_paths[:split_ix], height_y=111, width_y=128, height_x=111, width_x=128
+    )
     min_max_dict = train_dataset.get_min_max()
     val_dataset = SphericalNODataset(
         sim_paths[split_ix:],
         v_min=min_max_dict["v_min"],
         v_max=min_max_dict["v_max"],
-        height=111,
-        width=128,
+        height_y=111,
+        width_y=128,
+        height_x=111,
+        width_x=128,
     )
     cfg = {
         "instruments": instruments,
