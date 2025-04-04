@@ -1,76 +1,19 @@
 # Neural Operators (Spherical Fourier NO)
 
 ## Quick intro
-
-
-## <a href="https://icml.cc/virtual/2024/tutorial/35235">Neural Operator Notes nVIDIA - ICML 2024</a>
-
-- Neural network: R (d) to R (d) - Mapping between finite dim object to finite dim object
-- Data is not always an image, language tokens etc. Sometimes it's a function defined on a sphere.
-    - Model the phonomena using deifferential and algerbraic equations
-        - Schrodinger
-        - Darcy
-        - Maxwell
-        - Navier-Stokes
-        - Fluid dynamics
-        - Thermodynamics laws
-        - Helmholtz
-    - Develop suitable conventional solvers to solve these equations at certain resolutions
-        - Finite difference
-        - Elements
-        - Volume methods
-        - Spectral
-        - ...
-- Alternative: ML on functions (neural operator)
-    - Model outputs a function (can be queried at any point)
-        - derivatives: for obeying physics laws
-        - integrals: for physical quantities
-
-- Pre-requisites
-    - Integral = fine Riemannian sum, finder mesh -> better approximations
-    - Given the values at two points you can calculate the derivatives (finite differences)
-
-- From neural networks to neural operators
 <img src='resources/week_15/nn-to-no.png'/>
-
-- Input can be given at any resolution 64 x 64 (higher resolution, still the same operator (?slide 50)) 
-- Output can be queried at any point 1024 x 1024
 <img src='resources/week_15/no-1.png'/>
 <img src='resources/week_15/no-2.png'/>
+<img src='https://zongyi-li.github.io/neural-operator/img/fourier_full_arch5.png'/>
 
-- The way you calculate the integral:
-    - Fourier bases: FNO
-    - PCA: PCA-NO
-    - Laplace: LNO
-    - Represent by an implicit neural network (Graph NO, DeepONet)
-
-- Graph neural operator is local integration
-
-- UNet's equivalent in Neural operator 
-    - It's called Multi-pole GNO (MPGNO) 
-    - There is also U-Sahped neural oeprator (UNO)
-    - Shrinks down the domain size
-
-- There is also transformer Neural Operator
-
-- Main components
-    - Integration, global (FNO) or local (GNO)
-    - Residual connection (point-wise)
-    - Bias function (point-wise)
-    - Derivatives: calculable with a CNN kernel
-    <img src="resources/week_15/no-3.png"/>
-
-<img src="resources/week_15/no-4.png"/>
-
-- Domain-specific loss functions (sesimology, weather forecast st.), still unknown
-
-- FourCastNet is a FNO and 45k times faster than current models
-    - L2 loss on function space
-    - Adaptive FNO
-        - Actually: Spherical-harmonic Fourier Neural Operator (SFNO)
-            - Bases functions are spherical harmonics
-            - Gaussian quadrature for sum
-            - MLP based residual connections
+- P: Increase #channels with a neural network
+- F: Fourier transform (FFT)
+- R: Linear transform
+    - On a specified number of lower modes
+    - Filter out higher modes
+- F^(-1): Inverse fourier transform
+- W: Local linear transform
+- Q: Project back to the target dimension
 
 
 ## Experiments
@@ -149,6 +92,76 @@ Constant cube:
 
 <img src='resources/week_15/exp_13_8.gif'>
 <img src='resources/week_15/exp_13_9.gif'>
+
+
+## <a href="https://icml.cc/virtual/2024/tutorial/35235">Neural Operator Notes nVIDIA - ICML 2024</a>
+
+- Neural network: R (d) to R (d) - Mapping between finite dim object to finite dim object
+- Data is not always an image, language tokens etc. Sometimes it's a function defined on a sphere.
+    - Model the phonomena using deifferential and algerbraic equations
+        - Schrodinger
+        - Darcy
+        - Maxwell
+        - Navier-Stokes
+        - Fluid dynamics
+        - Thermodynamics laws
+        - Helmholtz
+    - Develop suitable conventional solvers to solve these equations at certain resolutions
+        - Finite difference
+        - Elements
+        - Volume methods
+        - Spectral
+        - ...
+- Alternative: ML on functions (neural operator)
+    - Model outputs a function (can be queried at any point)
+        - derivatives: for obeying physics laws
+        - integrals: for physical quantities
+
+- Pre-requisites
+    - Integral = fine Riemannian sum, finder mesh -> better approximations
+    - Given the values at two points you can calculate the derivatives (finite differences)
+
+- From neural networks to neural operators
+<img src='resources/week_15/nn-to-no.png'/>
+
+- Input can be given at any resolution 64 x 64 (higher resolution, still the same operator (?slide 50)) 
+- Output can be queried at any point 1024 x 1024
+<img src='resources/week_15/no-1.png'/>
+<img src='resources/week_15/no-2.png'/>
+
+- The way you calculate the integral:
+    - Fourier bases: FNO
+    - PCA: PCA-NO
+    - Laplace: LNO
+    - Represent by an implicit neural network (Graph NO, DeepONet)
+
+- Graph neural operator is local integration
+
+- UNet's equivalent in Neural operator 
+    - It's called Multi-pole GNO (MPGNO) 
+    - There is also U-Sahped neural oeprator (UNO)
+    - Shrinks down the domain size
+
+- There is also transformer Neural Operator
+
+- Main components
+    - Integration, global (FNO) or local (GNO)
+    - Residual connection (point-wise)
+    - Bias function (point-wise)
+    - Derivatives: calculable with a CNN kernel
+    <img src="resources/week_15/no-3.png"/>
+
+<img src="resources/week_15/no-4.png"/>
+
+- Domain-specific loss functions (sesimology, weather forecast st.), still unknown
+
+- FourCastNet is a FNO and 45k times faster than current models
+    - L2 loss on function space
+    - Adaptive FNO
+        - Actually: Spherical-harmonic Fourier Neural Operator (SFNO)
+            - Bases functions are spherical harmonics
+            - Gaussian quadrature for sum
+            - MLP based residual connections
 
 
 ## Resources
