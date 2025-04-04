@@ -28,3 +28,5 @@
 [Week 13 - Google's SphericalCNN Pointnet pt.3](week_13.md)
 
 [Week 14 - DeepSphere pt.1, PointRNN, PINNs, SIREN](week_14.md)
+
+[Week 15 - Neural Operators (Spherical Fourier Neural Operator)](week_15.md)
