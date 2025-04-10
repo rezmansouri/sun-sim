@@ -23,22 +23,12 @@ def main():
         int(n_epochs),
         int(hidden_channels),
     )
-    instruments = [
-        "kpo_mas_mas_std_0101",
-        "mdi_mas_mas_std_0101",
-        "hmi_mast_mas_std_0101",
-        "hmi_mast_mas_std_0201",
-        "hmi_masp_mas_std_0201",
-        "mdi_mas_mas_std_0201",
-    ]
     subdir_paths = sorted(os.listdir(data_path))
-    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
     sim_paths = []
-    for cr_path in cr_paths:
-        for instrument in instruments:
-            instrument_path = os.path.join(cr_path, instrument)
-            if os.path.exists(instrument_path):
-                sim_paths.append(instrument_path)
+    for cr_path in subdir_paths:
+        br_path = os.path.join(data_path, cr_path, "br.hdf")
+        if os.path.exists(br_path):
+            sim_paths.append(os.path.join(data_path, cr_path))
     split_ix = int(len(sim_paths) * 0.75)
     train_dataset = SphericalNODataset(
         sim_paths[:split_ix],
@@ -50,7 +40,6 @@ def main():
         b_max=min_max_dict["b_max"],
     )
     cfg = {
-        "instruments": instruments,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 1e-3,
@@ -67,7 +56,7 @@ def main():
     model = SFNO(
         n_modes=(32, 32),
         in_channels=1,
-        out_channels=140,
+        out_channels=99,
         hidden_channels=hidden_channels,
         projection_channel_ratio=2,
         factorization="dense",
@@ -92,13 +81,13 @@ def main():
 
     trainer.train(
         train_loader=train_loader,
-        test_loaders={(110, 128): val_loader},
+        test_loaders={(101, 101): val_loader},
         optimizer=optimizer,
         scheduler=scheduler,
         regularizer=False,
         training_loss=train_loss,
         eval_losses=eval_losses,
-        save_best="(110, 128)_l2",
+        save_best="(101, 101)_l2",
     )
 
 

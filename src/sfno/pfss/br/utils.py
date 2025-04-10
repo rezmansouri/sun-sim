@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 from os.path import join as path_join
 
 
-FILE_NAMES = ["br002.hdf"]
+FILE_NAMES = ["br.hdf"]
 
 
 def read_hdf(hdf_path, dataset_names):
@@ -38,7 +38,9 @@ def get_sim(sim_path, new_height, new_width):
 
     b = b.transpose(2, 1, 0)
 
-    b = resize_3d(b, new_height, new_width)
+    if b.shape[1] != new_height or b.shape[2] != new_width:
+        # Resize the 3D array
+        b = resize_3d(b, new_height, new_width)
 
     return b
 
@@ -63,8 +65,8 @@ class SphericalNODataset(Dataset):
     def __init__(
         self,
         sim_paths,
-        height=110,
-        width=128,
+        height=101,
+        width=101,
         b_min=None,
         b_max=None,
     ):
