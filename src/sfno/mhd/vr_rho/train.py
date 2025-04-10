@@ -57,8 +57,10 @@ def main():
         "learning_rate": 8e-4,
         "train_files": sim_paths[:split_ix],
         "val_files": sim_paths[split_ix:],
-        "train_min": float(min_max_dict["v_min"]),
-        "train_max": float(min_max_dict["v_max"]),
+        "v_min": float(min_max_dict["v_min"]),
+        "v_max": float(min_max_dict["v_max"]),
+        "rho_min": float(min_max_dict["rho_min"]),
+        "rho_max": float(min_max_dict["rho_max"]),
         "hidden_channels": hidden_channels,
         "n_modes": n_modes,
     }
