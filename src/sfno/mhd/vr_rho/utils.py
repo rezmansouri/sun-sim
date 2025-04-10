@@ -41,7 +41,7 @@ def get_sim(sim_path, height, width):
         v = resize_3d(v, height, width)
         rho = resize_3d(rho, height, width)
 
-    return v, rho
+    return v, rho[:-1, :, :]
 
 
 def get_sims(sim_paths, height, width):
@@ -80,7 +80,7 @@ class SphericalNODataset(Dataset):
     def __getitem__(self, index):
         v = self.vs[index]
         rho = self.rhos[index]
-        x = np.concatenate((v[0], rho[0]), axis=0)
+        x = np.stack((v[0], rho[0]), axis=0)
         y_stacked = np.stack((v[1:], rho[1:]), axis=1)
         y = y_stacked.reshape(-1, *v.shape[1:])
         return {

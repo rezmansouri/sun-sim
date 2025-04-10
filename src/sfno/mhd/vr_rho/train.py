@@ -69,7 +69,7 @@ def main():
     model = SFNO(
         n_modes=(n_modes, n_modes),
         in_channels=2,
-        out_channels=280,
+        out_channels=278,
         hidden_channels=hidden_channels,
         projection_channel_ratio=2,
         factorization="dense",
