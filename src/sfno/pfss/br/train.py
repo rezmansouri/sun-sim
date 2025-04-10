@@ -17,11 +17,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, batch_size, n_epochs, hidden_channels = sys.argv[1:]
-    batch_size, n_epochs, hidden_channels = (
+    data_path, batch_size, n_epochs, hidden_channels, n_modes = sys.argv[1:]
+    batch_size, n_epochs, hidden_channels, n_modes = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
+        int(n_modes)
     )
     subdir_paths = sorted(os.listdir(data_path))
     sim_paths = []
@@ -40,6 +41,7 @@ def main():
         b_max=min_max_dict["b_max"],
     )
     cfg = {
+        "n_modes": n_modes,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 1e-3,
@@ -54,7 +56,7 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     model = SFNO(
-        n_modes=(32, 32),
+        n_modes=(n_modes, n_modes),
         in_channels=1,
         out_channels=99,
         hidden_channels=hidden_channels,
