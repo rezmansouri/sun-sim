@@ -65,7 +65,7 @@ def main():
         activation="tanh",
         kernel_initializer="Glorot uniform",
         num_outputs=140,  # produce 140 output channels
-        multi_output_strategy="independent",
+        multi_output_strategy="split_trunk",
     ).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=8e-4)
     loss_fn = nn.MSELoss()
