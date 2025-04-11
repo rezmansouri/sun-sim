@@ -95,7 +95,7 @@ def main():
         scheduler_counter += 1
         model.eval()
         for x, y in tqdm(val_loader):
-            y_pred = model([x.to(device), val_loader.trunk_input.to(device)])
+            y_pred = model([x.to(device), val_dataset.trunk_input.to(device)])
             loss = loss_fn(y_pred, y.to(device))
             v_loss.append(loss.item())
         v_loss = np.mean(v_loss)
