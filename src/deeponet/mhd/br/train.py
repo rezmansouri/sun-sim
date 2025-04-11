@@ -56,8 +56,9 @@ def main():
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    gen = torch.Generator(device=device)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, generator=gen)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, generator=gen)
     model = DeepONetCartesianProd(
         layer_sizes_branch=[14080, 256, 128],  # Branch final layer = 128
         layer_sizes_trunk=[2, 256, 17920],  # Trunk final layer = 17920 = 128 * 140
