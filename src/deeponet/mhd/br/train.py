@@ -60,8 +60,10 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, generator=gen)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, generator=gen)
     model = DeepONetCartesianProd(
-        layer_sizes_branch=[14080, 256, 128],  # Branch final layer = 128
-        layer_sizes_trunk=[2, 256, 17920],  # Trunk final layer = 17920 = 128 * 140
+        # Branch net: from input size=14080 => hidden layers => final layer=128
+        layer_sizes_branch=[14080, 512, 512, 256, 128],
+        # Trunk net: from coords=2 => hidden layers => final layer=17920 (128 * 140)
+        layer_sizes_trunk=[2, 512, 512, 512, 256, 17920],
         activation="tanh",
         kernel_initializer="Glorot uniform",
         num_outputs=140,  # produce 140 output channels
