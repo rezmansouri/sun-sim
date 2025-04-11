@@ -30,3 +30,5 @@
 [Week 14 - DeepSphere pt.1, PointRNN, PINNs, SIREN](week_14.md)
 
 [Week 15 - Neural Operators (Spherical Fourier Neural Operator)](week_15.md)
+
+[Week 16 - SFNO on PFSS, MHD rho/vr and DeepONet](week_16.md)
