@@ -55,3 +55,8 @@ validation_size=227
 <img src="resources/week_16/exp_16_1.gif">
 <img src="resources/week_16/exp_16_2.gif">
 <img src="resources/week_16/exp_16_loss.png">
+
+
+
+## References
+- A blog post on a DeepONet simple example: https://towardsdatascience.com/operator-learning-via-physics-informed-deeponet-lets-implement-it-from-scratch-6659f3179887/
