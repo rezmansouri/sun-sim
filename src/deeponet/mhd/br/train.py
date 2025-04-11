@@ -82,8 +82,6 @@ def main():
         t_loss = []
         model.train()
         for x, y in tqdm(train_loader):
-            print("x shape:", x.shape)
-            print("y shape:", y.shape)
             y_pred = model([x.to(device), train_dataset.trunk_input.to(device)])
             loss = loss_fn(y_pred, y.to(device))
             t_loss.append(loss.item())
