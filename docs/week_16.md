@@ -54,7 +54,7 @@ validation_size=227
 
 <img src="resources/week_16/exp_16_1.gif">
 <img src="resources/week_16/exp_16_2.gif">
-<img src="resources/week_16/exp_17_loss.png">
+<img src="resources/week_16/exp_16_loss.png">
 
 
 
