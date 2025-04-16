@@ -59,7 +59,7 @@ class SphericalNODataset(Dataset):
     def __init__(
         self,
         sim_paths,
-        height=110,
+        height=111,
         width=128,
         rho_min=None,
         rho_max=None,
