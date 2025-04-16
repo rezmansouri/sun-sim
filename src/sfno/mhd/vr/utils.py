@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 from os.path import join as path_join
 
 
-FILE_NAMES = ["v002.hdf"]
+FILE_NAMES = ["vr002.hdf"]
 
 
 def read_hdf(hdf_path, dataset_names):
