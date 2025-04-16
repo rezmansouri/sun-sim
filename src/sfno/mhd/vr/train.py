@@ -17,11 +17,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, batch_size, n_epochs, hidden_channels = sys.argv[1:]
-    batch_size, n_epochs, hidden_channels = (
+    data_path, batch_size, n_epochs, hidden_channels, n_modes = sys.argv[1:]
+    batch_size, n_epochs, hidden_channels, n_modes = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
+        int(n_modes),
     )
     instruments = [
         "kpo_mas_mas_std_0101",
@@ -40,36 +41,31 @@ def main():
             if os.path.exists(instrument_path):
                 sim_paths.append(instrument_path)
     split_ix = int(len(sim_paths) * 0.75)
-    train_dataset = SphericalNODataset(
-        sim_paths[:split_ix], height_y=111, width_y=128, height_x=111, width_x=128
-    )
+    train_dataset = SphericalNODataset(sim_paths[:split_ix])
     min_max_dict = train_dataset.get_min_max()
     val_dataset = SphericalNODataset(
         sim_paths[split_ix:],
         v_min=min_max_dict["v_min"],
         v_max=min_max_dict["v_max"],
-        height_y=111,
-        width_y=128,
-        height_x=111,
-        width_x=128,
     )
     cfg = {
         "instruments": instruments,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
-        "learning_rate": 1e-3,
+        "learning_rate": 8e-4,
         "train_files": sim_paths[:split_ix],
         "val_files": sim_paths[split_ix:],
-        "train_min": float(min_max_dict["v_min"]),
-        "train_max": float(min_max_dict["v_max"]),
+        "v_min": float(min_max_dict["v_min"]),
+        "v_max": float(min_max_dict["v_max"]),
         "hidden_channels": hidden_channels,
+        "n_modes": n_modes,
     }
     with open("cfg.json", "w", encoding="utf-8") as f:
         json.dump(cfg, f)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     model = SFNO(
-        n_modes=(32, 32),
+        n_modes=(n_modes, n_modes),
         in_channels=1,
         out_channels=140,
         hidden_channels=hidden_channels,
