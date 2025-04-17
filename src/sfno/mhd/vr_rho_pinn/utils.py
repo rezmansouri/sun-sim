@@ -52,7 +52,7 @@ def get_sim(sim_path, height, width):
         v = resize_3d(v, height, width)
         rho = resize_3d(rho, height, width)
 
-    return v, rho[:-1, :, :], p
+    return v, rho[:-1, :, :], p[1:-1, :, :]
 
 
 def get_sims(sim_paths, height, width):
