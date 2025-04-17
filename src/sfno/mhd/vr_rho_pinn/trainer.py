@@ -513,6 +513,7 @@ class Trainer:
         law_output = self.law.forward(
             out, p
         )  # Get tensor output from law with the same shape as out
+        print(law_output)
 
         # Calculate the loss between law output and torch.zeros(out.shape)
         law_loss = training_loss(
