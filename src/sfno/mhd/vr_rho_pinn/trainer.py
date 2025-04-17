@@ -274,11 +274,8 @@ class Trainer:
         for idx, sample in enumerate(train_loader):
 
             loss = self.train_one_batch_with_law(idx, sample, training_loss)
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
-            for name, param in self.model.named_parameters():
-                if torch.isnan(param.grad).any():
-                    print(f"NaN gradients detected in {name}")
+            with torch.autograd.detect_anomaly():
+                loss.backward()
             self.optimizer.step()
 
             train_err += loss.item()
