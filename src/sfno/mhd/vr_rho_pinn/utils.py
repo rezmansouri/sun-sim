@@ -133,7 +133,7 @@ class PhysicalLaw:
         v_constant=481.3711,
         rho_constant=1.6726e-16,
     ):
-        self.dr = r[1] - r[0]
+        self.dr = float(r[1] - r[0])
         self.v_min = v_min
         self.v_max = v_max
         self.rho_min = rho_min
