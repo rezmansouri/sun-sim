@@ -17,7 +17,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    data_path, cfg_path, state_path = sys.argv[1:]
+    cfg_path, state_path = sys.argv[1:]
     with open(cfg_path, "r") as f:
         cfg = json.load(f)
     instruments = [
@@ -28,14 +28,7 @@ def main():
         "hmi_masp_mas_std_0201",
         "mdi_mas_mas_std_0201",
     ]
-    subdir_paths = sorted(os.listdir(data_path))
-    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
-    sim_paths = []
-    for cr_path in cr_paths:
-        for instrument in instruments:
-            instrument_path = os.path.join(cr_path, instrument)
-            if os.path.exists(instrument_path):
-                sim_paths.append(instrument_path)
+    sim_paths = cfg["val_files"]
     val_dataset = SphericalNODataset(
         sim_paths,
         rho_min=cfg_path["rho_min"],
