@@ -7,6 +7,7 @@ import warnings
 import torch
 from torch.cuda import amp
 from torch import nn
+import torch.nn.functional as F
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -517,9 +518,10 @@ class Trainer:
         print(law_output[0, 0, 0, 0])
 
         # Calculate the loss between law output and torch.zeros(out.shape)
-        law_loss = training_loss(
-            law_output, torch.zeros_like(law_output)
-        )  # Loss between law_output and zeros
+        law_loss = F.mse_loss(law_output, torch.zeros_like(law_output))
+        # training_loss(
+        #     law_output, torch.zeros_like(law_output)
+        # )  # Loss between law_output and zeros
 
         # Apply training loss and law loss
         if self.mixed_precision:
