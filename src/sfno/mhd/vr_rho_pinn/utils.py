@@ -157,12 +157,10 @@ class PhysicalLaw:
 
         rho_pred = rho_pred * self.rho_constant
 
-        dv_r_dr = (
-            torch.gradient(v_pred, dim=1) / self.dr
-        )  # First derivative of v_r (radial velocity) w.r.t. r (along axis 0)
-        d_p_dr = (
-            torch.gradient(p, dim=1) / self.dr
-        )  # First derivative of pressure w.r.t. r (1D array)
+        dv_r_dr = torch.gradient(v_pred, dim=1)[0] / self.dr
+        # First derivative of v_r (radial velocity) w.r.t. r (along axis 0)
+        d_p_dr = torch.gradient(p, dim=1)[0] / self.dr
+        # First derivative of pressure w.r.t. r (1D array)
 
         term1 = rho_pred * v_pred * dv_r_dr  # Convective term: rho * v_r * (dv_r / dr)
         term2 = -d_p_dr  # Pressure gradient term: - dp / dr
