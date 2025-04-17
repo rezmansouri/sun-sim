@@ -31,8 +31,8 @@ def main():
     sim_paths = cfg["val_files"]
     val_dataset = SphericalNODataset(
         sim_paths,
-        rho_min=cfg_path["rho_min"],
-        rho_max=cfg_path["rho_max"],
+        rho_min=cfg["rho_min"],
+        rho_max=cfg["rho_max"],
     )
     val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
     model = SFNO(
