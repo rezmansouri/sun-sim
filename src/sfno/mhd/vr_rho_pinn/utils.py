@@ -89,8 +89,7 @@ class SphericalNODataset(Dataset):
         rho_max=None,
     ):
         super().__init__()
-        radii = get_radii(sim_paths[0])
-        self.r = radii.unsqueeze(1).unsqueeze(2).expand(140, 110, 128)
+        self.r = get_radii(sim_paths[0])
         vs, rhos, ps = get_sims(sim_paths, height, width)
         vs, self.v_min, self.v_max = min_max_normalize(vs, v_min, v_max)
         rhos, self.rho_min, self.rho_max = min_max_normalize(rhos, rho_min, rho_max)
@@ -106,7 +105,7 @@ class SphericalNODataset(Dataset):
         return {
             "x": torch.tensor(x, dtype=torch.float32),
             "y": torch.tensor(y, dtype=torch.float32),
-            "p": torch.tensor(p, dtype=torch.float32)
+            "p": torch.tensor(p, dtype=torch.float32),
         }
 
     def __len__(self):
