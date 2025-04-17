@@ -39,7 +39,7 @@ def main():
         n_modes=(cfg["n_modes"], cfg["n_modes"]),
         in_channels=1,
         out_channels=140,
-        hidden_channels="hidden_channels",
+        hidden_channels=cfg["hidden_channels"],
         projection_channel_ratio=2,
         factorization="dense",
     )
