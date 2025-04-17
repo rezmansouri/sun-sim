@@ -515,7 +515,7 @@ class Trainer:
         law_output = self.law.forward(
             out, p
         )  # Get tensor output from law with the same shape as out
-        print(law_output[0, 0, 0, 0])
+        # print(law_output[0, 0, 0, 0])
 
         # Calculate the loss between law output and torch.zeros(out.shape)
         law_loss = F.mse_loss(law_output, torch.zeros_like(law_output))
