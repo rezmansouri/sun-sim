@@ -32,3 +32,5 @@
 [Week 15 - Neural Operators (Spherical Fourier Neural Operator)](week_15.md)
 
 [Week 16 - SFNO on PFSS, MHD rho/vr and DeepONet](week_16.md)
+
+[Week 17 - Neural Operator's factorization and Uni vs. Bimodal vs. PINO](week_17.md)
