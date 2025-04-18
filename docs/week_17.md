@@ -103,5 +103,7 @@ Velocity & Density Interleaved + Physical loss
 ### todo
 - test units in physical loss
 - physical loss on ground truth should be 0
-- <a href="https://arxiv.org/abs/2111.03794">PINO (physics informed neural operator)</a>
+- PINO (physics informed neural operator)
+    - <a href="https://github.com/neuraloperator/physics_informed">repo</a>  
+    - <a href="https://arxiv.org/abs/2111.03794">paper</a>
 - grid search for n_modes, hidden_channels, lift/projection #channels
