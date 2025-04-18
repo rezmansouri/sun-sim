@@ -60,7 +60,7 @@ def main():
         with torch.no_grad():
             out = model(**sample)
             law_out = law.forward(out, sample["p"])
-            law_loss = F.mse_loss(law_out, torch.zeros_like(out))
+            law_loss = F.mse_loss(law_out, torch.zeros_like(law_out))
         law_losses.append(law_loss.item())
         v_pred = out[:, 0::2, :, :]
         rho_pred = out[:, 1::2, :, :]
