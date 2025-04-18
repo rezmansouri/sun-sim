@@ -88,8 +88,8 @@ Velocity & Density Interleaved + Physical loss
 
     | Experiment| Data loss|
     |-----------|----------|
-    |unimodal (18)|684.3484182357788||
-    |bimodal (15)|750.3442726135254||
+    |unimodal (18)|684.3484182357788|
+    |bimodal (15)|750.3442726135254|
     |bimodal & physics informed (22)|700.9082899093628|
 
 
