@@ -19,7 +19,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main():
-    cfg_path, state_path = sys.argv[1:]
+    exp_path = sys.argv[1]
+    cfg_path = os.path.join(exp_path, "cfg.json")
+    state_path = os.path.join(exp_path, "ckpt", "best_model_state_dict.pt")
     with open(cfg_path, "r") as f:
         cfg = json.load(f)
     sim_paths = cfg["val_files"]
