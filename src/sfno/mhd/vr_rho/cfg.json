@@ -1,0 +1,46 @@
+{
+  "instruments": [
+    "kpo_mas_mas_std_0101",
+    "mdi_mas_mas_std_0101",
+    "hmi_mast_mas_std_0101",
+    "hmi_mast_mas_std_0201",
+    "hmi_masp_mas_std_0201",
+    "mdi_mas_mas_std_0201"
+  ],
+  "num_epochs": 2,
+  "batch_size": 2,
+  "learning_rate": 0.0008,
+  "train_files": [
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1732/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1733/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1734/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1735/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1736/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1737/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1738/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1739/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1740/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1741/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1742/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1743/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1744/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1745/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1746/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1747/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1748/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1749/kpo_mas_mas_std_0101"
+  ],
+  "val_files": [
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1750/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1751/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1752/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1753/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1754/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1755/kpo_mas_mas_std_0101",
+    "/Users/reza/Career/DMLab/SURROGATE/Data/psi_web_sample/train/cr1756/kpo_mas_mas_std_0101"
+  ],
+  "train_min": 0.5136001706123352,
+  "train_max": 1.5854008197784424,
+  "hidden_channels": 2,
+  "n_modes": 2
+}
