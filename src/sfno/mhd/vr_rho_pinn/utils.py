@@ -6,6 +6,7 @@ from pyhdf.SD import SD, SDC
 from tqdm import tqdm
 from torch.utils.data import Dataset
 from os.path import join as path_join
+import torch.nn.functional as F
 
 
 FILE_NAMES = ["vr002.hdf", "rho002.hdf", "p002.hdf"]
@@ -20,8 +21,8 @@ def read_hdf(hdf_path, dataset_names):
 
 
 def get_radii(sim_path):
-    (v_path, _, _) = [path_join(sim_path, file_name) for file_name in FILE_NAMES]
-    radii = read_hdf(v_path, ["fakeDim2"])[0]
+    (_, rho_path, _) = [path_join(sim_path, file_name) for file_name in FILE_NAMES]
+    radii = read_hdf(rho_path, ["fakeDim2"])[0]
     return radii
 
 
@@ -36,6 +37,62 @@ def resize_3d(array, new_height, new_width):
     return resized_array
 
 
+def interpolate_1d(arr, new_len):
+    """
+    Linearly resample a 1-D array to `new_len` points.
+
+    Parameters
+    ----------
+    arr : (N,) array_like
+        Original data (here N = 140).
+    new_len : int
+        Desired output length.
+
+    Returns
+    -------
+    out : (new_len,) ndarray
+        Interpolated array.
+    """
+    N = len(arr)
+    old_positions = np.linspace(0, N - 1, N)  # [0, 1, …, N-1]
+    new_positions = np.linspace(0, N - 1, new_len)  # evenly spaced over same span
+    return np.interp(new_positions, old_positions, arr)
+
+
+def interp_channels(
+    x: torch.Tensor, new_C: int, mode: str = "trilinear", align_corners: bool = True
+):
+    """
+    Interpolate only the channel axis of a (C, H, W) tensor.
+
+    Parameters
+    ----------
+    x            : (C, H, W)   real or float32/64 tensor
+    new_C        : int         desired #channels after resampling
+    mode         : str         'trilinear' | 'nearest' | 'area' (3-D modes)
+    align_corners: bool        like usual; keep True for metric grids
+
+    Returns
+    -------
+    (new_C, H, W) tensor
+    """
+    _, H, W = x.shape  # original sizes
+
+    # (1, 1, C, H, W)  →  treat (C, H, W) as a 3-D volume (D, H, W)
+    v = torch.tensor(x, dtype=torch.float32)
+    v = v.unsqueeze(0).unsqueeze(0)
+
+    # Only the depth (D=channels) changes; H and W stay the same
+    v_up = F.interpolate(
+        v,
+        size=(new_C, H, W),  # (D_out, H_out, W_out)
+        mode=mode,
+        align_corners=align_corners,
+    )
+
+    return v_up.squeeze(0).squeeze(0).numpy()
+
+
 def get_sim(sim_path, height, width):
     (v_path, rho_path, p_path) = [
         path_join(sim_path, file_name) for file_name in FILE_NAMES
@@ -48,11 +105,13 @@ def get_sim(sim_path, height, width):
     rho = rho.transpose(2, 1, 0)
     p = p.transpose(2, 1, 0)
 
+    v = interp_channels(v, rho.shape[0], mode="trilinear", align_corners=True)
+
     if height != v.shape[1] or width != v.shape[2]:
         v = resize_3d(v, height, width)
         rho = resize_3d(rho, height, width)
 
-    return v, rho[:-1, :, :], p[1:-1, :, :]
+    return v, rho, p[1:, :, :]
 
 
 def get_sims(sim_paths, height, width):
@@ -72,11 +131,6 @@ def min_max_normalize(cubes, min_=None, max_=None):
     return cubes, min_, max_
 
 
-def min_max_inverse(cubes, min_, max_):
-    cubes = cubes * (max_ - min_) + min_
-    return cubes
-
-
 class SphericalNODataset(Dataset):
     def __init__(
         self,
@@ -89,8 +143,8 @@ class SphericalNODataset(Dataset):
         rho_max=None,
     ):
         super().__init__()
-        self.r = get_radii(sim_paths[0])
         vs, rhos, ps = get_sims(sim_paths, height, width)
+        self.r = get_radii(sim_paths[0])[1:]
         vs, self.v_min, self.v_max = min_max_normalize(vs, v_min, v_max)
         rhos, self.rho_min, self.rho_max = min_max_normalize(rhos, rho_min, rho_max)
         self.vs, self.rhos, self.ps = vs, rhos, ps
@@ -118,54 +172,3 @@ class SphericalNODataset(Dataset):
             "rho_min": float(self.rho_min),
             "rho_max": float(self.rho_max),
         }
-
-
-class PhysicalLaw:
-
-    def __init__(
-        self,
-        r,
-        v_min,
-        v_max,
-        rho_min,
-        rho_max,
-        g=6.6743,
-        v_constant=481.3711,
-        rho_constant=1.6726e-16,
-    ):
-        self.dr = float(r[1] - r[0])
-        self.v_min = v_min
-        self.v_max = v_max
-        self.rho_min = rho_min
-        self.rho_max = rho_max
-        self.g = g
-        self.v_constant = v_constant
-        self.rho_constant = rho_constant
-
-    def forward(self, pred, p):
-        """
-        pred: (batch, 278, 111, 128). pred[:, 0, 111, 128] is v, pred[:, 1, 111, 128] is rho
-        """
-        v_pred = pred[:, 0::2, :, :]  # shape: (batch, 139, 111, 128)
-        rho_pred = pred[:, 1::2, :, :]  # shape: (batch, 139, 111, 128)
-
-        v_pred = min_max_inverse(v_pred, self.v_min, self.v_max)
-
-        rho_pred = min_max_inverse(rho_pred, self.rho_min, self.rho_max)
-
-        v_pred = v_pred * self.v_constant
-
-        rho_pred = rho_pred * self.rho_constant
-
-        dv_r_dr = torch.gradient(v_pred, dim=1)[0] / self.dr
-        # First derivative of v_r (radial velocity) w.r.t. r (along axis 0)
-        d_p_dr = torch.gradient(p, dim=1)[0] / self.dr
-        # First derivative of pressure w.r.t. r (1D array)
-
-        term1 = rho_pred * v_pred * dv_r_dr  # Convective term: rho * v_r * (dv_r / dr)
-        term2 = -d_p_dr  # Pressure gradient term: - dp / dr
-        term3 = rho_pred * self.g  # Gravitational term: rho * g
-
-        value = term2 + term3 - term1
-
-        return value
