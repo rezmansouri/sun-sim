@@ -7,7 +7,7 @@
 
 [Week 2 & 3: 23 July - 6 August 2024](week_3.md)
 
-[Week 4](week_4.md)
+[Week 4 - Toy Script and LSTM?](week_4.md)
 
 [Week 5 - ConvLSTM for velocity: PgNN](week_5.md)
 
@@ -34,3 +34,5 @@
 [Week 16 - SFNO on PFSS, MHD rho/vr and DeepONet](week_16.md)
 
 [Week 17 - Neural Operator's factorization and Uni vs. Bimodal vs. PINO](week_17.md)
+
+[Week 18 - SFNO vs. HUX, factorization and modes, physics loss](week_18.md)
