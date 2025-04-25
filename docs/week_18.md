@@ -98,7 +98,7 @@ log-scaled hist
 
 ## References
 
-## HUX (Pete and Opal Issan)
-- <a href="https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2021.795323/full">paper</a>
-- <a href="https://github.com/predsci/HUX-paper3/tree/main">repo</a>
+- HUX (Pete and Opal Issan)
+    - <a href="https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2021.795323/full">paper</a>
+    - <a href="https://github.com/predsci/HUX-paper3/tree/main">repo</a>
 - <a href="https://www.youtube.com/watch?v=y8SqkjoKV4k">fft for derivatives</a>
