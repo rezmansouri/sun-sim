@@ -67,6 +67,10 @@ Steps:
 
 #### Physical Loss (Ground truth) = 0?
 
+everything on RHS:
+
+-p'+ρg-ρvv'
+
 ##### For a MAS instance:
 <img src="resources/week_18/mas_loss.gif">
 
