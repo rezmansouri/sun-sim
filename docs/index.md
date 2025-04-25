@@ -35,4 +35,4 @@
 
 [Week 17 - Neural Operator's factorization and Uni vs. Bimodal vs. PINO](week_17.md)
 
-[Week 18 - SFNO vs. HUX, factorization and modes, physics loss](week_18.md)
+[Week 18 - SFNO vs. HUX, physics loss](week_18.md)

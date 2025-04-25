@@ -12,8 +12,6 @@ SFNO is from exp 17
 <img src="resources/week_18/sfno_vs_hux_error_2.gif">
 <img src="resources/week_18/sfno_vs_hux_dist_2.png">
 
-## Factorization means more modes?
-
 
 ## Coupled v and rho prediction with physical loss (simplified eq. 6)
 
@@ -81,12 +79,26 @@ mu = mean of cube, std = std of cube
 <img src="resources/week_18/mas_noisy_rho_loss.gif">
 
 ##### For my two separate rho/v predictions (no physics loss):
+SFNO_v is from exp 17, SFNO_rho is from exp 18
+
 <img src="resources/week_18/reza_losss.gif">
 
 ##### Comparison
 log-scaled hist
 <img src="resources/week_18/losses.png">
 
+
+## Next step
+- Optimal SFNO for `vr` to compete with HUX
+    - careful dataset splitting for cross-validation
+    - grid search for n_modes, hidden_channels, lift/projection #channels
+    - maybe don't normalize at all?
+- Confirm physics loss
+- 2-path SFNOs for coupled `vr` & `rho` with physics loss
+
+## References
+
 ## HUX (Pete and Opal Issan)
 - <a href="https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2021.795323/full">paper</a>
 - <a href="https://github.com/predsci/HUX-paper3/tree/main">repo</a>
+- <a href="https://www.youtube.com/watch?v=y8SqkjoKV4k">fft for derivatives</a>
