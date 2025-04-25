@@ -4,13 +4,13 @@ SFNO is from exp 17
 
 - `cr2233/hmi_masp_mas_std_0201`
 <img src="resources/week_18/sfno_vs_hux_1.gif">
+<img src="resources/week_18/sfno_vs_hux_error_1.gif">
 <img src="resources/week_18/sfno_vs_hux_dist_1.png">
 
 - `cr2239/hmi_mast_mas_std_0201`
 <img src="resources/week_18/sfno_vs_hux_2.gif">
+<img src="resources/week_18/sfno_vs_hux_error_2.gif">
 <img src="resources/week_18/sfno_vs_hux_dist_2.png">
-
-Question: is HUX's output in MAS scale? (or should I do something)
 
 ## Factorization means more modes?
 
