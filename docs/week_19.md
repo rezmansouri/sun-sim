@@ -41,7 +41,12 @@
 ## Metrics
 
 1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
+    - (-inf to 1)
+    - Normalize it
+    - NNSE = 1 / (2-NSE)
+        - (0 to 1)
 2. nRMSE
+    - Normalized (by the spread of the data) Root MSE
 3. Skill score (for comparison with HUX)
 
 
