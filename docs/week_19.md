@@ -34,7 +34,8 @@
 ## Training/validation strategy
 
 1. 5-fold cross validation to get best hyperparameters
-2. Train with the best configuration on 80% and report on 20%
+2. Splits are made with carrington rotations, not instruments/datacubes in carrington rotations
+3. Train with the best configuration on 80% and report on 20%
 
 
 ## Metrics
