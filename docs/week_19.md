@@ -115,8 +115,8 @@ $$
 <img src="resources/week_19/metrics.png"/>
 
 
-<!-- | Metric                        | Formula                                                                                   | Meaning                                |
+| Metric                        | Formula                                                                                   | Meaning                                |
 |:-------------------------------|:------------------------------------------------------------------------------------------|:---------------------------------------|
 | $R^2_{\text{SFNO}}$         | $1 - \frac{\sum (MAS - SFNO)^2}{\sum (MAS - \overline{MAS})^2}$                      | How well SFNO predicts MAS             |
 | $\text{NSE}_{\text{SFNO}}$  | $1 - \frac{\sum (MAS - SFNO)^2}{\sum (MAS - \overline{MAS})^2}$                      | Same as $R^2$, common in physics     |
-| $\text{Skill}_{\text{SFNO vs HUX}}$ | $1 - \frac{ \sum (MAS - SFNO)^2 }{ \sum (MAS - HUX)^2 }$ | How much SFNO outperforms HUX baseline | -->
+| $\text{Skill}_{\text{SFNO vs HUX}}$ | $1 - \frac{ \sum (MAS - SFNO)^2 }{ \sum (MAS - HUX)^2 }$ | How much SFNO outperforms HUX baseline |
