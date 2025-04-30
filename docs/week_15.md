@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # Neural Operators (Spherical Fourier NO)
 
 ## Quick intro

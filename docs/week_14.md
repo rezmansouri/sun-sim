@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # DeepSphere and PointRNN and PINNs
 
 ## DeepSphere 

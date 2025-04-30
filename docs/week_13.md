@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ## Pointnet and Google's SphericalCNN
 
 ### Exp 9:

@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # Four experiments and start of PINNs
 
 ## Experiment 1:

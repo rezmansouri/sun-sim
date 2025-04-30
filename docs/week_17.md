@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ## `factorization` in model arguments
 
 ```python

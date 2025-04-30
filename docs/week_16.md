@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # SFNO on PFSS, MHD rho/vr and DeepONet
 
 ## Experiment 14

@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # PointCloud, PointNet & Spherical Harmonics
 
 ## Quick recap

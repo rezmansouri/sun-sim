@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # Toy-script
 ## Questions
 1. Dataset dimensions:

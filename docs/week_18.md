@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ## SFNO vs HUX
 
 SFNO is from exp 17

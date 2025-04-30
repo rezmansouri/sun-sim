@@ -1,3 +1,6 @@
+---
+layout: default
+---
 # New approach and Questions
 
 ## Previous approaches

@@ -1,3 +1,6 @@
+---
+layout: default
+---
 <style>
         .image-row {
             display: flex;

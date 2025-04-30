@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ## CV Script done
 
 ## Train Script done

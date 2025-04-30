@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ## Last week single legened plots
 
 <video controls width="600">
