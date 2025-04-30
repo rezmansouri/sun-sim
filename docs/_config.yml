@@ -1,8 +1,8 @@
-remote_theme: pages-themes/midnight@v0.2.0
+google_analytics:
+theme: jekyll-theme-midnight
 
 plugins:
   - jekyll-include-cache
-  - jekyll-remote-theme
 
 markdown: kramdown
 kramdown:
