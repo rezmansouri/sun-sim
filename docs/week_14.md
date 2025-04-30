@@ -1,4 +1,5 @@
 ---
+title: Solar ML Surrogates
 layout: default
 ---
 # DeepSphere and PointRNN and PINNs

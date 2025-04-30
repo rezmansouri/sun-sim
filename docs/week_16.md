@@ -1,4 +1,5 @@
 ---
+title: Solar ML Surrogates
 layout: default
 ---
 # SFNO on PFSS, MHD rho/vr and DeepONet

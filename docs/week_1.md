@@ -1,4 +1,5 @@
 ---
+title: Solar ML Surrogates
 layout: default
 ---
 <h1>Week One: 16 July - 23 July</h1>

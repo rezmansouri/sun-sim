@@ -1,4 +1,5 @@
 ---
+title: Solar ML Surrogates
 layout: default
 ---
 ## Pointnet experiments:
