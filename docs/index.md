@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Solar ML Surrogates
 ---
 #### By Reza Mansouri under the supervision of Dr. Rafal Angryk
