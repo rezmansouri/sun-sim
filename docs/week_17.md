@@ -1,5 +1,4 @@
 ---
-title: Solar ML Surrogates
 layout: default
 ---
 ## `factorization` in model arguments

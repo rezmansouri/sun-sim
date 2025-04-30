@@ -1,5 +1,4 @@
 ---
-title: Solar ML Surrogates
 layout: default
 ---
 # Correct data representation & Spherical CNNs/GNNs

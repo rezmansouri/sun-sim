@@ -1,5 +1,4 @@
 ---
-title: Solar ML Surrogates
 layout: default
 ---
 # Four experiments and start of PINNs

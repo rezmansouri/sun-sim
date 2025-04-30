@@ -1,6 +1,5 @@
 ---
 title: Solar ML Surrogates
-layout: default
 ---
 ## CV Script done
 

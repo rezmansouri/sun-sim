@@ -1,5 +1,4 @@
 ---
-title: Solar ML Surrogates
 layout: default
 ---
 # Neural Operators (Spherical Fourier NO)
