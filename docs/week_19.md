@@ -9,6 +9,7 @@
 ## Metrics?
 
 1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
+
 $$
 1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {\mu}_y)^2}
 $$
@@ -23,11 +24,13 @@ $$
 
 2. SSIM
 
+{% raw %}
 $$
 \text{SSIM}(x, y) = 
 \frac{(2\mu_x \mu_y + C_1)(2\sigma_{xy} + C_2)}
      {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
 $$
+{% endraw %}
 
 - Details:
 
