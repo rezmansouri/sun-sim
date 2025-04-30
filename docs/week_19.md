@@ -1,4 +1,5 @@
-# Metrics and Ready for Optimal SFNO vs HUX
+layout: default
+title: Metrics and Ready for Optimal SFNO vs HUX
 
 ## CV Script done
 
@@ -7,6 +8,10 @@
 ## Factorization?
 
 ## Metrics?
+
+## Shrink high-res to medium
+
+## Fix flickering?
 
 1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
 
@@ -24,13 +29,11 @@ $$
 
 2. SSIM
 
-{% raw %}
 $$
 \text{SSIM}(x, y) = 
 \frac{(2\mu_x \mu_y + C_1)(2\sigma_{xy} + C_2)}
      {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
 $$
-{% endraw %}
 
 - Details:
 
@@ -59,10 +62,6 @@ $$
 
 4. LPIPS
 5. PSNR
-
-## Shrink high-res to medium
-
-## Fix flickering?
 
 # Optimal SFNO to beat HUX (vr)
 
