@@ -37,4 +37,4 @@
 
 [Week 18 - SFNO vs. HUX, physics loss](week_18.md)
 
-[Week 19 - Optimal SFNO to beat HUX (vr)](week_19.md)
+[Week 19 - Metrics and Ready for Optimal SFNO vs HUX](week_19.md)
