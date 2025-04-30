@@ -1,6 +1,5 @@
-remote_theme: pages-themes/midnight@v0.2.0
+theme: jekyll-theme-midnight
 
 # Enable the custom head
 plugins:
-  - jekyll-remote-theme 
   - jekyll-include-cache
