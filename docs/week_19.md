@@ -1,6 +1,3 @@
-layout: default
-title: Metrics and Ready for Optimal SFNO vs HUX
-
 ## CV Script done
 
 ## Train Script done
