@@ -1,5 +1,6 @@
 ---
 title: Solar ML Surrogates
+layout: default
 ---
 #### By Reza Mansouri under the supervision of Dr. Rafal Angryk
 #### Data Mining Laboratory @ Georgia State University
