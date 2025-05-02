@@ -17,7 +17,7 @@ $$
 Nash-Sutcliffe Efficiency
 
 $$
-1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {y}_{clim})^2}
+NSE = 1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {y}_{clim})^2}
 $$
 
 - $${y}_{clim}$$ is the climatology
@@ -58,7 +58,7 @@ $$
 
 - With $$x=\text{prediction cube}, y=\text{ground truth cube}$$
 
-- A `(11, 11, 11)` gaussian kernel will be convolved with $$x$$ and $$y$$
+- A `(11, 11, 11)` gaussian kernel will be convolved (depthwise/separable) with $$x$$ and $$y$$
 
 <img src="resources/week_19/ssim_calculation.png">
 
@@ -77,6 +77,12 @@ $$
     - simplified expression gives: $$\text{MS-SSIM}(x, y) = l_M(x, y)^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}$$
     - With $$l_M(x, y)$$ being the luminance term at the most coarse scale (last) and $$\alpha_M=0.1333$$
     - And $$\text{cs}_j(x, y)=\text{c}_j(x,y)\times\text{s}_j(x,y)$$ at previous scales and $$\beta_j=$$`weights[j]`
+    - Problem
+        - Our 111 dimension downsampled 4 times will be $$\frac{111}{2^4}\approx6.93 < 11 \text(kernel size)$$
+        - `assert smaller_side > (win_size - 1) * (2 ** 4)`
+        - ~~Zero-padding if 111 is close to 160~~
+        - *Or, smaller kernel: next kernel choice is 7*
+        - $$\sigma \text{of kernel}: 1.5 \rightarrow 1.0$$
 
 
 ## 1.5. LPIPS
@@ -115,6 +121,14 @@ $$
 - Signal to reconstruction error ratio (SRE)
 - Spectral angle mapper (SAM)
 - Universal image quality index (UIQ)
+
+
+## 1.8. Which ones I want go with
+
+- RMSE (Root Mean Square)
+- NNSE (Normalized NSE)
+- ACC (Anomaly Correlation Coefficient)
+- MS-SSIM (Multiscale Structural Similarity Index Measure)
 
 
 ## CV Script done
