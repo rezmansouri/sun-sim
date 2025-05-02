@@ -84,7 +84,7 @@ $$
     - With $$l_M(x, y)$$ being the luminance term at the most coarse scale (last) and $$\alpha_M=0.1333$$
     - And $$\text{cs}_j(x, y)=\text{c}_j(x,y)\times\text{s}_j(x,y)$$ at previous scales and $$\beta_j=$$`weights[j]`
     - Problem
-        - Our 111 dimension downsampled 4 times will be $$\frac{111}{2^4}\approx6.93 < 11 \text(kernel size)$$
+        - Our 111 dimension downsampled 4 times will be $$\frac{111}{2^4}\approx6.93 < 11 \text{\ (kernel size)}$$
         - `assert smaller_side > (win_size - 1) * (2 ** 4)`
         - ~~Zero-padding if 111 is close to 160~~
         - *Or, smaller kernel: next kernel choice is 7*
@@ -152,6 +152,18 @@ $$
 <img src = "resources/week_19/org.gif"/>
 <img src = "resources/week_19/shrunk.gif"/>
 
+# 3. Dataset Splitting
+
+- 598 crs (originally medium) + 54 crs (shrunk to medium) = 652 crs = 1069 `vr002.hdf` files from different instruments
+- All train/val/test splits will be made on the crs
+- A train/test split once and for all
+    - 80% training ~522 CRs
+    - 20% testing ~130 CRs
+    - Calling the 80% training split D, doing 5-fold cross validation to find hyperparams
+    - For each hyperparameter combination:
+        - 80% of D for training ~417 CRs
+        - 20% of D for validation ~105 CRs
+
 ## CV Script done
 
 ## Train Script done
@@ -159,8 +171,6 @@ $$
 ## Factorization?
 
 ## Metrics?
-
-## Shrink high-res to medium
 
 ## Fix flickering?
 
