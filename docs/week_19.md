@@ -27,6 +27,9 @@ $$
 - $${y}_{clim}$$ is the climatology
     - a `(140, 111, 128)` data cube
     - mean of the training data
+
+<img src="resources/week_19/climatology.gif">
+
 - Our NSE will be mean of this score across all coordinates
 - Range: $$(-\infty,1]$$
     - $$0$$ means $$\hat{y}={y}_{clim}$$
@@ -154,8 +157,8 @@ $$
 
 # 3. Dataset Splitting
 
-- 598 crs (originally medium) + 54 crs (shrunk to medium) = 652 crs = 1069 `vr002.hdf` files from different instruments
-- All train/val/test splits will be made on the crs
+- 598 CRs (originally medium) + 54 CRs (shrunk to medium) = 652 CRs = 1069 `vr002.hdf` files from different instruments
+- All train/val/test splits will be made on the CRs
 - A train/test split once and for all
     - 80% training ~522 CRs
     - 20% testing ~130 CRs
