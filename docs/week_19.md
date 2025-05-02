@@ -91,7 +91,7 @@ $$
         - `assert smaller_side > (win_size - 1) * (2 ** 4)`
         - ~~Zero-padding if 111 is close to 160~~
         - *Or, smaller kernel: next kernel choice is 7*
-        - $$\sigma \text{of kernel}: 1.5 \rightarrow 1.0$$
+        - and $$\sigma \text{of kernel}: 1.5 \rightarrow 1.0$$
 
 
 ## 1.5. LPIPS
