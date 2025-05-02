@@ -3,7 +3,16 @@ layout: default
 title: Metrics and Ready for Optimal SFNO vs HUX
 ---
 # 1. Regression Performance Metrics
-## 1.1 NNSE $$R^2$$
+
+## 1.1. RMSE
+
+Root mean squared error
+
+$$
+RMSE=\sqrt{MSE(y, \hat{y})}
+$$
+
+## 1.2 NSE ($$R^2$$)
 
 Nash-Sutcliffe Efficiency
 
@@ -15,14 +24,29 @@ $$
     - a `(140, 111, 128)` data cube
     - mean of the training data
 - Our NSE will be mean of this score across all coordinates
-- Range: $$(-\inf,1]$$
+- Range: $$(-\infty,1]$$
     - $$0$$ means $$\hat{y}={y}_{clim}$$
 - NNSE (Normalized NSE)
     - So, $$NNSE = 1 / (2-NSE)$$
     - Range: $$[0,1]$$
     - $$0.5$$ means $$\hat{y}={y}_{clim}$$
 
-## 1.2. SSIM
+
+## 1.3. ACC
+
+- Anomaly Correlation Coefficient
+- Used in SFNO paper for spatiotemporal ERA5 data, weather prediction
+
+$$
+ACC = \frac{\sum(f-c)(a-c)}{\sqrt{\sum{(f-c)}^2}{\sqrt{\sum{(a-c)}^2}}}
+$$
+
+- $$f$$: forecast (prediction)
+- $$a$$: actual dispatch targets (ground truth)
+- $$c$$: climatology (mean training set cube)
+
+
+## 1.4. SSIM
 
 Structural similarity index measure
 
@@ -51,24 +75,47 @@ $$
     - does the SSIM in 5 scales, downsampled (2) by average pooling
     - combines it by weighting `[0.0448, 0.2856, 0.3001, 0.2363, 0.1333]`
     - simplified expression gives: $$\text{MS-SSIM}(x, y) = l_M(x, y)^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}$$
-    - With $$l_M(x, y)$$ being the luminance term at the most coarse scale and $$\alpha_M=0.1333$$
+    - With $$l_M(x, y)$$ being the luminance term at the most coarse scale (last) and $$\alpha_M=0.1333$$
     - And $$\text{cs}_j(x, y)=\text{c}_j(x,y)\times\text{s}_j(x,y)$$ at previous scales and $$\beta_j=$$`weights[j]`
 
 
-## 1.3. ACC (used in SFNO paper for spatiotemporal ERA5 data, weather prediction)
+## 1.5. LPIPS
+
+<img src="https://camo.githubusercontent.com/a76b7c735cbb76851bab9c7ba7b7cabca3f378b56e504e2d99d09be6f49cb6bd/68747470733a2f2f726963687a68616e672e6769746875622e696f2f5065726365707475616c53696d696c61726974792f696e6465785f66696c65732f666967315f76322e6a7067"/>
+
+<img src="https://richzhang.github.io/PerceptualSimilarity/index_files/network.jpg">
+
+```py
+import lpips
+loss_fn_alex = lpips.LPIPS(net='alex') # best forward scores
+loss_fn_vgg = lpips.LPIPS(net='vgg') # closer to "traditional" perceptual loss, when used for optimization
+
+import torch
+img0 = torch.zeros(1,3,64,64) # image should be RGB, IMPORTANT: normalized to [-1,1]
+img1 = torch.zeros(1,3,64,64)
+d = loss_fn_alex(img0, img1)
+```
+- Will ignore our radial dimension (going with mean of 2D slices)
+- Current implementation uses 3 channel images (because of the sot networks alexnet etc.)
+- The lower the better
+
+## 1.6. PSNR
 
 $$
-ACC = \frac{\sum(f-c)(a-c)}{\sqrt{\sum{(f-c)}^2}{\sqrt{\sum{(a-c)}^2}}}
+\text{PSNR}(y, \hat{y}) = 10 \cdot \log_{10} \left( \frac{\text{max}^2(y)}{\text{MSE}(y, \hat{y})} \right)
 $$
 
-- $$f$$: forecast (prediction)
-- $$a$$: actual dispatch targets (ground truth)
-- $$c$$: climatology (mean training set cube)
+- Range $$[0,\infty]$$
+- Measures image or signal reconstruction quality
 
+## 1.7 Others
 
-## 1.4. LPIPS
+- FSIM
+- Information theoretic-based Statistic Similarity Measure (ISSM)
+- Signal to reconstruction error ratio (SRE)
+- Spectral angle mapper (SAM)
+- Universal image quality index (UIQ)
 
-## 1.5. PSNR
 
 ## CV Script done
 
@@ -81,33 +128,6 @@ $$
 ## Shrink high-res to medium
 
 ## Fix flickering?
-
-2. SSIM
-
-$$
-\text{SSIM}(x, y) = 
-\frac{(2\mu_x \mu_y + C_1)(2\sigma_{xy} + C_2)}
-     {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
-$$
-
-- Details:
-
-    - Three aspects:
-
-        - luminance (l): means
-        - contrast (c): variances
-        - structure (s): covariance
-
-    - -1 to 1
-    - a 11 x 11 x 11 gaussian kernel calculating SSIM in all coordinates
-    
-    - multiscale MSSIM is also available
-
-        - our cube sizes are incompatible (says larger than 160, needs a fix)
-
-
-4. LPIPS
-5. PSNR
 
 # Optimal SFNO to beat HUX (vr)
 
