@@ -18,9 +18,39 @@ $$
 - Range: $$(-\inf,1]$$
     - $$0$$ means $$\hat{y}={y}_{clim}$$
 - NNSE (Normalized NSE)
-    - $$NNSE = 1 / (2-NSE)$$
+    - So, $$NNSE = 1 / (2-NSE)$$
     - Range: $$[0,1]$$
     - $$0.5$$ means $$\hat{y}={y}_{clim}$$
+
+## 1.2. SSIM
+
+Structural similarity index measure
+
+$$
+\text{SSIM}(x, y) = 
+\frac{(2\mu_x \mu_y + C_1)(2\sigma_{xy} + C_2)}
+     {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
+$$
+
+- A `(11, 11, 11)` gaussian kernel will be convolved with $$x$$ and $$y$$
+
+<img src="resources/week_19/ssim_calculation.png">
+
+- Take the mean across all coordinates
+
+- Three aspects $$SSIM = l(x, y) \dot c(x, y) \dot s(x, y)$$
+    - luminance: $$l(x, y)=2\mu_A \mu_B + C_1 / 2\mu^2_A + \mu^2_B + C_1$$
+    - contrast $$c(x, y)=2\sigma_A \sigma_B + C_2 / 2\sigma^2_A + \sigma^2_B + C_2$$
+    - structure $$s(x, y)=2\sigma_{AB} + C_3 / \sigma_A \sigma_B + C_3$$, ($$C_3 = C_2 / 2$$)
+
+- Range: $$[-1,1]$$
+
+- Multiscale variant *MSSIM*
+    - does the SSIM in 5 scales, downsampled (2) by average pooling
+    - combines it by weighting `[0.0448, 0.2856, 0.3001, 0.2363, 0.1333]`
+    - simplified expression gives: $$\text{MS-SSIM}(x, y) = [l_M(x, y)]^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}$$
+
+
 
 ## CV Script done
 
@@ -33,18 +63,6 @@ $$
 ## Shrink high-res to medium
 
 ## Fix flickering?
-
-1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
-
-
-
-- Details:
-
-    - -inf to 1, 0: prediction=mean
-    - Normalize it
-    - NNSE = 1 / (2-NSE)
-        - (0 to 1)
-        - 0.5: prediction=mean
 
 2. SSIM
 
@@ -64,11 +82,9 @@ $$
 
     - -1 to 1
     - a 11 x 11 x 11 gaussian kernel calculating SSIM in all coordinates
-    <img src="resources/week_19/ssim_calculation.png">
+    
     - multiscale MSSIM is also available
-        - does the SSIM in 5 scales, downsampled (2) by average pooling
-        - combines it by weighting
-        <img src="resources/week_19/mssim.png">
+
         - our cube sizes are incompatible (says larger than 160, needs a fix)
 
 3. ACC (used in SFNO paper for spatiotemporal ERA5 data, weather prediction)
