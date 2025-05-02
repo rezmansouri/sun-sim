@@ -87,7 +87,7 @@ $$
     - With $$l_M(x, y)$$ being the luminance term at the most coarse scale (last) and $$\alpha_M=0.1333$$
     - And $$\text{cs}_j(x, y)=\text{c}_j(x,y)\times\text{s}_j(x,y)$$ at previous scales and $$\beta_j=$$`weights[j]`
     - Problem
-        - Our 111 dimension downsampled 4 times will be $$\frac{111}{2^4}\approx6.93 < 11 \text{\ (kernel size)}$$
+        - Our 111 dimension downsampled 4 times will be $$\frac{111}{2^4}\approx6.93 < 11 \text{ (kernel size)}$$
         - `assert smaller_side > (win_size - 1) * (2 ** 4)`
         - ~~Zero-padding if 111 is close to 160~~
         - *Or, smaller kernel: next kernel choice is 7*
