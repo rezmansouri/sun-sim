@@ -123,7 +123,7 @@ $$
 
 ## 1.7 Others
 
-- FSIM
+- Feature Similarity Index Measure (FSIM)
 - Information theoretic-based Statistic Similarity Measure (ISSM)
 - Signal to reconstruction error ratio (SRE)
 - Spectral angle mapper (SAM)
@@ -140,13 +140,17 @@ $$
 
 <img src = "resources/week_19/noisy_instances.png"/>
 
-| Noise Scale |   RMSE   |   NNSE   |   ACC   |   PSNR    |   MS-SSIM   |
+| Noise Scale |   RMSE $$\downarrow$$   |   NNSE $$\uparrow$$   |   ACC $$\uparrow$$  |   PSNR $$\uparrow$$   |   MS-SSIM $$\uparrow$$  |
 |-------------|----------|----------|---------|-----------|-------------|
 | 0.01        | 0.00999  | 0.99481  | 0.99787 | 40.01     | 0.99314     |
 | 0.1         | 0.04999  | 0.88430  | 0.94063 | 26.02     | 0.90880     |
 | 0.5         | 0.10002  | 0.65633  | 0.81033 | 19.99     | 0.79606     |
 
 
+# 2. Shrinking high resolution MAS to use as medium resolution
+
+<img src = "resources/week_19/org.gif"/>
+<img src = "resources/week_19/shrunk.gif"/>
 
 ## CV Script done
 
