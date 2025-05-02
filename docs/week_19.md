@@ -1,6 +1,27 @@
 ---
 layout: default
+title: Metrics and Ready for Optimal SFNO vs HUX
 ---
+# 1. Regression Performance Metrics
+## 1.1 NNSE \(R^2\)
+
+Nash-Sutcliffe Efficiency
+
+$$
+1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {y}_{clim})^2}
+$$
+
+- \({y}_{clim}\) is the climatology
+    - a `(140, 111, 128)` data cube
+    - mean of the training data
+- Our NSE will be mean of this score across all coordinates
+- Range: \((-\inf,1]\)
+    - \(0\) means \(\hat{y}={y}_{clim}\)
+- NNSE (Normalized NSE)
+    - \(NNSE = 1 / (2-NSE)\)
+    - Range: \([0,1]\)
+    - \(0.5\) means \(\hat{y}={y}_{clim}\)
+
 ## CV Script done
 
 ## Train Script done
@@ -15,9 +36,7 @@ layout: default
 
 1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
 
-$$
-1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {\mu}_y)^2}
-$$
+
 
 - Details:
 
