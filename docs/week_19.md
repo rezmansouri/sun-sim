@@ -8,6 +8,8 @@ title: Metrics and Ready for Optimal SFNO vs HUX
 
 Root mean squared error
 
+Lower better
+
 $$
 RMSE=\sqrt{MSE(y, \hat{y})}
 $$
@@ -15,6 +17,8 @@ $$
 ## 1.2 NSE ($$R^2$$)
 
 Nash-Sutcliffe Efficiency
+
+Higher better
 
 $$
 NSE = 1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {y}_{clim})^2}
@@ -34,16 +38,17 @@ $$
 
 ## 1.3. ACC
 
+- Higher better
 - Anomaly Correlation Coefficient
 - Used in SFNO paper for spatiotemporal ERA5 data, weather prediction
 
 $$
-ACC = \frac{\sum(f-c)(a-c)}{\sqrt{\sum{(f-c)}^2}{\sqrt{\sum{(a-c)}^2}}}
+ACC = \frac{\sum(\hat{y}-{y}_{clim})(y-{y}_{clim})}{\sqrt{\sum{(\hat{y}-{y}_{clim})}^2}{\sqrt{\sum{(y-{y}_{clim})}^2}}}
 $$
 
-- $$f$$: forecast (prediction)
-- $$a$$: actual dispatch targets (ground truth)
-- $$c$$: climatology (mean training set cube)
+- $$\hat{y}$$: forecast (prediction)
+- $$y$$: actual dispatch targets (ground truth)
+- $${y}_{clim}$$: climatology (mean training set cube)
 
 
 ## 1.4. SSIM
@@ -56,6 +61,7 @@ $$
      {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
 $$
 
+- Higher better
 - With $$x=\text{prediction cube}, y=\text{ground truth cube}$$
 
 - A `(11, 11, 11)` gaussian kernel will be convolved (depthwise/separable) with $$x$$ and $$y$$
@@ -103,7 +109,7 @@ d = loss_fn_alex(img0, img1)
 ```
 - Will ignore our radial dimension (going with mean of 2D slices)
 - Current implementation uses 3 channel images (because of the sot networks alexnet etc.)
-- The lower the better
+- Lower better
 
 ## 1.6. PSNR
 
@@ -111,6 +117,7 @@ $$
 \text{PSNR}(y, \hat{y}) = 10 \cdot \log_{10} \left( \frac{\text{max}^2(y)}{\text{MSE}(y, \hat{y})} \right)
 $$
 
+- Higher better
 - Range $$[0,\infty]$$
 - Measures image or signal reconstruction quality
 
@@ -129,6 +136,16 @@ $$
 - NNSE (Normalized NSE)
 - ACC (Anomaly Correlation Coefficient)
 - MS-SSIM (Multiscale Structural Similarity Index Measure)
+- PSNR
+
+<img src = "resources/week_19/noisy_instances.png"/>
+
+| Noise Scale |   RMSE   |   NNSE   |   ACC   |   PSNR    |   MS-SSIM   |
+|-------------|----------|----------|---------|-----------|-------------|
+| 0.01        | 0.00999  | 0.99481  | 0.99787 | 40.01     | 0.99314     |
+| 0.1         | 0.04999  | 0.88430  | 0.94063 | 26.02     | 0.90880     |
+| 0.5         | 0.10002  | 0.65633  | 0.81033 | 19.99     | 0.79606     |
+
 
 
 ## CV Script done
