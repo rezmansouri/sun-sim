@@ -32,25 +32,43 @@ $$
      {(\mu_x^2 + \mu_y^2 + C_1)(\sigma_x^2 + \sigma_y^2 + C_2)}
 $$
 
+- With $$x=\text{prediction cube}, y=\text{ground truth cube}$$
+
 - A `(11, 11, 11)` gaussian kernel will be convolved with $$x$$ and $$y$$
 
 <img src="resources/week_19/ssim_calculation.png">
 
 - Take the mean across all coordinates
 
-- Three aspects $$SSIM = l(x, y) \dot c(x, y) \dot s(x, y)$$
-    - luminance: $$l(x, y)=2\mu_A \mu_B + C_1 / 2\mu^2_A + \mu^2_B + C_1$$
-    - contrast $$c(x, y)=2\sigma_A \sigma_B + C_2 / 2\sigma^2_A + \sigma^2_B + C_2$$
-    - structure $$s(x, y)=2\sigma_{AB} + C_3 / \sigma_A \sigma_B + C_3$$, ($$C_3 = C_2 / 2$$)
+- Three aspects $$SSIM = l(x, y) \times c(x, y) \times s(x, y)$$
+    - luminance: $$l(x, y)=2\mu_A \mu_B + C_1 \ /\  2\mu^2_A + \mu^2_B + C_1$$
+    - contrast $$c(x, y)=2\sigma_A \sigma_B + C_2 \ /\  2\sigma^2_A + \sigma^2_B + C_2$$
+    - structure $$s(x, y)=2\sigma_{AB} + C_3 \ /\  \sigma_A \sigma_B + C_3$$, ($$C_3 = C_2 / 2$$)
 
 - Range: $$[-1,1]$$
 
-- Multiscale variant *MSSIM*
+- Multiscale variant: *MS-SSIM*
     - does the SSIM in 5 scales, downsampled (2) by average pooling
     - combines it by weighting `[0.0448, 0.2856, 0.3001, 0.2363, 0.1333]`
-    - simplified expression gives: $$\text{MS-SSIM}(x, y) = [l_M(x, y)]^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}$$
+    - simplified expression gives: $$\text{MS-SSIM}(x, y) = l_M(x, y)^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}$$
+    - With $$l_M(x, y)$$ being the luminance term at the most coarse scale and $$\alpha_M=0.1333$$
+    - And $$\text{cs}_j(x, y)=\text{c}_j(x,y)\times\text{s}_j(x,y)$$ at previous scales and $$\beta_j=$$`weights[j]`
 
 
+## 1.3. ACC (used in SFNO paper for spatiotemporal ERA5 data, weather prediction)
+
+$$
+ACC = \frac{\sum(f-c)(a-c)}{\sqrt{\sum{(f-c)}^2}{\sqrt{\sum{(a-c)}^2}}}
+$$
+
+- $$f$$: forecast (prediction)
+- $$a$$: actual dispatch targets (ground truth)
+- $$c$$: climatology (mean training set cube)
+
+
+## 1.4. LPIPS
+
+## 1.5. PSNR
 
 ## CV Script done
 
@@ -87,13 +105,6 @@ $$
 
         - our cube sizes are incompatible (says larger than 160, needs a fix)
 
-3. ACC (used in SFNO paper for spatiotemporal ERA5 data, weather prediction)
-
-<img src="https://wattclarity.com.au/wp-content/uploads/2022/10/ACCFormula-300x88.png">
-
-- f: forecast (prediction)
-- a: actual dispatch targets (ground truth)
-- c: climatology (mean of training set?)
 
 4. LPIPS
 5. PSNR
@@ -114,7 +125,7 @@ $$
     - 16
     - 32
     - 64
-    -128
+    - 128
 
 
 - Hidden Channels:
