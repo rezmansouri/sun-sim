@@ -257,9 +257,8 @@ def train(
                 x = batch["x"].to(device)
                 y = batch["y"].to(device)
 
-                with torch.amp.autocast(device_type=autocast_device_type):
-                    pred = model(x)
-                    loss = loss_fn(pred, y)
+                pred = model(x)
+                loss = loss_fn(pred, y)
 
                 val_loss += loss.item() * x.size(0)
                 running_rmse += rmse_score(y, pred)
