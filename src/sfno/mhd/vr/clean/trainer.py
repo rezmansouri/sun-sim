@@ -194,6 +194,8 @@ def train(
     val_acc = []
     train_psnr = []
     val_psnr = []
+    
+    climatology = train_dataset.climatology.to(device)
 
     for epoch in range(n_epochs):
         model.train()
@@ -211,9 +213,8 @@ def train(
 
             optimizer.zero_grad()
 
-            with torch.amp.autocast(device_type=autocast_device_type):
-                pred = model(x)
-                loss = loss_fn(pred, y)
+            pred = model(x)
+            loss = loss_fn(pred, y)
 
             scaler.scale(loss).backward()
             scaler.step(optimizer)
@@ -221,9 +222,9 @@ def train(
 
             running_loss += loss.item() * x.size(0)
             running_rmse += rmse_score(y, pred)
-            running_nnse += nnse_score(y, pred, train_dataset.climatology)
+            running_nnse += nnse_score(y, pred, climatology)
             running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
-            running_acc += acc_score(y, pred, train_dataset.climatology)
+            running_acc += acc_score(y, pred, climatology)
             running_psnr += psnr_score(y, pred)
 
         epoch_train_loss = running_loss / len(train_loader.dataset)
@@ -262,9 +263,9 @@ def train(
 
                 val_loss += loss.item() * x.size(0)
                 running_rmse += rmse_score(y, pred)
-                running_nnse += nnse_score(y, pred, train_dataset.climatology)
+                running_nnse += nnse_score(y, pred, climatology)
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
-                running_acc += acc_score(y, pred, train_dataset.climatology)
+                running_acc += acc_score(y, pred, climatology)
                 running_psnr += psnr_score(y, pred)
 
         epoch_val_loss = val_loss / len(val_loader.dataset)
