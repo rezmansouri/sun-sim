@@ -1,0 +1,104 @@
+import os
+import sys
+import numpy as np
+import torch
+from neuralop import LpLoss
+from neuralop.models import SFNO, FNO
+from trainer import train
+from utils import SphericalNODataset, get_cr_dirs
+from sklearn.model_selection import train_test_split
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+
+def main():
+    (
+        model_str,
+        data_path,
+        batch_size,
+        n_epochs,
+        hidden_channels,
+        n_modes,
+        projection_channel_ratio,
+        factorization,
+    ) = sys.argv[1:]
+    batch_size, n_epochs, hidden_channels, n_modes, projection_channel_ratio = (
+        int(batch_size),
+        int(n_epochs),
+        int(hidden_channels),
+        int(n_modes),
+        int(projection_channel_ratio),
+    )
+
+    cr_dirs = get_cr_dirs(data_path)
+    cr_train, cr_val = train_test_split(cr_dirs, test_size=0.2, random_state=42)
+
+    loss_fn = LpLoss(d=2, p=2, reduction="sum")
+
+    train_dataset = SphericalNODataset(data_path, cr_train)
+    val_dataset = SphericalNODataset(
+        data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
+    )
+
+    if model_str == "sfno":
+        model = SFNO(
+            n_modes=(n_modes, n_modes),
+            in_channels=1,
+            out_channels=139,
+            hidden_channels=hidden_channels,
+            projection_channel_ratio=projection_channel_ratio,
+            factorization=factorization,
+        )
+    elif model_str == "fno":
+        model = FNO(
+            n_modes=(n_modes, n_modes),
+            in_channels=1,
+            out_channels=139,
+            hidden_channels=hidden_channels,
+            projection_channel_ratio=projection_channel_ratio,
+            factorization=factorization,
+        )
+    else:
+        raise KeyError('model should be either "sfno" or "fno"')
+
+    (
+        train_losses,
+        val_losses,
+        train_nnse,
+        val_nnse,
+        train_ssim,
+        val_ssim,
+        best_epoch,
+        best_state_dict,
+    ) = train(
+        model,
+        train_dataset,
+        val_dataset,
+        n_epochs=n_epochs,
+        batch_size=batch_size,
+        loss_fn=loss_fn,
+        device=device,
+        lr=8e-4,
+        weight_decay=0.0,
+    )
+    out_path = f"model-{model_str}_best_epoch-{best_epoch}_hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
+    os.makedirs(
+        out_path,
+        exist_ok=True,
+    )
+
+    torch.save(
+        best_state_dict,
+        os.path.join(out_path, "model.pt"),
+    )
+    np.save(os.path.join(out_path, "train_losses.npy"), train_losses)
+    np.save(os.path.join(out_path, "val_losses.npy"), val_losses)
+    np.save(os.path.join(out_path, "train_nnse.npy"), train_nnse)
+    np.save(os.path.join(out_path, "val_nnse.npy"), val_nnse)
+    np.save(os.path.join(out_path, "train_ssim.npy"), train_ssim)
+    np.save(os.path.join(out_path, "val_ssim.npy"), val_ssim)
+    print("Training completed.")
+
+
+if __name__ == "__main__":
+    main()

@@ -11,6 +11,7 @@ from neuralop.models import SFNO
 from neuralop.training import AdamW
 from utils import SphericalNODataset
 from torch.utils.data import DataLoader
+from sklearn.model_selection import train_test_split
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -32,19 +33,36 @@ def main():
         "hmi_masp_mas_std_0201",
         "mdi_mas_mas_std_0201",
     ]
-    subdir_paths = sorted(os.listdir(data_path))
-    cr_paths = [os.path.join(data_path, p) for p in subdir_paths if p.startswith("cr")]
-    sim_paths = []
-    for cr_path in cr_paths:
+    cr_dirs = sorted(
+        [
+            d
+            for d in os.listdir(data_path)
+            if d.startswith("cr") and os.path.isdir(os.path.join(data_path, d))
+        ]
+    )
+
+    cr_train, cr_val = train_test_split(cr_dirs, test_size=0.25, random_state=42)
+
+    train_sim_paths = []
+    for cr in cr_train:
+        cr_path = os.path.join(data_path, cr)
         for instrument in instruments:
             instrument_path = os.path.join(cr_path, instrument)
             if os.path.exists(instrument_path):
-                sim_paths.append(instrument_path)
-    split_ix = int(len(sim_paths) * 0.75)
-    train_dataset = SphericalNODataset(sim_paths[:split_ix])
+                train_sim_paths.append(instrument_path)
+
+    val_sim_paths = []
+    for cr in cr_val:
+        cr_path = os.path.join(data_path, cr)
+        for instrument in instruments:
+            instrument_path = os.path.join(cr_path, instrument)
+            if os.path.exists(instrument_path):
+                val_sim_paths.append(instrument_path)
+
+    train_dataset = SphericalNODataset(train_sim_paths)
     min_max_dict = train_dataset.get_min_max()
     val_dataset = SphericalNODataset(
-        sim_paths[split_ix:],
+        val_sim_paths,
         v_min=min_max_dict["v_min"],
         v_max=min_max_dict["v_max"],
     )
@@ -53,8 +71,8 @@ def main():
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 8e-4,
-        "train_files": sim_paths[:split_ix],
-        "val_files": sim_paths[split_ix:],
+        "train_files": train_sim_paths,
+        "val_files": val_sim_paths,
         "v_min": float(min_max_dict["v_min"]),
         "v_max": float(min_max_dict["v_max"]),
         "hidden_channels": hidden_channels,
