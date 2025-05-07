@@ -194,7 +194,7 @@ def train(
     val_acc = []
     train_psnr = []
     val_psnr = []
-    
+
     climatology = train_dataset.climatology.to(device)
 
     for epoch in range(n_epochs):
@@ -303,10 +303,16 @@ def train(
     return (
         train_losses,
         val_losses,
+        train_rmse,
+        val_rmse,
         train_nnse,
         val_nnse,
         train_msssim,
         val_msssim,
+        train_acc,
+        val_acc,
+        train_psnr,
+        val_psnr,
         best_epoch + 1,
         best_state_dict,
     )

@@ -74,10 +74,16 @@ def main():
     (
         train_losses,
         val_losses,
+        train_rmse,
+        val_rmse,
         train_nnse,
         val_nnse,
-        train_ssim,
-        val_ssim,
+        train_msssim,
+        val_msssim,
+        train_acc,
+        val_acc,
+        train_psnr,
+        val_psnr,
         best_epoch,
         best_state_dict,
     ) = train(
@@ -92,13 +98,23 @@ def main():
         weight_decay=0.0,
     )
 
-    torch.save(best_state_dict, os.path.join(out_path, f"model_{best_epoch}.pt"))
+    torch.save(best_state_dict, os.path.join(out_path, f"model.pt"))
+    with open(
+        os.path.join(out_path, f"best_epoch-{best_epoch}.txt"), "w", encoding="utf-8"
+    ) as f:
+        f.write(f"best_epoch: {best_epoch}")
     np.save(os.path.join(out_path, "train_losses.npy"), train_losses)
     np.save(os.path.join(out_path, "val_losses.npy"), val_losses)
+    np.save(os.path.join(out_path, "train_rmse.npy"), train_rmse)
+    np.save(os.path.join(out_path, "val_rmse.npy"), val_rmse)
     np.save(os.path.join(out_path, "train_nnse.npy"), train_nnse)
     np.save(os.path.join(out_path, "val_nnse.npy"), val_nnse)
-    np.save(os.path.join(out_path, "train_ssim.npy"), train_ssim)
-    np.save(os.path.join(out_path, "val_ssim.npy"), val_ssim)
+    np.save(os.path.join(out_path, "train_msssim.npy"), train_msssim)
+    np.save(os.path.join(out_path, "val_msssim.npy"), val_msssim)
+    np.save(os.path.join(out_path, "train_acc.npy"), train_acc)
+    np.save(os.path.join(out_path, "val_acc.npy"), val_acc)
+    np.save(os.path.join(out_path, "train_psnr.npy"), train_psnr)
+    np.save(os.path.join(out_path, "val_psnr.npy"), val_psnr)
     print("Training completed.")
 
 

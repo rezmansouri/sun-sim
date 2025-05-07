@@ -79,8 +79,6 @@ def get_cr_dirs(data_path):
             if d.startswith("cr") and os.path.isdir(os.path.join(data_path, d))
         ]
     )
-    rng = np.random.default_rng(seed=42)
-    rng.shuffle(cr_dirs)
     return cr_dirs
 
 
