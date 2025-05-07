@@ -285,9 +285,10 @@ def train(
             f"Train Loss = {epoch_train_loss:.6f} | Val Loss = {epoch_val_loss:.6f}\n",
             f"Train RMSE = {epoch_train_rmse:.6f} | Val RMSE = {epoch_val_nnse:.6f}\n",
             f"Train NNSE = {epoch_train_nnse:.6f} | Val NNSE = {epoch_val_nnse:.6f}\n",
-            f"Train MS-SSIM = {epoch_train_msssim:.6f} | Val MS-SSIM = {epoch_val_msssim:.6f}",
-            f"Train ACC = {epoch_train_acc:.6f} | Val ACC = {epoch_val_acc:.6f}",
-            f"Train PSNR = {epoch_train_psnr:.6f} | Val ACC = {epoch_val_psnr:.6f}",
+            f"Train MS-SSIM = {epoch_train_msssim:.6f} | Val MS-SSIM = {epoch_val_msssim:.6f}\n",
+            f"Train ACC = {epoch_train_acc:.6f} | Val ACC = {epoch_val_acc:.6f}\n",
+            f"Train PSNR = {epoch_train_psnr:.6f} | Val ACC = {epoch_val_psnr:.6f}\n",
+            "================================================================================================",
         )
 
         # Save best model
