@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import torch
+import json
 from neuralop import LpLoss
 from neuralop.models import SFNO, FNO
 from trainer import train
@@ -39,6 +40,29 @@ def main():
     val_dataset = SphericalNODataset(
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
+
+    out_path = f"model-{model_str}_hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
+    os.makedirs(
+        out_path,
+        exist_ok=True,
+    )
+
+    cfg = {
+        "model": model_str,
+        "num_epochs": n_epochs,
+        "batch_size": batch_size,
+        "learning_rate": 8e-4,
+        "train_files": cr_train,
+        "val_files": cr_val,
+        "v_min": float(train_dataset.v_min),
+        "v_max": float(train_dataset.v_max),
+        "hidden_channels": hidden_channels,
+        "n_modes": n_modes,
+        "projection_channel_ratio": projection_channel_ratio,
+        "factorization": factorization,
+    }
+    with open("cfg.json", "w", encoding="utf-8") as f:
+        json.dump(cfg, f)
 
     if model_str == "sfno":
         model = SFNO(
@@ -81,16 +105,8 @@ def main():
         lr=8e-4,
         weight_decay=0.0,
     )
-    out_path = f"model-{model_str}_best_epoch-{best_epoch}_hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
-    os.makedirs(
-        out_path,
-        exist_ok=True,
-    )
 
-    torch.save(
-        best_state_dict,
-        os.path.join(out_path, "model.pt"),
-    )
+    torch.save(best_state_dict, os.path.join(out_path, f"model_{best_epoch}.pt"))
     np.save(os.path.join(out_path, "train_losses.npy"), train_losses)
     np.save(os.path.join(out_path, "val_losses.npy"), val_losses)
     np.save(os.path.join(out_path, "train_nnse.npy"), train_nnse)

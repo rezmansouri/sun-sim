@@ -213,7 +213,7 @@ def train(
             scaler.update()
 
             running_loss += loss.item() * x.size(0)
-            running_nnse += nnse_score(y, pred)
+            running_nnse += nnse_score(y, pred, train_dataset.climatology)
             running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
 
         epoch_train_loss = running_loss / len(train_loader.dataset)
@@ -242,7 +242,7 @@ def train(
                     loss = loss_fn(pred, y)
 
                 val_loss += loss.item() * x.size(0)
-                running_nnse += nnse_score(y, pred)
+                running_nnse += nnse_score(y, pred, train_dataset.climatology)
                 running_msssim += mssim_score(MS_SSIM, y, pred)
 
         epoch_val_loss = val_loss / len(val_loader.dataset)
@@ -275,6 +275,6 @@ def train(
         val_nnse,
         train_msssim,
         val_msssim,
-        best_epoch,
+        best_epoch + 1,
         best_state_dict,
     )
