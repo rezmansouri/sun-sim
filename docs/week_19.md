@@ -167,73 +167,23 @@ $$
         - 80% of D for training ~417 CRs
         - 20% of D for validation ~105 CRs
 
-## CV Script done
+# 4. Hyperparameters
 
-## Train Script done
+| Hyperparameter           | Values                         |
+|--------------------------|---------------------------------|
+| **Factorization**        | Dense, CP, Tucker, TT           |
+| **Modes**                | 8, 16, 32, 64, 128              |
+| **Hidden Channels**      | 64, 128, 256, 512               |
+| **Projection/Lifting Ratio** | 1, 2, 4, 8, 16               |
 
-## Factorization?
+For a k-fold cross validation: $$k\times4\times5\times4\times5=400k$$ runs.
 
-## Metrics?
+Alternatives:
 
-## Fix flickering?
-
-# Optimal SFNO to beat HUX (vr)
-
-## Hyperparameters
-
-- Factorization:
-    - Dense
-    - CP
-    - Tucker
-    - TT
-
-
-- Modes:
-    - 8
-    - 16
-    - 32
-    - 64
-    - 128
-
-
-- Hidden Channels:
-    - 64
-    - 128
-    - 256
-    - 512
-
-
-- Projection/Lifting Ratio:
-    - 1
-    - 2
-    - 4
-    - 8
-    - 16
-
-## Training/validation strategy
-
-1. 5-fold cross validation to get best hyperparameters
-2. Splits are made with carrington rotations, not instruments/datacubes in carrington rotations
-3. Train with the best configuration on 80% and report on 20%
-
-
-## Metrics
-
-1. R^2 score, aka NSE (Nash-Sutcliffe Efficiency)
-    - (-inf to 1)
-    - Normalize it
-    - NNSE = 1 / (2-NSE)
-        - (0 to 1)
-2. nRMSE
-    - Normalized (by the spread of the data) Root MSE
-3. Skill score (for comparison with HUX)
-
-
-<img src="resources/week_19/metrics.png"/>
-
-
-| Metric                        | Formula                                                                                   | Meaning                                |
-|:-------------------------------|:------------------------------------------------------------------------------------------|:---------------------------------------|
-| $R^2_{\text{SFNO}}$         | $1 - \frac{\sum (MAS - SFNO)^2}{\sum (MAS - \overline{MAS})^2}$                      | How well SFNO predicts MAS             |
-| $\text{NSE}_{\text{SFNO}}$  | $1 - \frac{\sum (MAS - SFNO)^2}{\sum (MAS - \overline{MAS})^2}$                      | Same as $R^2$, common in physics     |
-| $\text{Skill}_{\text{SFNO vs HUX}}$ | $1 - \frac{ \sum (MAS - SFNO)^2 }{ \sum (MAS - HUX)^2 }$ | How much SFNO outperforms HUX baseline |
+- Random search
+- <a href="https://arxiv.org/abs/1603.06560">Hyperband</a>
+    1. Search the full grid but models are trained shorter or on subset of data
+    2. Select the winner configurations
+    3. Search the winner among those with longer training and on the whole data
+- Bayesian optimization
+    - <a href="https://optuna.org/">Optuna</a>

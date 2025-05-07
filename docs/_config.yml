@@ -1,5 +1,5 @@
 google_analytics:
-theme: jekyll-theme-leap-day
+theme: jekyll-theme-midnight
 
 plugins:
   - jekyll-include-cache
