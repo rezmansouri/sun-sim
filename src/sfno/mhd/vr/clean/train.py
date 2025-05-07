@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import json
 from neuralop import LpLoss
-from neuralop.models import SFNO, FNO
+from neuralop.models import SFNO
 from trainer import train
 from utils import SphericalNODataset, get_cr_dirs
 from sklearn.model_selection import train_test_split
@@ -14,7 +14,6 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def main():
     (
-        model_str,
         data_path,
         batch_size,
         n_epochs,
@@ -41,14 +40,13 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
-    out_path = f"model-{model_str}_hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
+    out_path = f"hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
     os.makedirs(
         out_path,
         exist_ok=True,
     )
 
     cfg = {
-        "model": model_str,
         "num_epochs": n_epochs,
         "batch_size": batch_size,
         "learning_rate": 8e-4,
@@ -61,29 +59,17 @@ def main():
         "projection_channel_ratio": projection_channel_ratio,
         "factorization": factorization,
     }
-    with open("cfg.json", "w", encoding="utf-8") as f:
+    with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
 
-    if model_str == "sfno":
-        model = SFNO(
-            n_modes=(n_modes, n_modes),
-            in_channels=1,
-            out_channels=139,
-            hidden_channels=hidden_channels,
-            projection_channel_ratio=projection_channel_ratio,
-            factorization=factorization,
-        )
-    elif model_str == "fno":
-        model = FNO(
-            n_modes=(n_modes, n_modes),
-            in_channels=1,
-            out_channels=139,
-            hidden_channels=hidden_channels,
-            projection_channel_ratio=projection_channel_ratio,
-            factorization=factorization,
-        )
-    else:
-        raise KeyError('model should be either "sfno" or "fno"')
+    model = SFNO(
+        n_modes=(n_modes, n_modes),
+        in_channels=1,
+        out_channels=139,
+        hidden_channels=hidden_channels,
+        projection_channel_ratio=projection_channel_ratio,
+        factorization=factorization,
+    )
 
     (
         train_losses,

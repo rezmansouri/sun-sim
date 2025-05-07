@@ -101,7 +101,6 @@ def acc_score(
 def psnr_score(
     y_true: torch.Tensor,
     y_pred: torch.Tensor,
-    data_range: float = 1.0,
     eps: float = 1e-10,
 ) -> float:
     """
@@ -124,8 +123,9 @@ def psnr_score(
     ), f"Input dtypes must match {y_true.dtype} vs {y_pred.dtype}"
 
     # Compute MSE per sample
-    mse = torch.mean((y_true - y_pred) ** 2, dim=tuple(range(1, y_true.ndim)))
-    psnr = 10 * torch.log10((data_range**2) / (mse + eps))
+    mse = torch.mean((y_true - y_pred) ** 2, dim=0)
+    max_ = torch.max(y_true, dim=0)[0]
+    psnr = 10 * torch.log10((max_**2) / (mse + eps))
     return float(psnr.mean().item())
 
 
