@@ -40,7 +40,7 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
-    out_path = f"hidden_channels-{hidden_channels}_n_modes-{n_modes}_factorization-{factorization}"
+    out_path = f"hidden_channels-{hidden_channels}_n_modes-{n_modes}_projection-{projection_channel_ratio}_factorization-{factorization}"
     os.makedirs(
         out_path,
         exist_ok=True,
@@ -98,7 +98,7 @@ def main():
         weight_decay=0.0,
     )
 
-    torch.save(best_state_dict, os.path.join(out_path, f"model.pt"))
+    torch.save(best_state_dict, os.path.join(out_path, "model.pt"))
     with open(
         os.path.join(out_path, f"best_epoch-{best_epoch}.txt"), "w", encoding="utf-8"
     ) as f:

@@ -167,7 +167,9 @@ $$
         - 80% of D for training ~417 CRs
         - 20% of D for validation ~105 CRs
 
-# 4. Hyperparameters
+# 4. Hyperparameter search
+
+- Candidates:
 
 | Hyperparameter           | Values                         |
 |--------------------------|---------------------------------|
@@ -187,3 +189,112 @@ Alternatives:
     3. Search the winner among those with longer training and on the whole data
 - Bayesian optimization
     - <a href="https://optuna.org/">Optuna</a>
+
+
+# 5. New experiments
+
+See if we can fix flickering.
+
+## 5.1. Exp 23
+
+Max candidate for projection (P and Q) = 16
+
+<img src = "https://zongyi-li.github.io/neural-operator/img/fourier_full_arch5.png">
+
+```py
+  "projection_channel_ratio": 16,
+  "num_epochs": 200,
+  "batch_size": 64,
+  "hidden_channels": 128,
+  "n_modes": 64,
+  "factorization": "dense"
+```
+
+### Visual Comparison
+
+Comparing with Exp 17. Every hyperparameter is the same but `projection_channel_ratio`=2.
+
+- `projection_channel_ratio`=2 (Exp 17)
+<img src="resources/week_19/exp_17_1.gif">
+- `projection_channel_ratio`=16 (Exp 23)
+<img src="resources/week_19/exp_23_1.gif">
+
+16 is $$\approx$$ same or even worse than 2.
+
+### Loss and metrics
+
+
+## 5.2. Exp 24
+
+Min candidate for n_modes = 8 and projection=2.
+
+```py
+  "n_modes": 8,
+  "projection_channel_ratio": 2,
+  "num_epochs": 200,
+  "batch_size": 64,
+  "hidden_channels": 128,
+  "factorization": "dense"
+```
+
+### Visual Comparison
+
+- `n_modes`=64 (Exp 17)
+<img src="resources/week_19/exp_17_1.gif">
+- `n_modes`=8 (Exp 24)
+<img src="resources/week_19/exp_24_1.gif">
+
+### Loss and metrics
+
+<img src="resources/week_19/exp_24_metrics.png">
+
+
+## 5.3. Exp 25
+
+Maybe the modes control it...
+
+```py
+  "n_modes": 128,
+  "projection_channel_ratio": 2,
+  "num_epochs": 200,
+  "batch_size": 64,
+  "hidden_channels": 128,
+  "factorization": "dense"
+```
+
+### Visual Comparison
+
+- `n_modes`=64 (Exp 17)
+<img src="resources/week_19/exp_17_1.gif">
+- `n_modes`=128 (Exp 25)
+<img src="resources/week_19/exp_25_1.gif">
+
+### Loss and metrics
+
+<img src="resources/week_19/exp_25_metrics.png">
+
+
+# 6. Physical Loss
+
+$$
+\rho  v_r \frac{\partial v_r}{\partial r} = -  \frac{\partial p}{\partial r} + \rho g
+$$
+
+For MAS, is it zero or small because scales are small?
+
+Mean of the values for the whole cube:
+
+- Convective term ($$\rho  v_r \frac{\partial v_r}{\partial r}$$): $$3.3711176875004925 \times 10^{-22}$$
+- Pressure gradient term ($$-  \frac{\partial p}{\partial r}$$): $$2.7239933721076018 \times 10^{-16}$$
+- Gravitational term ($$\rho g$$): $$3.2309111983042094 \times 10^{-12}$$
+- Residual value: $$3.2309111983042094 \times 10^{-12}$$ = Gravitational term ($$\rho g$$)! 
+    - i.e., $$-  \frac{\partial p}{\partial r} + \rho g - \rho  v_r \frac{\partial v_r}{\partial r} = \rho g$$
+    - $$\rightarrow \frac{\partial p}{\partial r} = $$
+
+Confirming:
+```py
+>>> 2.7239933721076018e-16 + 3.2309111983042094e-12 - 3.3711176875004925e-22
+3.2311835973043085e-12
+```
+
+The 
