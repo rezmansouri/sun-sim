@@ -223,10 +223,11 @@ Comparing with Exp 17. Every hyperparameter is the same but `projection_channel_
 
 ### Loss and metrics
 
+<img src="resources/week_19/exp_23_metrics.png">
 
 ## 5.2. Exp 24
 
-Min candidate for n_modes = 8 and projection=2.
+Min candidate for n_modes = 8 and projection back to 2.
 
 ```py
   "n_modes": 8,
@@ -280,21 +281,20 @@ $$
 \rho  v_r \frac{\partial v_r}{\partial r} = -  \frac{\partial p}{\partial r} + \rho g
 $$
 
-For MAS, is it zero or small because scales are small?
+For MAS, is it zero or small because the variables are small?
 
 Mean of the values for the whole cube:
 
-- Convective term ($$\rho  v_r \frac{\partial v_r}{\partial r}$$): $$3.3711176875004925 \times 10^{-22}$$
-- Pressure gradient term ($$-  \frac{\partial p}{\partial r}$$): $$2.7239933721076018 \times 10^{-16}$$
-- Gravitational term ($$\rho g$$): $$3.2309111983042094 \times 10^{-12}$$
-- Residual value: $$3.2309111983042094 \times 10^{-12}$$ = Gravitational term ($$\rho g$$)! 
-    - i.e., $$-  \frac{\partial p}{\partial r} + \rho g - \rho  v_r \frac{\partial v_r}{\partial r} = \rho g$$
-    - $$\rightarrow \frac{\partial p}{\partial r} = $$
+- Convective term ($$\rho  v_r \frac{\partial v_r}{\partial r}$$): $$3.371118251962845 \times 10^{-22}$$
+- Pressure gradient term ($$-  \frac{\partial p}{\partial r}$$): $$2.723992941651573 \times 10^{-16}$$
+- Gravitational term ($$\rho g$$): $$3.230910790309221 \times 10^{-12}$$
 
-Confirming:
-```py
->>> 2.7239933721076018e-16 + 3.2309111983042094e-12 - 3.3711176875004925e-22
-3.2311835973043085e-12
-```
+Residual value: $$3.230910794886196 \times 10^{-12}$$
 
-The 
+Lets not multiply $$\rho$$ by `rho_constant=1.6726e-13` (`rho_constant=1`)
+
+- Convective term ($$\rho  v_r \frac{\partial v_r}{\partial r}$$): $$2.01549578617891 \times 10^{-9}$$
+- Pressure gradient term ($$-  \frac{\partial p}{\partial r}$$): $$2.723992941651573 \times 10^{-16}$$
+- Gravitational term ($$\rho g$$): $$19.31669729946921$$
+
+Residual value: $$19.316697299650734$$
