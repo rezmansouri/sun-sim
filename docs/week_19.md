@@ -285,6 +285,16 @@ Maybe the modes control it...
 | exp_24     | 8       | 2                | 758.14   | 0.06500  | 0.92850  | 0.87308  | 0.96062  | 25.50   |
 
 
+
+## Maybe n_modes is not a hyperparamter?
+
+| **Aspect**              | **Explanation**                                      |
+|-------------------------|------------------------------------------------------|
+| `n_modes`               | Tuple `(ℓ_max, m_max)` — max degrees of harmonics   |
+| Max usable values       | ℓ ≲ N_lat / 2, m ≲ N_lon / 2                          |
+| How to choose?          | Use ~50–70% of max, or plot spectral energy          |
+
+
 # 6. Physical Loss
 
 $$
@@ -308,3 +318,9 @@ Lets not multiply $$\rho$$ by `rho_constant=1.6726e-13` (`rho_constant=1`)
 - Gravitational term ($$\rho g$$): $$19.31669729946921$$
 
 Residual value: $$19.316697299650734$$
+
+
+## Todos
+
+- Find `n_modes` (l and m)
+- Decide on the training strategy
