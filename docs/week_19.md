@@ -275,6 +275,16 @@ Maybe the modes control it...
 <img src="resources/week_19/exp_25_metrics.png">
 
 
+
+## Comparing Exp 23 vs. 24 vs 25
+
+| Experiment | n_modes | Projection Ratio | Val Loss | RMSE     | NNSE     | MSSSIM   | ACC      | PSNR    |
+|------------|---------|------------------|----------|----------|----------|----------|----------|---------|
+| exp_25     | 128     | 2                | 281.25   | 0.02467  | 0.98910  | 0.98088  | 0.99448  | 34.36   |
+| exp_23     | 64      | 16               | 306.72   | 0.02717  | 0.98678  | 0.97700  | 0.99329  | 33.36   |
+| exp_24     | 8       | 2                | 758.14   | 0.06500  | 0.92850  | 0.87308  | 0.96062  | 25.50   |
+
+
 # 6. Physical Loss
 
 $$
