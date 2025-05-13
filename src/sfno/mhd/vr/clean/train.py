@@ -18,15 +18,24 @@ def main():
         batch_size,
         n_epochs,
         hidden_channels,
-        n_modes,
+        n_modes_lat,
+        n_modes_lon,
         projection_channel_ratio,
         factorization,
     ) = sys.argv[1:]
-    batch_size, n_epochs, hidden_channels, n_modes, projection_channel_ratio = (
+    (
+        batch_size,
+        n_epochs,
+        hidden_channels,
+        n_modes_lat,
+        n_modes_lon,
+        projection_channel_ratio,
+    ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
-        int(n_modes),
+        int(n_modes_lat),
+        int(n_modes_lon),
         int(projection_channel_ratio),
     )
 
@@ -40,7 +49,7 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
-    out_path = f"hidden_channels-{hidden_channels}_n_modes-{n_modes}_projection-{projection_channel_ratio}_factorization-{factorization}"
+    out_path = f"hidden_channels-{hidden_channels}_n_modes-({n_modes_lat},{n_modes_lon})_projection-{projection_channel_ratio}_factorization-{factorization}"
     os.makedirs(
         out_path,
         exist_ok=True,
@@ -55,7 +64,8 @@ def main():
         "v_min": float(train_dataset.v_min),
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
-        "n_modes": n_modes,
+        "n_modes_lat": n_modes_lat,
+        "n_modes_lon": n_modes_lon,
         "projection_channel_ratio": projection_channel_ratio,
         "factorization": factorization,
     }
@@ -63,7 +73,7 @@ def main():
         json.dump(cfg, f)
 
     model = SFNO(
-        n_modes=(n_modes, n_modes),
+        n_modes=(n_modes_lat, n_modes_lon),
         in_channels=1,
         out_channels=139,
         hidden_channels=hidden_channels,
