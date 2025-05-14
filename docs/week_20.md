@@ -21,18 +21,18 @@ Example: humans hear up to 22 KHz. `.mp3` files are 44 KHz.
 ### In our case
 
 $$
-m_max = 64
+m_{max} = 64
 $$
 
 <span style="color:red">
 
-<b>`neuralop` package knew this. Does the division itself. So:</b>
+`neuralop` package knew this. Does the division itself. So:
 
 </span>
 
 
 $$
-m_max = 128
+m_{max} = 128
 $$
 
 
