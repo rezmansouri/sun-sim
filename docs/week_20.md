@@ -28,11 +28,13 @@ $$
 
 <b>`neuralop` package knew this. Does the division itself. So:</b>
 
+</span>
+
+
 $$
 m_max = 128
 $$
 
-</span>
 
 
 <a href="https://www.youtube.com/watch?v=FcXZ28BX-xE">Reference</a>
