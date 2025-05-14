@@ -21,7 +21,7 @@ Example: humans hear up to 22 KHz. `.mp3` files are 44 KHz.
 ### In our case
 
 $$
-m = 64
+m_max = 64
 $$
 
 <span style="color:red">
@@ -29,7 +29,7 @@ $$
 <b>`neuralop` package knew this. Does the division itself. So:</b>
 
 $$
-m = 128
+m_max = 128
 $$
 
 </span>
@@ -40,13 +40,17 @@ $$
 
 ## 1.2. $$\theta$$: polynomial quadrature rules (Gauss-Legendre)
 
-<i>To exactly resolve a polynomial of degree $$l$$ you need at least $$l+1$$ samples.
+<i>To exactly resolve a polynomial of degree $$l$$ you need at least $$l+1$$ samples.</i>
 
 
 ### In our case
 
 $$
-l = 128
+l_{max}=N_{lat}-1
+$$
+
+$$
+l = 111 - 1 = 110
 $$
 
 
