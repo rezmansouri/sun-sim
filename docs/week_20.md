@@ -24,11 +24,7 @@ $$
 m_{max} = 64
 $$
 
-<span style="color:red">
-
-`neuralop` package knew this. Does the division itself. So:
-
-</span>
+<span style="color:red">`neuralop` package knew this. Does the division itself. So:</span>
 
 
 $$
