@@ -176,7 +176,10 @@ $$
 | **Factorization**        | Dense, CP, Tucker, TT           |
 | **Modes**                | 8, 16, 32, 64, 128              |
 | **Hidden Channels**      | 64, 128, 256, 512               |
+| **Layers**      | 4 (default), 8, 16, 32, 64               |
 | **Projection/Lifting Ratio** | 1, 2, 4, 8, 16               |
+
+<a href="https://neuraloperator.github.io/dev/modules/generated/neuralop.models.SFNO.html#neuralop.models.SFNO>Full arguments</a>
 
 For a k-fold cross validation: $$k\times4\times5\times4\times5=400k$$ runs.
 

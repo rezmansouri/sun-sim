@@ -5,7 +5,12 @@ title: n_modes and flickering fixed
 
 # 1. `n_modes`
 
-## 1.1. Shannon Nyquist Sampling Theorem
+
+- latitude, $$\phi: [0, 2\pi]$$, periodic, 111 in medium MAS
+- longitude, $$\theta: [0, \pi]$$, non-periodic, 128 in medium MAS
+
+
+## 1.1. $$\phi$$: Shannon Nyquist Sampling Theorem
 
 <i>A function containing no frequency higher than $$\omega$$ Hz, is completely determened by sampling it at $$2\omega$$ Hz.</i>
 
@@ -13,9 +18,35 @@ title: n_modes and flickering fixed
 
 Example: humans hear up to 22 KHz. `.mp3` files are 44 KHz.
 
+### In our case
+
+$$
+m = 64
+$$
+
+<b><span style="color:red">`neuralop` package knew this. Does the division itself. So:</span></b>
+
+$$
+m = 6̶4̶ 128
+$$
+
+
 <a href="https://www.youtube.com/watch?v=FcXZ28BX-xE">Reference</a>
 
-In our case:
 
-- latitude = 111
-- longitude = 128
+## 1.2. $$\theta$$: polynomial quadrature rules (Gauss-Legendre)
+
+<i>To exactly resolve a polynomial of degree $$l$$ you need at least $$l+1$$ samples.
+
+
+### In our case
+
+$$
+l = 128
+$$
+
+
+### Lets observe it:
+
+<img src="resources/week_20/n_modes_1.png"/>
+<img src="resources/week_20/n_modes_2.png"/>
