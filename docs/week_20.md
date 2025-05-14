@@ -24,11 +24,15 @@ $$
 m = 64
 $$
 
-<b><span style="color:red">`neuralop` package knew this. Does the division itself. So:</span></b>
+<span style="color:red">
+
+<b>`neuralop` package knew this. Does the division itself. So:</b>
 
 $$
-m = 6̶4̶ 128
+m = 128
 $$
+
+</span>
 
 
 <a href="https://www.youtube.com/watch?v=FcXZ28BX-xE">Reference</a>
@@ -48,5 +52,8 @@ $$
 
 ### Lets observe it:
 
+#### Example 1:
 <img src="resources/week_20/n_modes_1.png"/>
+
+#### Example 2:
 <img src="resources/week_20/n_modes_2.png"/>

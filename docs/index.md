@@ -42,4 +42,4 @@ layout: default
 
 [Week 19 - Metrics and Ready for Optimal SFNO vs HUX](week_19.md)
 
-[Week 19 - SFNO vs HUX: n_modes and flickering fixed](week_20.md)
+[Week 20 - SFNO vs HUX: n_modes and flickering fixed](week_20.md)
