@@ -3,11 +3,9 @@ import sys
 import numpy as np
 import torch
 import json
-from neuralop import LpLoss
 from neuralop.models import SFNO
 from trainer import train
-from utils import SphericalNODataset, get_cr_dirs
-from sklearn.model_selection import train_test_split
+from utils import SphericalNODataset, get_cr_dirs, AreaWeightedLpLoss
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -22,6 +20,7 @@ def main():
         n_modes_lon,
         projection_channel_ratio,
         factorization,
+        area_weighted,
     ) = sys.argv[1:]
     (
         batch_size,
@@ -30,6 +29,7 @@ def main():
         n_modes_lat,
         n_modes_lon,
         projection_channel_ratio,
+        area_weighted,
     ) = (
         int(batch_size),
         int(n_epochs),
@@ -37,12 +37,14 @@ def main():
         int(n_modes_lat),
         int(n_modes_lon),
         int(projection_channel_ratio),
+        bool(area_weighted),
     )
 
     cr_dirs = get_cr_dirs(data_path)
-    cr_train, cr_val = train_test_split(cr_dirs, test_size=0.2, random_state=42)
+    split_ix = int(len(cr_dirs) * 0.8)
+    cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    loss_fn = LpLoss(d=2, p=2, reduction="sum")
+    loss_fn = AreaWeightedLpLoss(d=2, p=2, reduction="sum", area_weighted=area_weighted)
 
     train_dataset = SphericalNODataset(data_path, cr_train)
     val_dataset = SphericalNODataset(
@@ -68,6 +70,7 @@ def main():
         "n_modes_lon": n_modes_lon,
         "projection_channel_ratio": projection_channel_ratio,
         "factorization": factorization,
+        "area_weighted": area_weighted,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)

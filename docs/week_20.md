@@ -113,10 +113,10 @@ Had to switch to ARCTIC this week. Subset of the whole data and half the batch s
 
 <img src="resources/week_20/exp_26_2.gif"/>
 
+<span style="color:red">Flickering is still happening.</span>
+
 <img src="resources/week_20/exp_26_metrics.png"/>
 
-
-<span style="color:red">Flickering is still happening.</span>
 
 
 # 1.4. Why the flickering happens
@@ -126,14 +126,35 @@ Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the
 | Solution                                  | Why                                          |
 |-------------------------------------------|----------------------------------------------|
 | Use **Legendre-Gauss grid** in SHT (exp 27)       | Correct area representation, reduces flickering near poles |
-| Use **area-weighted loss (`sin(theta)`)** | Ensures model focuses equally per sphere area |
+| Use **area-weighted loss (`sin(theta)`)** (exp 28) | Ensures model focuses equally per sphere area |
 | Apply **smooth tapering** (spectral or spatial) | Reduces ringing, stabilizes predictions near poles |
+
+Gauss-legnedre grid example:
+
+<img src="https://people.math.sc.edu/burkardt/m_src/gl_display_test/gl_grid_square_21x21.png"/>
 
 
 ## 2.2. Exp 27
 
+Everything the same as exp 26. Changed `sht_grids` argument in `SphericalConvolution` class to from `'equiangular'` to `'legendre-gauss'`.
+
+
+<img src="resources/week_20/exp_27_1.gif"/>
+
+<img src="resources/week_20/exp_27_2.gif"/>
+
+<span style="color:red">Flickering is still happening.</span>
+
+
+<img src="resources/week_20/exp_27_metrics.png"/>
+
+
+## 2.3. Exp 28
+
+Everything the same as exp 26. 
 
 # 3. Final training/validation strategy
+
 
 Hyperparameters table from last week:
 
@@ -141,7 +162,7 @@ Hyperparameters table from last week:
 |--------------------------|---------------------------------|-----------------------|
 | **Factorization**        | Dense, CP, Tucker, TT           |Dense|
 | **Modes_lat**            | 8, 16, 32, 64, 110              |110|
-| **Modes_lon**            | 8, 16, 32, 64, 128              |128|
+| **Modes_lon**            | 8, 16, 32, 64                   |64 (128 in code)|
 | **Hidden Channels**      | 64, 128, 256, 512               |***64, 128, 256*** |
 | **Layers** (new!)        | 1, 2, 3, 4 (default, and so far), ... |***4, 8***|
 | **Projection/Lifting Ratio** | 1, 2, 4, 8, 16              |***2, 4***|

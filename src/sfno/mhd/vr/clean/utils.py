@@ -1,9 +1,11 @@
 import torch
+import math
 import numpy as np
 from tqdm import tqdm
 from pyhdf.SD import SD, SDC
 from torch.utils.data import Dataset
 from os.path import join as path_join
+from neuralop import LpLoss
 import os
 
 FILE_NAMES = ["vr002.hdf"]
@@ -125,3 +127,44 @@ class SphericalNODataset(Dataset):
 
     def get_min_max(self):
         return {"v_min": float(self.v_min), "v_max": float(self.v_max)}
+
+
+class AreaWeightedLpLoss(LpLoss):
+    """
+    LpLoss with optional area weighting using sin(θ) for spherical latitude grids.
+    """
+
+    def __init__(self, d=2, p=2, measure=1.0, reduction="sum", area_weighted=True):
+        super().__init__(d, p, measure, reduction)
+        self.area_weighted = area_weighted
+
+    def get_area_weights(self, x):
+        """
+        Returns area weights per latitude assuming equiangular grid.
+        Assumes the latitude is at axis -2.
+        """
+        H = x.size(-2)
+        theta = torch.linspace(0, np.pi, H, device=x.device).view(1, 1, H, 1)
+        area_weights = torch.sin(theta)  # shape (1, 1, H, 1)
+        return area_weights
+
+    def rel(self, x, y):
+        """
+        Relative Lp loss with optional area weighting.
+        """
+        diff = x - y
+        if self.area_weighted:
+            area_weights = self.get_area_weights(diff)
+            diff = diff * area_weights
+            y = y * area_weights
+
+        diff = torch.norm(
+            torch.flatten(diff, start_dim=-self.d), p=self.p, dim=-1, keepdim=False
+        )
+        ynorm = torch.norm(
+            torch.flatten(y, start_dim=-self.d), p=self.p, dim=-1, keepdim=False
+        )
+
+        diff = diff / ynorm
+        diff = self.reduce_all(diff).squeeze()
+        return diff

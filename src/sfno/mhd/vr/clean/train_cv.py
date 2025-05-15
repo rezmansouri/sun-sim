@@ -1,24 +1,23 @@
-import os
 import sys
-import numpy as np
 import torch
 import json
-from neuralop import LpLoss
-from neuralop import Trainer
-from neuralop.models import SFNO
-from trainer import train_cv, train
-from utils import SphericalNODataset, get_cr_dirs
-from sklearn.model_selection import train_test_split
+from trainer import train_cv
+from utils import get_cr_dirs, AreaWeightedLpLoss
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    data_path, batch_size, n_epochs = sys.argv[1:]
-    batch_size, n_epochs = int(batch_size), int(n_epochs)
+    data_path, batch_size, n_epochs, area_weighted = sys.argv[1:]
+    batch_size, n_epochs, area_weighted = (
+        int(batch_size),
+        int(n_epochs),
+        bool(area_weighted),
+    )
 
     cr_dirs = get_cr_dirs(data_path)
-    cr_train, cr_val = train_test_split(cr_dirs, test_size=0.2, random_state=42)
+    split_ix = int(len(cr_dirs) * 0.8)
+    cr_train = cr_dirs[:split_ix]
 
     hyperparams = {
         "hidden_channels": [8],
@@ -29,7 +28,7 @@ def main():
         "weight_decay": [0.0],
     }
 
-    loss_fn = LpLoss(d=2, p=2, reduction="sum")
+    loss_fn = AreaWeightedLpLoss(d=2, p=2, reduction="sum", area_weighted=area_weighted)
 
     results = train_cv(
         data_path,
