@@ -3,7 +3,7 @@ layout: default
 title: n_modes and flickering fixed
 ---
 
-# 1. `n_modes`
+# 1. n_modes
 
 
 - latitude, $$\phi: [0, 2\pi]$$, periodic, 111 in medium MAS
@@ -30,6 +30,23 @@ $$
 $$
 m_{max} = 128
 $$
+
+`>>> neuralop/layers/spherical_convolution.py: line 447`
+```py
+
+        out_fft = self.sht_handle.sht(x, s=(self.n_modes[0], self.n_modes[1]//2),
+                                      norm=self.sht_norm, grid=self.sht_grids[0])
+
+        out_fft = self._contract(
+            out_fft[:, :, :self.n_modes[0], :self.n_modes[1]//2],
+            self.weight[:, :, :self.n_modes[0]],
+            separable=self.separable,
+            dhconv=True,
+        )
+
+        x = self.sht_handle.isht(out_fft, s=(height, width), norm=self.sht_norm,
+                                 grid=self.sht_grids[1])
+```
 
 
 
@@ -59,3 +76,38 @@ $$
 
 #### Example 2:
 <img src="resources/week_20/n_modes_2.png"/>
+
+
+
+## 1.3. max_n_modes option
+
+You can start with lower number of modes and gradually get to (110, 64).
+
+- Let the model extract more global patterns
+- Slowly focus on local patterns
+
+
+# 2. Experiments
+
+## 2.1. Exp 26
+
+Main difference: maximum n_modes possible: 110 for lat, 64 for lon (110, **128** in code)
+
+Config:
+```
+num_epochs: 200
+batch_size: 32
+hidden_channels: 128
+n_modes_lat: 110
+n_modes_lon: 128
+projection_channel_ratio: 2
+factorization: "dense"
+```
+
+Had to switch to ARCTIC this week. Subset of the whole data and half the batch size:
+
+- 263 cubes for training
+- 66 cubes for testing
+
+
+# 3. Final training/validation strategy
