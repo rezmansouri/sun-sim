@@ -109,5 +109,46 @@ Had to switch to ARCTIC this week. Subset of the whole data and half the batch s
 - 263 cubes for training
 - 66 cubes for testing
 
+<img src="resources/week_20/exp_26_1.gif"/>
+
+<img src="resources/week_20/exp_26_2.gif"/>
+
+<img src="resources/week_20/exp_26_metrics.png"/>
+
+
+<span style="color:red">Flickering is still happening.</span>
+
+
+# 1.4. Why the flickering happens
+
+Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the grid points in $$\theta$$ (latitude) are uniformly spaced but, near the poles they are smaller and larger near the equator.
+
+| Solution                                  | Why                                          |
+|-------------------------------------------|----------------------------------------------|
+| Use **Legendre-Gauss grid** in SHT (exp 27)       | Correct area representation, reduces flickering near poles |
+| Use **area-weighted loss (`sin(theta)`)** | Ensures model focuses equally per sphere area |
+| Apply **smooth tapering** (spectral or spatial) | Reduces ringing, stabilizes predictions near poles |
+
+
+## 2.2. Exp 27
+
 
 # 3. Final training/validation strategy
+
+Hyperparameters table from last week:
+
+| Hyperparameter           | Possible Candidate values       | Final Candidate values|
+|--------------------------|---------------------------------|-----------------------|
+| **Factorization**        | Dense, CP, Tucker, TT           |Dense|
+| **Modes_lat**            | 8, 16, 32, 64, 110              |110|
+| **Modes_lon**            | 8, 16, 32, 64, 128              |128|
+| **Hidden Channels**      | 64, 128, 256, 512               |***64, 128, 256*** |
+| **Layers** (new!)        | 1, 2, 3, 4 (default, and so far), ... |***4, 8***|
+| **Projection/Lifting Ratio** | 1, 2, 4, 8, 16              |***2, 4***|
+
+
+$$
+
+\text{n\_experiments}=3 (\text{hidden\_channels})\times2(\text{layers})\times2(\text{projection ratio})\times5(\text{k-folds}) + 1=61
+
+$$
