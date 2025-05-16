@@ -235,7 +235,7 @@ Hyperparameters table from last week:
 | **Hidden Channels**      | 64, 128, 256, 512               |***64, 128, 256*** |
 | **Layers** (new!)        | 1, 2, 3, 4 (default, and so far), ... |***4, 8***|
 | **Projection/Lifting Ratio** | 1, 2, 4, 8, 16              |***2, 4***|
-| **Grid** | equiangular, gauss-legendre, lobatto            |gauss-legendre|
+| **Grid** | equiangular, gauss-legendre, lobatto            |equiangular|
 
 
 $$
