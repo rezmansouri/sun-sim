@@ -118,8 +118,7 @@ Had to switch to ARCTIC this week. Subset of the whole data and half the batch s
 <img src="resources/week_20/exp_26_metrics.png"/>
 
 
-
-# 1.4. Why the flickering happens
+# 1.4. back to why the flickering happens
 
 Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the grid points in $$\theta$$ (latitude) are uniformly spaced but, near the poles they are smaller and larger near the equator.
 
@@ -132,6 +131,11 @@ Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the
 Gauss-legnedre grid example:
 
 <img src="https://people.math.sc.edu/burkardt/m_src/gl_display_test/gl_grid_square_21x21.png"/>
+
+<img src="resources/week_20/gauss.png"/>
+
+
+It will force equal sampled areas.
 
 
 Area weighted loss
@@ -202,8 +206,10 @@ $$
 w(\ell) = \frac{1}{2} \left( 1 - \cos\left( \frac{\pi \ell}{\ell_{\text{max}}} \right) \right)
 $$
 
-- For low $$\ell$$s it is $$\approx1$$.
+- For low $$\ell$$s it is $$\approx1$$
 - For high $$\ell$$s it is $$\approx0$$
+
+The weights get multiplied by the filters $\kappa$ (i.e., a low pass filter on the latitude modes).
 
 <img src="resources/week_20/exp_30_1.gif"/>
 
@@ -225,10 +231,17 @@ Hyperparameters table from last week:
 | **Hidden Channels**      | 64, 128, 256, 512               |***64, 128, 256*** |
 | **Layers** (new!)        | 1, 2, 3, 4 (default, and so far), ... |***4, 8***|
 | **Projection/Lifting Ratio** | 1, 2, 4, 8, 16              |***2, 4***|
+| **Grid** | equiangular, gauss-legendre              |gauss-legendre|
 
 
 $$
 
-\text{n\_experiments}=3 (\text{hidden\_channels})\times2(\text{layers})\times2(\text{projection ratio})\times5(\text{k-folds}) + 1=61
+\text{n_experiments}=3 (\text{hidden_channels})\times2(\text{layers})\times2(\text{projection ratio})\times5(\text{k-folds}) + 1=61
 
 $$
+
+
+# 4. Todos
+
+- Finally fix flickering
+- Do the cross-validation (when DMLab cluster is back up)

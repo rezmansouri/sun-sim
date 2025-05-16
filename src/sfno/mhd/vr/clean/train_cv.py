@@ -14,6 +14,7 @@ def main():
         int(n_epochs),
         bool(area_weighted),
     )
+    print('warning you are applying tapering in spehrical convolution')
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)

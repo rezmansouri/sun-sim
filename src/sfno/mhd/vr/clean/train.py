@@ -50,6 +50,8 @@ def main():
     val_dataset = SphericalNODataset(
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
+    
+    print('warning you are applying tapering in spehrical convolution')
 
     out_path = f"hidden_channels-{hidden_channels}_n_modes-({n_modes_lat},{n_modes_lon})_projection-{projection_channel_ratio}_factorization-{factorization}"
     os.makedirs(
