@@ -126,12 +126,32 @@ Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the
 | Solution                                  | Why                                          |
 |-------------------------------------------|----------------------------------------------|
 | Use **Legendre-Gauss grid** in SHT (exp 27)       | Correct area representation, reduces flickering near poles |
-| Use **area-weighted loss (`sin(theta)`)** (exp 28) | Ensures model focuses equally per sphere area |
+| Use **area-weighted loss (`sin(theta)`)** (exp 28 & 29) | Ensures model focuses equally per sphere area |
 | Apply **smooth tapering** (spectral or spatial) | Reduces ringing, stabilizes predictions near poles |
 
 Gauss-legnedre grid example:
 
 <img src="https://people.math.sc.edu/burkardt/m_src/gl_display_test/gl_grid_square_21x21.png"/>
+
+
+Area weighted loss
+
+<img src="resources/week_20/sin.jpg"/>
+
+1. Weights are $$sin(\theta)$$
+- Less weight to near-pole pixels
+- More weight to near-equator pixels
+- Why?
+    - Maybe the model should not focus on near-pole pixels
+    - Small variations in some samples cause the flickering
+
+
+2. Weights are $$cos^2(\theta)$$
+- More weight to near-pole pixels
+- Less weight to near-equator pixels
+- Why?
+    - Make the model actually focus on the high-wind areas
+
 
 
 ## 2.2. Exp 27
@@ -151,7 +171,16 @@ Everything the same as exp 26. Changed `sht_grids` argument in `SphericalConvolu
 
 ## 2.3. Exp 28
 
-Everything the same as exp 26. 
+Everything the same as exp 26. But $$sin(\theta)$$ weighted.
+
+<img src="resources/week_20/exp_28_1.gif"/>
+
+<img src="resources/week_20/exp_28_2.gif"/>
+
+<span style="color:red">Flickering is still happening. Even worse.</span>
+
+
+<img src="resources/week_20/exp_28_metrics.png"/>
 
 # 3. Final training/validation strategy
 

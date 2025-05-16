@@ -145,7 +145,7 @@ class AreaWeightedLpLoss(LpLoss):
         """
         H = x.size(-2)
         theta = torch.linspace(0, np.pi, H, device=x.device).view(1, 1, H, 1)
-        area_weights = torch.sin(theta)  # shape (1, 1, H, 1)
+        area_weights = torch.cos(theta) ** 2 # shape (1, 1, H, 1)
         return area_weights
 
     def rel(self, x, y):
