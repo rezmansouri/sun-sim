@@ -1,6 +1,6 @@
 ---
 layout: default
-title: n_modes and flickering fixed
+title: n_modes and fixing flickering
 ---
 
 # 1. n_modes
@@ -134,6 +134,10 @@ Gauss-legnedre grid example:
 
 <img src="resources/week_20/gauss.png"/>
 
+<img src="resources/week_20/grids_1.png"/>
+
+<img src="resources/week_20/grids_2.png"/>
+
 
 It will force equal sampled areas.
 
@@ -231,7 +235,7 @@ Hyperparameters table from last week:
 | **Hidden Channels**      | 64, 128, 256, 512               |***64, 128, 256*** |
 | **Layers** (new!)        | 1, 2, 3, 4 (default, and so far), ... |***4, 8***|
 | **Projection/Lifting Ratio** | 1, 2, 4, 8, 16              |***2, 4***|
-| **Grid** | equiangular, gauss-legendre              |gauss-legendre|
+| **Grid** | equiangular, gauss-legendre, lobatto            |gauss-legendre|
 
 
 $$
