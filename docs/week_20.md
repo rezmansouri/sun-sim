@@ -213,7 +213,7 @@ $$
 - For low $$\ell$$s it is $$\approx1$$
 - For high $$\ell$$s it is $$\approx0$$
 
-The weights get multiplied by the filters $\kappa$ (i.e., a low pass filter on the latitude modes).
+The weights get multiplied by the filters $$\kappa$$ (i.e., a low pass filter on the latitude modes).
 
 <img src="resources/week_20/exp_30_1.gif"/>
 
