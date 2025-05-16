@@ -6,8 +6,8 @@ title: n_modes and fixing flickering
 # 1. n_modes
 
 
-- latitude, $$\phi: [0, 2\pi]$$, periodic, 111 in medium MAS
-- longitude, $$\theta: [0, \pi]$$, non-periodic, 128 in medium MAS
+- longitude, $$\phi: [0, 2\pi]$$, periodic, 128 in medium MAS
+- latitude, $$\theta: [0, \pi]$$, non-periodic, 111 in medium MAS
 
 
 ## 1.1. $$\phi$$: Shannon Nyquist Sampling Theorem
