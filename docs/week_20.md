@@ -126,8 +126,8 @@ Non-uniform area per grid cell (pole crowding effect): In equiangular grids, the
 | Solution                                  | Why                                          |
 |-------------------------------------------|----------------------------------------------|
 | Use **Legendre-Gauss grid** in SHT (exp 27)       | Correct area representation, reduces flickering near poles |
-| Use **area-weighted loss (`sin(theta)`)** (exp 28 & 29) | Ensures model focuses equally per sphere area |
-| Apply **smooth tapering** (spectral or spatial) | Reduces ringing, stabilizes predictions near poles |
+| Use **area-weighted loss** (exp 28 & 29) | Ensures model focuses equally per sphere area |
+| Apply **smooth tapering** (spectral) exp(30) | Reduces ringing, stabilizes predictions near poles |
 
 Gauss-legnedre grid example:
 
@@ -179,8 +179,20 @@ Everything the same as exp 26. But $$sin(\theta)$$ weighted.
 
 <span style="color:red">Flickering is still happening. Even worse.</span>
 
-
 <img src="resources/week_20/exp_28_metrics.png"/>
+
+## 2.4. Exp 29
+
+Everything the same as exp 26. But $$cos^2(\theta)$$ weighted.
+
+<img src="resources/week_20/exp_29_1.gif"/>
+
+<img src="resources/week_20/exp_29_2.gif"/>
+
+<span style="color:red">Flickering is still happening. A bit better, but equator preds are bad.</span>
+
+
+<img src="resources/week_20/exp_29_metrics.png"/>
 
 # 3. Final training/validation strategy
 
