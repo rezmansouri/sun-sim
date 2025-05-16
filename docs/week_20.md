@@ -55,7 +55,7 @@ $$
 
 ## 1.2. $$\theta$$: polynomial quadrature rules (Gauss-Legendre)
 
-<i>To exactly resolve a polynomial of degree $$l$$ you need at least $$l+1$$ samples.</i>
+<i>To exactly resolve a polynomial of degree $$\ell$$ you need at least $$\ell+1$$ samples.</i>
 
 
 ### In our case
@@ -193,6 +193,24 @@ Everything the same as exp 26. But $$cos^2(\theta)$$ weighted.
 
 
 <img src="resources/week_20/exp_29_metrics.png"/>
+
+## 2.4. Exp 30
+
+Everything the same as exp 26. But Hann window tapering is applied on $$\ell$$s.
+
+$$
+w(\ell) = \frac{1}{2} \left( 1 - \cos\left( \frac{\pi \ell}{\ell_{\text{max}}} \right) \right)
+$$
+
+- For low $$\ell$$s it is $$\approx1$$.
+- For high $$\ell$$s it is $$\approx0$$
+
+<img src="resources/week_20/exp_30_1.gif"/>
+
+<img src="resources/week_20/exp_30_2.gif"/>
+
+
+<img src="resources/week_20/exp_30_metrics.png"/>
 
 # 3. Final training/validation strategy
 
