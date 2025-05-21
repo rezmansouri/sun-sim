@@ -9,11 +9,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    data_path, batch_size, n_epochs = sys.argv[1:]
-    batch_size, n_epochs = (
-        int(batch_size),
-        int(n_epochs)
-    )
+    data_path, batch_size, n_epochs, experiment_name = sys.argv[1:]
+    batch_size, n_epochs = (int(batch_size), int(n_epochs))
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
@@ -22,8 +19,10 @@ def main():
     hyperparams = {
         "hidden_channels": [64, 128, 256],
         "projection_channel_ratio": [2, 4],
-        "n_layers": [4, 8]
+        "n_layers": [4, 8],
     }
+
+    print("search space:\n", hyperparams, "experiment name:", experiment_name)
 
     loss_fn = LpLoss(d=2, p=2, reduction="sum")
 
@@ -38,7 +37,7 @@ def main():
         device=device,
     )
 
-    with open("results.json", "w", encoding="utf-8") as f:
+    with open(f"{experiment_name}.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=4)
 
     print("Training completed. Results saved to results.json.")
