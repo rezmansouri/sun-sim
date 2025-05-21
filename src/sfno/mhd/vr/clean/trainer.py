@@ -128,6 +128,7 @@ def train_cv(
                 device=device,
                 lr=8e-4,
                 weight_decay=0.0,
+                verbose=False
             )
 
             fold_val_losses.append(val_losses[best_epoch])
