@@ -3,9 +3,10 @@ import sys
 import numpy as np
 import torch
 import json
-from neuralop.models import SFNO
 from trainer import train
-from utils import SphericalNODataset, get_cr_dirs, AreaWeightedLpLoss
+from neuralop.models import SFNO
+from neuralop.losses import LpLoss
+from utils import SphericalNODataset, get_cr_dirs
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -16,44 +17,35 @@ def main():
         batch_size,
         n_epochs,
         hidden_channels,
-        n_modes_lat,
-        n_modes_lon,
         projection_channel_ratio,
-        factorization,
-        area_weighted,
+        n_layers,
     ) = sys.argv[1:]
     (
         batch_size,
         n_epochs,
         hidden_channels,
-        n_modes_lat,
-        n_modes_lon,
         projection_channel_ratio,
-        area_weighted,
+        n_layers,
     ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
-        int(n_modes_lat),
-        int(n_modes_lon),
         int(projection_channel_ratio),
-        bool(area_weighted),
+        int(n_layers),
     )
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    loss_fn = AreaWeightedLpLoss(d=2, p=2, reduction="sum", area_weighted=area_weighted)
+    loss_fn = LpLoss(d=2, p=2)
 
     train_dataset = SphericalNODataset(data_path, cr_train)
     val_dataset = SphericalNODataset(
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
-    
-    print('warning you are applying tapering in spehrical convolution')
 
-    out_path = f"hidden_channels-{hidden_channels}_n_modes-({n_modes_lat},{n_modes_lon})_projection-{projection_channel_ratio}_factorization-{factorization}"
+    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_projection-{projection_channel_ratio}"
     os.makedirs(
         out_path,
         exist_ok=True,
@@ -68,22 +60,20 @@ def main():
         "v_min": float(train_dataset.v_min),
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
-        "n_modes_lat": n_modes_lat,
-        "n_modes_lon": n_modes_lon,
         "projection_channel_ratio": projection_channel_ratio,
-        "factorization": factorization,
-        "area_weighted": area_weighted,
+        "n_layers": n_layers,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
 
     model = SFNO(
-        n_modes=(n_modes_lat, n_modes_lon),
+        n_modes=(110, 128),
         in_channels=1,
         out_channels=139,
         hidden_channels=hidden_channels,
         projection_channel_ratio=projection_channel_ratio,
-        factorization=factorization,
+        factorization="dense",
+        n_layers=n_layers,
     )
 
     (

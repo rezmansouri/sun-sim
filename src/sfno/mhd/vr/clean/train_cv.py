@@ -1,44 +1,40 @@
 import sys
 import torch
 import json
+from neuralop.losses import LpLoss
 from trainer import train_cv
-from utils import get_cr_dirs, AreaWeightedLpLoss
+from utils import get_cr_dirs
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    data_path, batch_size, n_epochs, area_weighted = sys.argv[1:]
-    batch_size, n_epochs, area_weighted = (
+    data_path, batch_size, n_epochs = sys.argv[1:]
+    batch_size, n_epochs = (
         int(batch_size),
-        int(n_epochs),
-        bool(area_weighted),
+        int(n_epochs)
     )
-    print('warning you are applying tapering in spehrical convolution')
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train = cr_dirs[:split_ix]
 
     hyperparams = {
-        "hidden_channels": [8],
-        "n_modes": [8],
-        "projection_channel_ratio": [1],
-        "factorization": ["tt"],
-        "lr": [8e-4],
-        "weight_decay": [0.0],
+        "hidden_channels": [64, 128, 256],
+        "projection_channel_ratio": [2, 4],
+        "n_layers": [4, 8]
     }
 
-    loss_fn = AreaWeightedLpLoss(d=2, p=2, reduction="sum", area_weighted=area_weighted)
+    loss_fn = LpLoss(d=2, p=2, reduction="sum")
 
     results = train_cv(
         data_path,
         cr_train,
         hyperparams,
-        5,
-        n_epochs,
-        batch_size,
-        loss_fn,
+        n_splits=5,
+        n_epochs=n_epochs,
+        batch_size=batch_size,
+        loss_fn=loss_fn,
         device=device,
     )
 

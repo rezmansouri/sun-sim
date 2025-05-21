@@ -74,6 +74,9 @@ def train_cv(
         print(f"\n=== Training with hyperparameters: {param_dict} ===")
 
         fold_val_losses = []
+        fold_val_rmse = []
+        fold_val_acc = []
+        fold_val_psnr = []
         fold_val_nnse = []
         fold_val_msssim = []
 
@@ -90,22 +93,29 @@ def train_cv(
 
             # Instantiate model using full param_dict
             model = SFNO(
-                n_modes=(param_dict["n_modes"], param_dict["n_modes"]),
+                n_modes=(110, 128),
                 in_channels=1,
                 out_channels=139,
                 hidden_channels=param_dict["hidden_channels"],
                 projection_channel_ratio=param_dict["projection_channel_ratio"],
-                factorization=param_dict["factorization"],
+                factorization="dense",
+                n_layers=param_dict["n_layers"],
             )
 
             # Train one model
             (
                 train_losses,
                 val_losses,
+                train_rmse,
+                val_rmse,
                 train_nnse,
                 val_nnse,
                 train_msssim,
                 val_msssim,
+                train_acc,
+                val_acc,
+                train_psnr,
+                val_psnr,
                 best_epoch,
                 best_state_dict,
             ) = train(
@@ -116,11 +126,14 @@ def train_cv(
                 batch_size=batch_size,
                 loss_fn=loss_fn,
                 device=device,
-                lr=param_dict.get("lr", 8e-4),  # optional fallback
-                weight_decay=param_dict.get("weight_decay", 0.0),
+                lr=8e-4,
+                weight_decay=0.0,
             )
 
             fold_val_losses.append(val_losses[best_epoch])
+            fold_val_rmse.append(val_rmse[best_epoch])
+            fold_val_acc.append(val_acc[best_epoch])
+            fold_val_psnr.append(val_psnr[best_epoch])
             fold_val_nnse.append(val_nnse[best_epoch])
             fold_val_msssim.append(val_msssim[best_epoch])
 
@@ -128,6 +141,9 @@ def train_cv(
             {
                 "hyperparameters": param_dict,
                 "val_loss": fold_val_losses,
+                "val_rmse": fold_val_rmse,
+                "val_acc": fold_val_acc,
+                "val_psnr": fold_val_psnr,
                 "val_nnse": fold_val_nnse,
                 "val_msssim": fold_val_msssim,
             }
@@ -146,6 +162,7 @@ def train(
     device: str,
     lr: float = 8e-4,
     weight_decay: float = 0.0,
+    verbose=True,
 ):
     """
     Train a model on train_dataset, validate on val_dataset.
@@ -280,16 +297,17 @@ def train(
         val_acc.append(epoch_val_acc)
         val_psnr.append(epoch_val_psnr)
 
-        print(
-            f"Epoch {epoch+1}:\n",
-            f"Train Loss = {epoch_train_loss:.6f} | Val Loss = {epoch_val_loss:.6f}\n",
-            f"Train RMSE = {epoch_train_rmse:.6f} | Val RMSE = {epoch_val_rmse:.6f}\n",
-            f"Train NNSE = {epoch_train_nnse:.6f} | Val NNSE = {epoch_val_nnse:.6f}\n",
-            f"Train MS-SSIM = {epoch_train_msssim:.6f} | Val MS-SSIM = {epoch_val_msssim:.6f}\n",
-            f"Train ACC = {epoch_train_acc:.6f} | Val ACC = {epoch_val_acc:.6f}\n",
-            f"Train PSNR = {epoch_train_psnr:.6f} | Val PSNR = {epoch_val_psnr:.6f}\n",
-            "================================================================================================",
-        )
+        if verbose:
+            print(
+                f"Epoch {epoch+1}:\n",
+                f"Train Loss = {epoch_train_loss:.6f} | Val Loss = {epoch_val_loss:.6f}\n",
+                f"Train RMSE = {epoch_train_rmse:.6f} | Val RMSE = {epoch_val_rmse:.6f}\n",
+                f"Train NNSE = {epoch_train_nnse:.6f} | Val NNSE = {epoch_val_nnse:.6f}\n",
+                f"Train MS-SSIM = {epoch_train_msssim:.6f} | Val MS-SSIM = {epoch_val_msssim:.6f}\n",
+                f"Train ACC = {epoch_train_acc:.6f} | Val ACC = {epoch_val_acc:.6f}\n",
+                f"Train PSNR = {epoch_train_psnr:.6f} | Val PSNR = {epoch_val_psnr:.6f}\n",
+                "================================================================================================",
+            )
 
         # Save best model
         if epoch_val_loss < best_val_loss:
@@ -297,8 +315,8 @@ def train(
             best_state_dict = deepcopy(model.state_dict())
             best_val_loss = epoch_val_loss
             best_epoch = epoch
-
-    print(f"\nTraining complete. Best validation loss: {best_val_loss:.6f}")
+    if verbose:
+        print(f"\nTraining complete. Best validation loss: {best_val_loss:.6f}")
 
     return (
         train_losses,
@@ -313,6 +331,6 @@ def train(
         val_acc,
         train_psnr,
         val_psnr,
-        best_epoch + 1,
+        best_epoch,
         best_state_dict,
     )
