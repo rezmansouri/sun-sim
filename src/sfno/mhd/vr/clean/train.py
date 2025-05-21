@@ -17,20 +17,17 @@ def main():
         batch_size,
         n_epochs,
         hidden_channels,
-        projection_channel_ratio,
         n_layers,
     ) = sys.argv[1:]
     (
         batch_size,
         n_epochs,
         hidden_channels,
-        projection_channel_ratio,
         n_layers,
     ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
-        int(projection_channel_ratio),
         int(n_layers),
     )
 
@@ -45,7 +42,7 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
-    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_projection-{projection_channel_ratio}"
+    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}"
     os.makedirs(
         out_path,
         exist_ok=True,
@@ -60,8 +57,7 @@ def main():
         "v_min": float(train_dataset.v_min),
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
-        "projection_channel_ratio": projection_channel_ratio,
-        "n_layers": n_layers,
+        "n_layers": n_layers
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
@@ -71,8 +67,8 @@ def main():
         in_channels=1,
         out_channels=139,
         hidden_channels=hidden_channels,
-        projection_channel_ratio=projection_channel_ratio,
         factorization="dense",
+        projection_channel_ratio=2,
         n_layers=n_layers,
     )
 

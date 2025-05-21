@@ -18,7 +18,6 @@ def main():
 
     hyperparams = {
         "hidden_channels": [64, 128, 256],
-        "projection_channel_ratio": [2, 4],
         "n_layers": [4, 8],
     }
 

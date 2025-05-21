@@ -97,7 +97,7 @@ def train_cv(
                 in_channels=1,
                 out_channels=139,
                 hidden_channels=param_dict["hidden_channels"],
-                projection_channel_ratio=param_dict["projection_channel_ratio"],
+                projection_channel_ratio=2,
                 factorization="dense",
                 n_layers=param_dict["n_layers"],
             )
