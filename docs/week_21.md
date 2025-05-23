@@ -53,32 +53,70 @@ $$
 
 ### RMSE
 
+$$
+RMSE=\sqrt{MSE(y, \hat{y})}
+$$
+
 <img src="resources/week_21/rmse.png"/>
 
 ### NNSE
+
+$$
+NSE = 1 - \frac{\sum (y - \hat{y})^2}{\sum (y - {y}_{clim})^2}
+$$
 
 <img src="resources/week_21/nnse.png"/>
 
 ### ACC
 
+$$
+ACC = \frac{\sum(\hat{y}-{y}_{clim})(y-{y}_{clim})}{\sqrt{\sum{(\hat{y}-{y}_{clim})}^2}{\sqrt{\sum{(y-{y}_{clim})}^2}}}
+$$
+
 <img src="resources/week_21/acc.png"/>
 
 ### MS-SSIM
+
+$$
+\text{MS-SSIM}(x, y) = l_M(x, y)^{\alpha_M} \prod_{j=1}^{M-1} \text{cs}_j(x, y)^{\beta_j}
+$$
 
 <img src="resources/week_21/msssim.png"/>
 
 ### PSNR
 
+$$
+\text{PSNR}(y, \hat{y}) = 10 \cdot \log_{10} \left( \frac{\text{max}^2(y)}{\text{MSE}(y, \hat{y})} \right)
+$$
+
 <img src="resources/week_21/psnr.png"/>
 
 Seems like 8 x 256 is the winner. (Lets go higher? 8 x 512?)
 
-## 2.2. 8 x 256 visualization
+## 2.2. 8 x 256 (exp 31)
 
 - Trained from scratch on the first 80% CRs
 - Reporting results on the last 20%
 
-## 2.3. Going higher: 8 x 512 visualization
+<img src="resources/week_21/exp_31_1.gif"/>
+<img src="resources/week_21/exp_31_2.gif"/>
+<img src="resources/week_21/exp_31_3.gif"/>
+<img src="resources/week_21/exp_31_4.gif"/>
+<img src="resources/week_21/exp_31_5.gif"/>
+<img src="resources/week_21/exp_31_metrics.png">
+
+## 2.3. Going higher: 8 x 512 (exp 32)
 
 - Trained on the first 80% CRs
 - Reporting results on the last 20%
+
+<img src="resources/week_21/exp_32_1.gif"/>
+<img src="resources/week_21/exp_32_2.gif"/>
+<img src="resources/week_21/exp_32_3.gif"/>
+<img src="resources/week_21/exp_32_4.gif"/>
+<img src="resources/week_21/exp_32_5.gif"/>
+<img src="resources/week_21/exp_32_metrics.png">
+
+Metrics are not representative (?).
+
+## 2.4. Somewhere in the middle: 8 x 64 (exp 33)
