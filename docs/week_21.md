@@ -46,6 +46,7 @@ $$
 
 - The data is the first 80% CRs
 - 5-fold Cross validation
+- 150 epochs for each run
 
 ### Loss
 
@@ -97,6 +98,7 @@ Seems like 8 x 256 is the winner. (Lets go higher? 8 x 512?)
 
 - Trained from scratch on the first 80% CRs
 - Reporting results on the last 20%
+- 200 epochs
 
 <img src="resources/week_21/exp_31_1.gif"/>
 <img src="resources/week_21/exp_31_2.gif"/>
@@ -107,8 +109,9 @@ Seems like 8 x 256 is the winner. (Lets go higher? 8 x 512?)
 
 ## 2.3. Going higher: 8 x 512 (exp 32)
 
-- Trained on the first 80% CRs
+- Trained from scratch on the first 80% CRs
 - Reporting results on the last 20%
+- 200 epochs
 
 <img src="resources/week_21/exp_32_1.gif"/>
 <img src="resources/week_21/exp_32_2.gif"/>
@@ -120,3 +123,44 @@ Seems like 8 x 256 is the winner. (Lets go higher? 8 x 512?)
 Metrics are not representative (?).
 
 ## 2.4. Somewhere in the middle: 8 x 64 (exp 33)
+
+- Trained from scratch on the first 80% CRs
+- Reporting results on the last 20%
+- 200 epochs
+
+<img src="resources/week_21/exp_33_1.gif"/>
+<img src="resources/week_21/exp_33_2.gif"/>
+<img src="resources/week_21/exp_33_3.gif"/>
+<img src="resources/week_21/exp_33_4.gif"/>
+<img src="resources/week_21/exp_33_5.gif"/>
+<img src="resources/week_21/exp_33_metrics.png">
+
+
+# 3. Todos
+
+3.1. metrics for HUX on the test set
+
+3.2. Paper's introduction and background
+
+3.3. Paper's determined methods subsections
+
+3.4. Current loss has been per slice (d=2, norm over slices) L2:
+
+$$
+\text{L}_2^{(2D)} = \frac{1}{BCR} \sum_{b=1}^{B} \sum_{c=1}^{C} \sum_{r=1}^{R}
+\left( \sum_{i=1}^{H} \sum_{j=1}^{W} \left| x_{bcrij} - y_{bcrij} \right|^2 \right)^{1/2}
+$$
+
+Try per cube (d=3, norm over cube) L2 (exp 34)
+
+$$
+\text{L}_2^{(3D)} = \frac{1}{BC} \sum_{b=1}^{B} \sum_{c=1}^{C}
+\left( \sum_{r=1}^{R} \sum_{i=1}^{H} \sum_{j=1}^{W} \left| x_{bcrij} - y_{bcrij} \right|^2 \right)^{1/2}
+$$
+
+Also try adding an L1 term to it (exp 35)
+
+$$
+\text{L}_1^{(3D)} = \frac{1}{BC} \sum_{b=1}^{B} \sum_{c=1}^{C}
+\sum_{r=1}^{R} \sum_{i=1}^{H} \sum_{j=1}^{W} \left| x_{bcrij} - y_{bcrij} \right|
+$$
