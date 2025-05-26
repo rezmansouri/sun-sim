@@ -96,23 +96,25 @@ def train(
             train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False
         ):
 
-            optimizer.zero_grad()
 
             pred = []
             for i in range(cube.shape[1] - 1):
                 x = cube[:, i, :, :].unsqueeze(1).to(device)
+                y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
                 pred_slice = model(x)
                 pred.append(pred_slice)
-
-            pred = torch.stack(pred, dim=1).squeeze(2)
+                
+                
+                optimizer.zero_grad()
+                loss = loss_fn(pred_slice, y)
+                running_loss += loss.item()
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+                
             y = cube[:, 1:, :, :].to(device)
-            loss = loss_fn(pred, y)
+            pred = torch.stack(pred, dim=1).squeeze(2)
 
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
-
-            running_loss += loss.item() * x.size(0)
             running_rmse += rmse_score(y, pred)
             running_nnse += nnse_score(y, pred, climatology)
             running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
@@ -148,17 +150,17 @@ def train(
             ):
 
                 pred = []
-                x = cube[:, 0, :, :].unsqueeze(1).to(device)
                 for i in range(cube.shape[1] - 1):
+                    x = cube[:, i, :, :].unsqueeze(1).to(device)
+                    y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
                     pred_slice = model(x)
-                    x = pred_slice
                     pred.append(pred_slice)
-
-                pred = torch.stack(pred, dim=1).squeeze(2)
+                    
+                    loss = loss_fn(pred_slice, y)
+                    val_loss += loss.item()
+                    
                 y = cube[:, 1:, :, :].to(device)
-                loss = loss_fn(pred, y)
-
-                val_loss += loss.item() * x.size(0)
+                pred = torch.stack(pred, dim=1).squeeze(2)
                 running_rmse += rmse_score(y, pred)
                 running_nnse += nnse_score(y, pred, climatology)
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
