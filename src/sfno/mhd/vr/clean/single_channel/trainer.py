@@ -98,7 +98,7 @@ def train(
 
 
             pred = []
-            for i in range(cube.shape[1] - 1, leave=False):
+            for i in trange(cube.shape[1] - 1, leave=False):
                 x = cube[:, i, :, :].unsqueeze(1).to(device)
                 y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
                 pred_slice = model(x)
