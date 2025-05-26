@@ -71,7 +71,7 @@ Metrics
 
 Numerical comparison
 
-| Method | Val Loss $$\downarrow$$ | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+| Loss fn | Val Loss $$\downarrow$$ | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|------|------|--------|-----|------|
 | 3D L2  | 1.3854   | 0.0262 | 0.9920 | 0.9869 | 0.9959 | 38.55 |
 | 2D L2  | 172.1135 | 0.0249 | 0.9927 | 0.9907 | 0.9963 | 39.22 |
@@ -130,11 +130,11 @@ Metrics
 <img src="resources/week_21/exp_31_metrics.png">
 
 
-| Method      | Val Loss | RMSE     | NNSE     | MSSSIM   | ACC      | PSNR   |
+| Loss fn | Val Loss $$\downarrow$$ | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |-------------|----------|----------|----------|----------|----------|--------|
 | 2D L2       | 172.1135 | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
 | 2D L2 + L1  | 306.4048 | 0.0264   | 0.9918   | 0.9872   | 0.9959   | 38.41  |
 
-
+**Gonna go with 2D L2 only.**
 
 ## HUX metrics
