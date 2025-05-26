@@ -41,7 +41,7 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
-    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}"
+    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_str}"
     os.makedirs(
         out_path,
         exist_ok=True,
