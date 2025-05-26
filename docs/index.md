@@ -45,3 +45,5 @@ layout: default
 [Week 20 - SFNO vs HUX: n_modes and fixing flickering](week_20.md)
 
 [Week 21 - First paper 1](week_21.md)
+
+[Week 21 - First paper 2](week_22.md)
