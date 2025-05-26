@@ -137,4 +137,6 @@ Metrics
 
 **Gonna go with 2D L2 only.**
 
+## Enlarge the simulations to capture larger modes (exp 36)
+
 ## HUX metrics
