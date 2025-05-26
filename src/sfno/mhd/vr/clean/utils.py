@@ -168,3 +168,33 @@ class AreaWeightedLpLoss(LpLoss):
         diff = diff / ynorm
         diff = self.reduce_all(diff).squeeze()
         return diff
+
+class L1L2Loss:
+    """
+    L1L2Loss combines relative L1 and L2 losses over spatial dimensions.
+    Useful when you want to balance between L1 robustness and L2 smoothness.
+
+    Parameters
+    ----------
+    d : int
+        Number of spatial dimensions
+    measure : float or list
+        Domain size for quadrature weighting
+    reduction : str
+        'sum' or 'mean' over batch/channel dims
+    alpha : float
+        Weight for L1 loss (default 1.0)
+    beta : float
+        Weight for L2 loss (default 1.0)
+    """
+
+    def __init__(self, d, measure=1.0, reduction='sum', alpha=1.0, beta=1.0):
+        self.l1 = LpLoss(d=d, p=1, measure=measure, reduction=reduction)
+        self.l2 = LpLoss(d=d, p=2, measure=measure, reduction=reduction)
+        self.alpha = alpha
+        self.beta = beta
+
+    def __call__(self, y_pred, y):
+        l1_loss = self.l1.rel(y_pred, y)
+        l2_loss = self.l2.rel(y_pred, y)
+        return self.alpha * l1_loss + self.beta * l2_loss
