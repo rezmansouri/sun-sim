@@ -6,7 +6,7 @@ import torch
 from copy import deepcopy
 import torch.nn as nn
 from utils import SphericalNODataset
-from tqdm import tqdm
+from tqdm import tqdm, trange
 from pytorch_msssim import MS_SSIM
 import torch.optim as optim
 from metrics import nnse_score, mssim_score, rmse_score, acc_score, psnr_score
@@ -98,7 +98,7 @@ def train(
 
 
             pred = []
-            for i in range(cube.shape[1] - 1):
+            for i in range(cube.shape[1] - 1, leave=False):
                 x = cube[:, i, :, :].unsqueeze(1).to(device)
                 y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
                 pred_slice = model(x)
@@ -150,7 +150,7 @@ def train(
             ):
 
                 pred = []
-                for i in range(cube.shape[1] - 1):
+                for i in trange(cube.shape[1] - 1, leave=False):
                     x = cube[:, i, :, :].unsqueeze(1).to(device)
                     y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
                     pred_slice = model(x)
