@@ -133,8 +133,8 @@ def mssim_score(mssim_module, y_true: torch.Tensor, y_pred: torch.Tensor) -> flo
     eps = 1e-6
     B = y_true.shape[0]
 
-    # Reshape: treat (139,111,128) as 3D volume with 1 channel
-    y_true = y_true.unsqueeze(1)  # (B, 1, 139, 111, 128)
+    # Reshape: treat (138,111,128) as 3D volume with 1 channel
+    y_true = y_true.unsqueeze(1)  # (B, 1, 138, 111, 128)
     y_pred = y_pred.unsqueeze(1)
 
     # Min-max normalization

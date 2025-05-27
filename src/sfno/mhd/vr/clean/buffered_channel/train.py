@@ -12,19 +12,15 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    (data_path, batch_size, n_epochs, hidden_channels, n_layers, loss_str) = sys.argv[
-        1:
-    ]
-    (
-        batch_size,
-        n_epochs,
-        hidden_channels,
-        n_layers,
-    ) = (
+    (data_path, batch_size, n_epochs, hidden_channels, n_layers, loss_str, buffer) = (
+        sys.argv[1:]
+    )
+    (batch_size, n_epochs, hidden_channels, n_layers, buffer) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
         int(n_layers),
+        int(buffer),
     )
 
     cr_dirs = get_cr_dirs(data_path)
@@ -59,7 +55,8 @@ def main():
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
         "n_layers": n_layers,
-        "loss": loss_str
+        "loss": loss_str,
+        "buffer": buffer,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
@@ -67,7 +64,7 @@ def main():
     model = SFNO(
         n_modes=(110, 128),
         in_channels=1,
-        out_channels=1,
+        out_channels=buffer,
         hidden_channels=hidden_channels,
         factorization="dense",
         projection_channel_ratio=2,
@@ -99,6 +96,7 @@ def main():
         device=device,
         lr=8e-4,
         weight_decay=0.0,
+        buffer=buffer,
     )
 
     torch.save(best_state_dict, os.path.join(out_path, "model.pt"))

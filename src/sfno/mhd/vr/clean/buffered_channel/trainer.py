@@ -5,7 +5,6 @@ from neuralop.models import SFNO
 import torch
 from copy import deepcopy
 import torch.nn as nn
-from utils import SphericalNODataset
 from tqdm import tqdm, trange
 from pytorch_msssim import MS_SSIM
 import torch.optim as optim
@@ -29,6 +28,7 @@ def train(
     n_epochs: int,
     batch_size: int,
     loss_fn: nn.Module,
+    buffer: int,
     device: str,
     lr: float = 8e-4,
     weight_decay: float = 0.0,
@@ -96,24 +96,26 @@ def train(
             train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False
         ):
 
-
             pred = []
-            for i in trange(cube.shape[1] - 1, leave=False):
-                x = cube[:, i, :, :].unsqueeze(1).to(device)
-                y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
-                pred_slice = model(x)
-                pred.append(pred_slice)
-                
-                
-                optimizer.zero_grad()
-                loss = loss_fn(pred_slice, y)
-                running_loss += loss.item()
-                scaler.scale(loss).backward()
-                scaler.step(optimizer)
-                scaler.update()
-                
+            t = cube.shape[1] - 1
+            x = cube[:, 0:1, :, :].to(device)
+            pred_buf = model(x)
+            pred.append(pred_buf)
+            for i in trange(buffer - 1, t - 1, buffer, leave=False):
+                pred_buf = model(x)
+                pred.append(pred_buf)
+                x = cube[:, i : i + 1, :, :].to(device)
+
+            pred = torch.cat(pred, dim=1).squeeze(2)
+            pred = pred[:, :t, :, :]
             y = cube[:, 1:, :, :].to(device)
-            pred = torch.stack(pred, dim=1).squeeze(2)
+
+            optimizer.zero_grad()
+            loss = loss_fn(pred, y)
+            running_loss += loss.item() * len(pred)
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
 
             running_rmse += rmse_score(y, pred)
             running_nnse += nnse_score(y, pred, climatology)
@@ -150,17 +152,20 @@ def train(
             ):
 
                 pred = []
-                for i in trange(cube.shape[1] - 1, leave=False):
-                    x = cube[:, i, :, :].unsqueeze(1).to(device)
-                    y = cube[:, i + 1, :, :].unsqueeze(1).to(device)
-                    pred_slice = model(x)
-                    pred.append(pred_slice)
-                    
-                    loss = loss_fn(pred_slice, y)
-                    val_loss += loss.item()
-                    
+                t = cube.shape[1] - 1
+                x = cube[:, 0:1, :, :].to(device)
+                pred_buf = model(x)
+                pred.append(pred_buf)
+                for i in trange(buffer - 1, t - 1, buffer, leave=False):
+                    pred_buf = model(x)
+                    pred.append(pred_buf)
+                    x = pred_buf[:, -1:, :, :].to(device)
+
+                pred = torch.cat(pred, dim=1).squeeze(2)
+                pred = pred[:, :t, :, :]
                 y = cube[:, 1:, :, :].to(device)
-                pred = torch.stack(pred, dim=1).squeeze(2)
+
+                val_loss += loss_fn(pred, y).item() * len(pred)
                 running_rmse += rmse_score(y, pred)
                 running_nnse += nnse_score(y, pred, climatology)
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)

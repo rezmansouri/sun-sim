@@ -33,7 +33,7 @@ def get_sim(sim_path):
     v = read_hdf(v_path, ["Data-Set-2"])[0]
     v = v.transpose(2, 1, 0)
 
-    return v
+    return v[:-1, :, :]
 
 
 def get_sims(sim_paths):
@@ -57,13 +57,13 @@ def compute_climatology(data: np.ndarray) -> np.ndarray:
     Compute per-voxel climatology (mean field) from a dataset.
 
     Args:
-        data (np.ndarray): Array of shape (n, 139, 111, 128)
+        data (np.ndarray): Array of shape (n, 138, 111, 128)
 
     Returns:
-        np.ndarray: Climatology array of shape (139, 111, 128)
+        np.ndarray: Climatology array of shape (138, 111, 128)
     """
     assert data.ndim == 4 and data.shape[1:] == (
-        139,
+        138,
         111,
         128,
     ), "Unexpected input shape."
