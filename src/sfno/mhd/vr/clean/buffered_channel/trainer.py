@@ -98,24 +98,37 @@ def train(
 
             pred = []
             t = cube.shape[1] - 1
+
             x = cube[:, 0:1, :, :].to(device)
+            y = cube[:, 1 : buffer + 1, :, :].to(device)
+
             pred_buf = model(x)
             pred.append(pred_buf)
+
+            optimizer.zero_grad()
+            loss = loss_fn(pred_buf, y)
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+            running_loss += loss.item()
+
             for i in trange(buffer - 1, t - 1, buffer, leave=False):
+                x = cube[:, i : i + 1, :, :].to(device)
+                y = cube[:, i + 1 : i + buffer + 1, :, :].to(device)
+
                 pred_buf = model(x)
                 pred.append(pred_buf)
-                x = cube[:, i : i + 1, :, :].to(device)
+
+                optimizer.zero_grad()
+                loss = loss_fn(pred_buf, y)
+                scaler.scale(loss).backward()
+                scaler.step(optimizer)
+                scaler.update()
+                running_loss += loss.item()
 
             pred = torch.cat(pred, dim=1).squeeze(2)
             pred = pred[:, :t, :, :]
             y = cube[:, 1:, :, :].to(device)
-
-            optimizer.zero_grad()
-            loss = loss_fn(pred, y)
-            running_loss += loss.item() * len(pred)
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
 
             running_rmse += rmse_score(y, pred)
             running_nnse += nnse_score(y, pred, climatology)
@@ -154,12 +167,20 @@ def train(
                 pred = []
                 t = cube.shape[1] - 1
                 x = cube[:, 0:1, :, :].to(device)
+                y = cube[:, 1 : buffer + 1, :, :].to(device)
+
                 pred_buf = model(x)
                 pred.append(pred_buf)
+                loss = loss_fn(pred_buf, y)
+                val_loss += loss.item()
+                
                 for i in trange(buffer - 1, t - 1, buffer, leave=False):
-                    pred_buf = model(x)
-                    pred.append(pred_buf)
                     x = pred_buf[:, -1:, :, :].to(device)
+                    y = cube[:, i + 1 : i + buffer + 1, :, :].to(device)
+                    pred_buf = model(x)
+                    loss = loss_fn(pred_buf, y)
+                    val_loss += loss.item()
+                    pred.append(pred_buf)
 
                 pred = torch.cat(pred, dim=1).squeeze(2)
                 pred = pred[:, :t, :, :]
