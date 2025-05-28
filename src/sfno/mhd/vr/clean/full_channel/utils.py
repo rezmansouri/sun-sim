@@ -218,3 +218,48 @@ class L1L2Loss:
         l1_loss = self.l1.rel(y_pred, y)
         l2_loss = self.l2.rel(y_pred, y)
         return self.alpha * l1_loss + self.beta * l2_loss
+
+
+class RadialLpLoss(LpLoss):
+    def __init__(
+        self,
+        weights: torch.Tensor,
+        dim: int = 1,
+        d: int = 2,
+        p: int = 2,
+        measure=1.0,
+        reduction="sum",
+    ):
+        """
+        Parameters
+        ----------
+        weights : torch.Tensor
+            1D tensor of shape (num_slices,) to apply as weights per output slice
+        dim : int
+            the dimension along which slices are weighted (e.g., 1 = channel)
+        """
+        super().__init__(d=d, p=p, measure=measure, reduction=reduction)
+        self.weights = weights  # shape: (num_slices,)
+        self.slice_dim = dim
+
+    def rel(self, x, y):
+        """
+        Weighted relative LpLoss over specified slice dimension.
+        """
+        # Flatten last `d` spatial dims
+        x_flat = torch.flatten(x, start_dim=-self.d)
+        y_flat = torch.flatten(y, start_dim=-self.d)
+
+        # Compute ||x - y||_p and ||y||_p over spatial dims
+        diff = torch.norm(x_flat - y_flat, p=self.p, dim=-1)
+        ynorm = torch.norm(y_flat, p=self.p, dim=-1)
+
+        # Reshape weights to broadcast along batch/spatial dims
+        w = self.weights.to(x.device)
+        while w.dim() < x.dim():
+            w = w.view(
+                *([1] * self.slice_dim), -1, *([1] * (x.dim() - self.slice_dim - 1))
+            )
+
+        weighted_diff = w * (diff / ynorm)
+        return self.reduce_all(weighted_diff).squeeze()

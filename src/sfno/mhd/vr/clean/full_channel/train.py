@@ -6,7 +6,7 @@ import json
 from trainer import train
 from neuralop.models import SFNO
 from neuralop.losses import LpLoss
-from utils import SphericalNODataset, get_cr_dirs, L1L2Loss
+from utils import SphericalNODataset, get_cr_dirs, L1L2Loss, RadialLpLoss
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -35,6 +35,9 @@ def main():
 
     if loss_str == "l2":
         loss_fn = LpLoss(d=2, p=2)
+    elif loss_str == "radial-l2":
+        weights = torch.linspace(1.0, 2.0, steps=139)  # shape: (139,)
+        loss_fn = RadialLpLoss(d=2, p=2, dim=1, weights=weights)
     elif loss_str == "l2l1":
         loss_fn = L1L2Loss(d=2)
     else:
