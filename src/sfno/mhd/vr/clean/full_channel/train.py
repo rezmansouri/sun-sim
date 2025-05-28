@@ -12,7 +12,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    (data_path, batch_size, n_epochs, hidden_channels, n_layers, loss_str) = sys.argv[
+    (data_path, batch_size, n_epochs, hidden_channels, n_layers, loss_str, scale_up) = sys.argv[
         1:
     ]
     (
@@ -20,11 +20,13 @@ def main():
         n_epochs,
         hidden_channels,
         n_layers,
+        scale_up
     ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
         int(n_layers),
+        int(scale_up)
     )
 
     cr_dirs = get_cr_dirs(data_path)
@@ -38,9 +40,9 @@ def main():
     else:
         raise ValueError('loss should be either "l2" or "l2l1"')
 
-    train_dataset = SphericalNODataset(data_path, cr_train)
+    train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
     val_dataset = SphericalNODataset(
-        data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
+        data_path, cr_val, scale_up=scale_up, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
     out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_str}"
@@ -59,13 +61,14 @@ def main():
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
         "n_layers": n_layers,
-        "loss": loss_str
+        "loss": loss_str,
+        "scale_up": scale_up
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
 
     model = SFNO(
-        n_modes=(110, 128),
+        n_modes=(110 * scale_up, 128 * scale_up),
         in_channels=1,
         out_channels=139,
         hidden_channels=hidden_channels,

@@ -6,6 +6,7 @@ from pyhdf.SD import SD, SDC
 from torch.utils.data import Dataset
 from os.path import join as path_join
 from neuralop import LpLoss
+from scipy.ndimage import zoom
 import os
 
 FILE_NAMES = ["vr002.hdf"]
@@ -28,20 +29,37 @@ def read_hdf(hdf_path, dataset_names):
     return datasets
 
 
-def get_sim(sim_path):
+def get_sim(sim_path, scale_up):
     (v_path,) = [path_join(sim_path, file_name) for file_name in FILE_NAMES]
     v = read_hdf(v_path, ["Data-Set-2"])[0]
     v = v.transpose(2, 1, 0)
 
+    if scale_up != 1:
+        v = enlarge_cube(v, scale_up)
+
     return v
 
 
-def get_sims(sim_paths):
+def get_sims(sim_paths, scale_up):
     sims = []
     for sim_path in tqdm(sim_paths, desc="Loading simulations"):
-        sims.append(get_sim(sim_path))
+        sims.append(get_sim(sim_path, scale_up))
     sims = np.stack(sims, axis=0)
     return sims
+
+
+def enlarge_cube(cube, scale):
+    """
+    Enlarge the spatial dimensions (axis 1 and 2) of a 3D cube using bilinear interpolation.
+
+    Parameters:
+    - cube: np.ndarray of shape (140, 110, 128)
+    - scale: int or float (e.g., 2)
+
+    Returns:
+    - enlarged_cube: np.ndarray of shape (140, 110 * scale, 128 * scale)
+    """
+    return zoom(cube, (1, scale, scale), order=1)
 
 
 def min_max_normalize(array, min_=None, max_=None):
@@ -52,7 +70,7 @@ def min_max_normalize(array, min_=None, max_=None):
     return array, min_, max_
 
 
-def compute_climatology(data: np.ndarray) -> np.ndarray:
+def compute_climatology(data: np.ndarray, scale_up) -> np.ndarray:
     """
     Compute per-voxel climatology (mean field) from a dataset.
 
@@ -64,8 +82,8 @@ def compute_climatology(data: np.ndarray) -> np.ndarray:
     """
     assert data.ndim == 4 and data.shape[1:] == (
         139,
-        111,
-        128,
+        111 * scale_up,
+        128 * scale_up,
     ), "Unexpected input shape."
     climatology = np.mean(data, axis=0)
     climatology = torch.tensor(climatology, dtype=torch.float32)
@@ -104,16 +122,17 @@ class SphericalNODataset(Dataset):
         self,
         data_path,
         cr_list,
+        scale_up,
         v_min=None,
         v_max=None,
         instruments=None,
     ):
         super().__init__()
         sim_paths = collect_sim_paths(data_path, cr_list, instruments)
-        sims = get_sims(sim_paths)
+        sims = get_sims(sim_paths, scale_up)
         sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
-        self.climatology = compute_climatology(sims[:, 1:, :, :])
+        self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
 
     def __getitem__(self, index):
         cube = self.sims[index]
@@ -145,7 +164,7 @@ class AreaWeightedLpLoss(LpLoss):
         """
         H = x.size(-2)
         theta = torch.linspace(0, np.pi, H, device=x.device).view(1, 1, H, 1)
-        area_weights = torch.cos(theta) ** 2 # shape (1, 1, H, 1)
+        area_weights = torch.cos(theta) ** 2  # shape (1, 1, H, 1)
         return area_weights
 
     def rel(self, x, y):
@@ -169,6 +188,7 @@ class AreaWeightedLpLoss(LpLoss):
         diff = self.reduce_all(diff).squeeze()
         return diff
 
+
 class L1L2Loss:
     """
     L1L2Loss combines relative L1 and L2 losses over spatial dimensions.
@@ -188,7 +208,7 @@ class L1L2Loss:
         Weight for L2 loss (default 1.0)
     """
 
-    def __init__(self, d, measure=1.0, reduction='sum', alpha=1.0, beta=1.0):
+    def __init__(self, d, measure=1.0, reduction="sum", alpha=1.0, beta=1.0):
         self.l1 = LpLoss(d=d, p=1, measure=measure, reduction=reduction)
         self.l2 = LpLoss(d=d, p=2, measure=measure, reduction=reduction)
         self.alpha = alpha
