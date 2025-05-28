@@ -198,6 +198,7 @@ Metrics
 ## Enlarge the simulations to capture larger modes (exp 37)
 
 ## HUX metrics
+
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
 | Buffered | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
