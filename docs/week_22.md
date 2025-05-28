@@ -137,6 +137,69 @@ Metrics
 
 **Gonna go with 2D L2 only.**
 
-## Enlarge the simulations to capture larger modes (exp 36)
+## Buffered channels (exp 36)
+
+<img src="resources/week_22/buffered_pred.png">
+
+- 8 x 256 architecture
+- Trained from scratch on the first 80% CRs
+- Reporting results on the last 20%
+- 100 epochs
+
+Example 1
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_1.gif">
+138 Channels at once
+<img src="resources/week_21/exp_31_1.gif">
+
+Example 2
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_2.gif">
+138 Channels at once
+<img src="resources/week_21/exp_31_2.gif">
+
+Example 3
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_3.gif">
+138 Channels at once
+<img src="resources/week_21/exp_31_3.gif">
+
+Example 4
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_4.gif">
+138 Channels at once
+<img src="resources/week_21/exp_31_4.gif">
+
+Example 5
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_5.gif">
+138 Channels at once
+<img src="resources/week_21/exp_31_5.gif">
+
+
+Metrics
+
+6 * 23 Channels (Buffered)
+<img src="resources/week_22/exp_36_metrics.png">
+
+138 Channels at once
+<img src="resources/week_21/exp_31_metrics.png">
+
+| Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|----------|----------|----------|----------|----------|--------|
+| Buffered | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
+| Full Channel | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+
+## Enlarge the simulations to capture larger modes (exp 37)
 
 ## HUX metrics
+| Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+| Buffered | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
+| Full Channel | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| HUX    | 40.7198  | 0.9149   | 0.9723   | 0.9584   | 27.82  |
