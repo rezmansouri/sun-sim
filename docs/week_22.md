@@ -317,7 +317,56 @@ Not that different.
 
 ## Fine-tuning slice 24 to 46 (exp 39)
 
+- 8 x 256 architecture
+- Fine-tuned on the first 80% CRs
+- Reporting results on the last 20%
+- 50 epochs
 
+Example 1
+
+Fine-tuned
+<img src="resources/week_22/exp_39_1.gif">
+Pre-trained
+<img src="resources/week_21/exp_31_1.gif">
+
+Example 2
+
+Fine-tuned
+<img src="resources/week_22/exp_39_2.gif">
+Pre-trained
+<img src="resources/week_21/exp_31_2.gif">
+
+Example 3
+
+Fine-tuned
+<img src="resources/week_22/exp_39_3.gif">
+Pre-trained
+<img src="resources/week_21/exp_31_3.gif">
+
+Example 4
+
+Fine-tuned
+<img src="resources/week_22/exp_39_4.gif">
+Pre-trained
+<img src="resources/week_21/exp_31_4.gif">
+
+Example 5
+
+Fine-tuned
+<img src="resources/week_22/exp_39_5.gif">
+Pre-trained
+<img src="resources/week_21/exp_31_5.gif">
+
+
+Metrics
+
+Fine-tuned
+<img src="resources/week_22/exp_39_metrics.png">
+
+| Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+| Pre-trained   | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| Fine-tuned | 0.1443   | 0.7749   | 0.7882   | 0.8294   | 20.42  |
 
 ## HUX metrics
 
