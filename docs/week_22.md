@@ -240,6 +240,14 @@ Example 5
 (111, 128)
 <img src="resources/week_21/exp_33_5.gif">
 
+Metrics
+
+(222, 256)
+<img src="resources/week_22/exp_37_metrics.png">
+
+<!-- 138 Channels at once
+<img src="resources/week_21/exp_31_metrics.png"> -->
+
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
