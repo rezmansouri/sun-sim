@@ -6,49 +6,56 @@ import json
 from trainer import train
 from neuralop.models import SFNO
 from neuralop.losses import LpLoss
-from utils import SphericalNODataset, get_cr_dirs, L1L2Loss, RadialLpLoss
+from utils import SphericalNODataset, get_cr_dirs
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    (data_path, batch_size, n_epochs, hidden_channels, n_layers, loss_str, scale_up) = sys.argv[
-        1:
-    ]
+    (
+        data_path,
+        batch_size,
+        n_epochs,
+        hidden_channels,
+        n_layers,
+        scale_up,
+        loss_d,
+        loss_p,
+    ) = sys.argv[1:]
     (
         batch_size,
         n_epochs,
         hidden_channels,
         n_layers,
-        scale_up
+        scale_up,
+        loss_d,
+        loss_p,
     ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
         int(n_layers),
-        int(scale_up)
+        int(scale_up),
+        int(loss_d),
+        int(loss_p),
     )
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    if loss_str == "l2":
-        loss_fn = LpLoss(d=2, p=2)
-    elif loss_str == "radial-l2":
-        weights = torch.linspace(1.0, 2.0, steps=139)  # shape: (139,)
-        loss_fn = RadialLpLoss(d=2, p=2, dim=1, weights=weights)
-    elif loss_str == "l2l1":
-        loss_fn = L1L2Loss(d=2)
-    else:
-        raise ValueError('loss should be either "l2" or "l2l1"')
+    loss_fn = LpLoss(d=loss_d, p=loss_p)
 
     train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
     val_dataset = SphericalNODataset(
-        data_path, cr_val, scale_up=scale_up, v_min=train_dataset.v_min, v_max=train_dataset.v_max
+        data_path,
+        cr_val,
+        scale_up=scale_up,
+        v_min=train_dataset.v_min,
+        v_max=train_dataset.v_max,
     )
 
-    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_str}"
+    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-d{loss_d}-p{loss_p}"
     os.makedirs(
         out_path,
         exist_ok=True,
@@ -64,8 +71,9 @@ def main():
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
         "n_layers": n_layers,
-        "loss": loss_str,
-        "scale_up": scale_up
+        "loss_d": loss_d,
+        "loss_p": loss_p,
+        "scale_up": scale_up,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
