@@ -3,6 +3,22 @@ layout: default
 title: First Paper 2
 ---
 
+## Summary of this week
+
+Main problem: predictions become worse as we go further.
+
+<img src="resources/week_21/exp_31_1.gif">
+
+1. 3D L2 Loss (exp 34)
+2. 2D L2 + L1 Loss (exp 35)
+3. Sequential/buffered predicted slices (exp 36)
+4. Enlarge MAS and capture more modes (exp 37)
+5. Slice-weighted loss function (exp 38)
+6. Fine-tuning further channels (exp 39)
+7. Higher norms for loss (2D L8) (exp 40)
+8. Starting with lower n_modes and increasing it to max possible (not implemented in SFNO, opened an issue)
+9. HUX metrics and conclusion
+
 ## 3D L2 Loss (exp 34)
 
 2D:
@@ -368,6 +384,68 @@ Fine-tuned
 | Pre-trained   | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
 | Fine-tuned | 0.1443   | 0.7749   | 0.7882   | 0.8294   | 20.42  |
 
+Per-slice fine-tuning is wrong. 90% of weights are spectral not spatial.
+
+## Higher norms for loss (2D L8) (exp 40)
+
+$$
+\text{L}_8^{(2D)} = \frac{1}{BCR} \sum_{b=1}^{B} \sum_{c=1}^{C} \sum_{r=1}^{R}
+\left( \sum_{i=1}^{H} \sum_{j=1}^{W} \left| x_{bcrij} - y_{bcrij} \right|^8 \right)^{1/8}
+$$
+
+- 8 x 256 architecture
+- Trained from scratch on the first 80% CRs
+- Reporting results on the last 20%
+- 200 epochs
+
+Example 1
+
+L8
+<img src="resources/week_22/exp_40_1.gif">
+L2
+<img src="resources/week_21/exp_31_1.gif">
+
+Example 2
+
+L8
+<img src="resources/week_22/exp_40_2.gif">
+L2
+<img src="resources/week_21/exp_31_2.gif">
+
+Example 3
+
+L8
+<img src="resources/week_22/exp_40_3.gif">
+L2
+<img src="resources/week_21/exp_31_3.gif">
+
+Example 4
+
+L8
+<img src="resources/week_22/exp_40_4.gif">
+L2
+<img src="resources/week_21/exp_31_4.gif">
+
+Example 5
+
+L8
+<img src="resources/week_22/exp_40_5.gif">
+L2
+<img src="resources/week_21/exp_31_5.gif">
+
+
+Metrics
+
+Fine-tuned
+<img src="resources/week_22/exp_40_metrics.png">
+
+| Loss | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+| L8 | ***0.0233***   | ***0.9934***   | 0.9877   | ***0.9967***   | 35.83  |
+| L2 | 0.0249   | 0.9927   | ***0.9907***   | 0.9963   | ***39.22***  |
+
+L8 is better but has more flickering/ringing...
+
 ## HUX metrics
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
@@ -375,3 +453,5 @@ Fine-tuned
 | Buffered L2 2D | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
 | Full Channel L2 2D | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
 | HUX    | 40.7198  | 0.9149   | 0.9723   | 0.9584   | 27.82  |
+
+
