@@ -243,8 +243,10 @@ Example 5
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
+| (111, 128) | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| (222, 256) | 0.0299   | 0.9893   | 0.9748   | 0.9946   | 35.36  |
 
-
+It is worse.
 
 ## Slice weighted loss, further=higher (exp 38)
 
@@ -300,10 +302,14 @@ Slice weighted L2
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
-| Full Channel L2   | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| L2   | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
 | Slice weighted L2 | 0.0250   | 0.9926   | 0.9889   | 0.9963   | 39.12  |
 
 Not that different.
+
+## Fine-tuning slice 24 to 46 (exp 39)
+
+
 
 ## HUX metrics
 
