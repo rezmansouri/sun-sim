@@ -218,6 +218,16 @@ class L1L2Loss:
         l1_loss = self.l1.rel(y_pred, y)
         l2_loss = self.l2.rel(y_pred, y)
         return self.alpha * l1_loss + self.beta * l2_loss
+    
+    
+class MaskedLpLoss(LpLoss):
+    def __init__(self, i: int, j: int, d: int = 2, p: int = 2, measure=1., reduction='sum'):
+        super().__init__(d=d, p=p, measure=measure, reduction=reduction)
+        self.i = i
+        self.j = j
+
+    def rel(self, x, y):
+        return super().rel(x[:, self.i:self.j], y[:, self.i:self.j])
 
 
 class RadialLpLoss(LpLoss):
