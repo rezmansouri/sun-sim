@@ -65,8 +65,8 @@ Metrics
 3D
 <img src="resources/week_22/exp_34_metrics.png">
 
-2D
-<img src="resources/week_21/exp_31_metrics.png">
+<!-- 2D
+<img src="resources/week_21/exp_31_metrics.png"> -->
 
 
 Numerical comparison
@@ -126,8 +126,8 @@ Metrics
 2D L2 + L1
 <img src="resources/week_22/exp_35_metrics.png">
 
-2D L2
-<img src="resources/week_21/exp_31_metrics.png">
+<!-- 2D L2
+<img src="resources/week_21/exp_31_metrics.png"> -->
 
 
 | Loss fn | Val Loss $$\downarrow$$ | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
@@ -188,8 +188,8 @@ Metrics
 6 * 23 Channels (Buffered)
 <img src="resources/week_22/exp_36_metrics.png">
 
-138 Channels at once
-<img src="resources/week_21/exp_31_metrics.png">
+<!-- 138 Channels at once
+<img src="resources/week_21/exp_31_metrics.png"> -->
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |----------|----------|----------|----------|----------|--------|
@@ -198,7 +198,7 @@ Metrics
 
 ## Enlarge the simulations to capture larger modes (exp 37)
 
-- 8 x 64 architecture (8 x 256 didn't fit. i had 8 x 64 results on normal data.)
+- 8 x 64 architecture (8 x 256 didn't fit. i had 8 x 64 results on normal data (exp 33).)
 - Trained from scratch on the first 80% CRs
 - Reporting results on the last 20%
 - 200 epochs
@@ -243,7 +243,7 @@ Example 5
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
-| (111, 128) | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| (111, 128) | 0.0292   | 0.9900   | 0.9798   | 0.9949   | 35.77  |
 | (222, 256) | 0.0299   | 0.9893   | 0.9748   | 0.9946   | 35.36  |
 
 It is worse.
@@ -296,8 +296,8 @@ Metrics
 Slice weighted L2
 <img src="resources/week_22/exp_38_metrics.png">
 
-2D L2
-<img src="resources/week_21/exp_31_metrics.png">
+<!-- 2D L2
+<img src="resources/week_21/exp_31_metrics.png"> -->
 
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
