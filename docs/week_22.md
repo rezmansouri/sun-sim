@@ -181,6 +181,7 @@ Example 5
 138 Channels at once
 <img src="resources/week_21/exp_31_5.gif">
 
+Visually and numerically, buffered is better. But the max absolute error is higher.
 
 Metrics
 
@@ -197,10 +198,117 @@ Metrics
 
 ## Enlarge the simulations to capture larger modes (exp 37)
 
+- 8 x 64 architecture (8 x 256 didn't fit. i had 8 x 64 results on normal data.)
+- Trained from scratch on the first 80% CRs
+- Reporting results on the last 20%
+- 200 epochs
+- slice size: `(140, 111, 128)` -> `(140, 222, 256)`
+- n_modes: `(110, 64)` (110, 128 in code) -> `(221, 128)` (221, 256 in code)
+
+Example 1
+
+(222, 256)
+<img src="resources/week_22/exp_37_1.gif">
+(111, 128)
+<img src="resources/week_21/exp_33_1.gif">
+
+Example 2
+
+(222, 256)
+<img src="resources/week_22/exp_37_2.gif">
+(111, 128)
+<img src="resources/week_21/exp_33_2.gif">
+
+Example 3
+
+(222, 256)
+<img src="resources/week_22/exp_37_3.gif">
+(111, 128)
+<img src="resources/week_21/exp_33_3.gif">
+
+Example 4
+
+(222, 256)
+<img src="resources/week_22/exp_37_4.gif">
+(111, 128)
+<img src="resources/week_21/exp_33_4.gif">
+
+Example 5
+
+(222, 256)
+<img src="resources/week_22/exp_37_5.gif">
+(111, 128)
+<img src="resources/week_21/exp_33_5.gif">
+
+
+| Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+
+
+
+## Slice weighted loss, further=higher (exp 38)
+
+- 8 x 256 architecture
+- Trained from scratch on the first 80% CRs
+- Reporting results on the last 20%
+- 200 epochs
+
+Example 1
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_1.gif">
+2D L2
+<img src="resources/week_21/exp_31_1.gif">
+
+Example 2
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_2.gif">
+2D L2
+<img src="resources/week_21/exp_31_2.gif">
+
+Example 3
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_3.gif">
+2D L2
+<img src="resources/week_21/exp_31_3.gif">
+
+Example 4
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_4.gif">
+2D L2
+<img src="resources/week_21/exp_31_4.gif">
+
+Example 5
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_5.gif">
+2D L2
+<img src="resources/week_21/exp_31_5.gif">
+
+
+Metrics
+
+Slice weighted L2
+<img src="resources/week_22/exp_38_metrics.png">
+
+2D L2
+<img src="resources/week_21/exp_31_metrics.png">
+
+
+| Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+| Full Channel L2   | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| Slice weighted L2 | 0.0250   | 0.9926   | 0.9889   | 0.9963   | 39.12  |
+
+Not that different.
+
 ## HUX metrics
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
-| Buffered | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
-| Full Channel | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| Buffered L2 2D | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
+| Full Channel L2 2D | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
 | HUX    | 40.7198  | 0.9149   | 0.9723   | 0.9584   | 27.82  |
