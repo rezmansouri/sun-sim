@@ -16,9 +16,10 @@ Main problem: predictions become worse as we go further.
 5. Slice-weighted loss function (exp 38)
 6. Fine-tuning further channels (exp 39)
 7. Train with higher norms for loss (2D L8) (exp 40)
-7. Fine tune with higher norms for loss (2D L8) (exp 41)
-8. Starting with lower n_modes and increasing it to max possible (not implemented in SFNO, opened an issue)
-9. HUX metrics and conclusion
+8. Fine tune with higher norms for loss (2D L8) (exp 41)
+9. Starting with lower n_modes and increasing it to max possible (not implemented in SFNO, opened an issue)
+10. HUX metrics
+11. Conclusion & paper outline
 
 ## 3D L2 Loss (exp 34)
 
@@ -387,7 +388,7 @@ Fine-tuned
 
 Per-slice fine-tuning is wrong. 90% of weights are spectral not spatial.
 
-## Higher norms for loss (2D L8) (exp 40)
+## Training with higher norms for loss (2D L8) (exp 40)
 
 $$
 \text{L}_8^{(2D)} = \frac{1}{BCR} \sum_{b=1}^{B} \sum_{c=1}^{C} \sum_{r=1}^{R}
@@ -437,7 +438,7 @@ L2
 
 Metrics
 
-Fine-tuned
+L8
 <img src="resources/week_22/exp_40_metrics.png">
 
 | Loss | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
@@ -446,6 +447,59 @@ Fine-tuned
 | L2 | 0.0249   | 0.9927   | ***0.9907***   | 0.9963   | ***39.22***  |
 
 L8 is better but has more flickering/ringing...
+
+
+## Fine-tuning L2-trained on higher norms for loss (2D L8) (exp 41)
+
+- 8 x 256 architecture
+- Fine-tuned on the first 80% CRs
+- Reporting results on the last 20%
+- 50 epochs
+
+Example 1
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_1.gif">
+L2
+<img src="resources/week_21/exp_31_1.gif">
+
+Example 2
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_2.gif">
+L2
+<img src="resources/week_21/exp_31_2.gif">
+
+Example 3
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_3.gif">
+L2
+<img src="resources/week_21/exp_31_3.gif">
+
+Example 4
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_4.gif">
+L2
+<img src="resources/week_21/exp_31_4.gif">
+
+Example 5
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_5.gif">
+L2
+<img src="resources/week_21/exp_31_5.gif">
+
+
+L8 Fine-tuned
+<img src="resources/week_22/exp_41_metrics.png">
+
+| Loss | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|--------|
+| L2 | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
+| L8 Fine-tuned | 0.0281   | 0.9907   | 0.9809   | 0.9953   | 33.73  |
+
 
 ## HUX metrics
 
@@ -456,3 +510,46 @@ L8 is better but has more flickering/ringing...
 | HUX    | 40.7198  | 0.9149   | 0.9723   | 0.9584   | 27.82  |
 
 
+## Conclusion and paper outline
+
+- Introduction
+    - What is the solar wind
+        - $$J, B, V, \rho, ...$$
+    - Importance of surrogates for this
+    - Numerical solvers
+        - MAS
+        - Others?
+    - Data-driven/ML solvers
+        - Why they are important
+        - Any similar work
+    - Our problem
+        - why we started with velocity
+        - why only radial
+- Background
+    - Numerical solvers
+        - MAS
+        - Others?
+    - Data-driven/ML solvers
+        - Any similar work
+        - Traditional DL (i.e., in spatial dims)
+        - Operator learning
+            - DeepONet
+            - FNO
+            - SFNO
+- Methods
+    - Dataset
+        - Why velocity
+        - Why only radial?
+    - Baseline: HUX
+    - SFNO
+    - Training strategy
+        - Dataset split
+        - Cross val
+        - Hyperparams
+        - Loss
+        - Evaluation metrics
+- Results and Discussion
+
+
+***ICDM deadline is 8 AM next Saturday.***
+***CogMI next, with 21 June deadline.***
