@@ -505,12 +505,16 @@ L8 Fine-tuned
 
 | Method | RMSE $$\downarrow$$ | NNSE $$\uparrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
 |--------|----------|----------|----------|----------|--------|
-| Buffered L2 2D | 0.0235   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
-| Full Channel L2 2D | 0.0249   | 0.9927   | 0.9907   | 0.9963   | 39.22  |
-| HUX    | 40.7198  | 0.9149   | 0.9723   | 0.9584   | 27.82  |
+| Buffered L2 2D | 0.0235 (code units)  | 0.9933   | 0.9942   | 0.9966   | 39.29  |
+| Full Channel L2 2D | 0.0249 (code units)  | 0.9927   | 0.9907   | 0.9963   | 39.22  |
+| HUX    | 40.7198 (km/s) | 0.9149   | 0.9723   | 0.9584   | 27.82  |
 
 
 ## Conclusion and paper outline
+
+Here's what I will say:
+
+<i>We found out that 8 x 256 performs best. But in latter slices predictions became worse. Thus we took the buffered channels approach and its our optimal model. **One problem though, last slice?**</i>
 
 - Introduction
     - What is the solar wind
