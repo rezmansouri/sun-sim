@@ -12,9 +12,19 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
-    (data_path, batch_size, n_epochs, hidden_channels, n_layers, scale_up, slice_start, slice_end, state_path) = sys.argv[
-        1:
-    ]
+    (
+        data_path,
+        batch_size,
+        n_epochs,
+        hidden_channels,
+        n_layers,
+        scale_up,
+        slice_start,
+        slice_end,
+        state_path,
+        loss_d,
+        loss_p,
+    ) = sys.argv[1:]
     (
         batch_size,
         n_epochs,
@@ -22,7 +32,9 @@ def main():
         n_layers,
         scale_up,
         slice_start,
-        slice_end
+        slice_end,
+        loss_d,
+        loss_p,
     ) = (
         int(batch_size),
         int(n_epochs),
@@ -31,17 +43,23 @@ def main():
         int(scale_up),
         int(slice_start),
         int(slice_end),
+        int(loss_d),
+        int(loss_p),
     )
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    loss_fn = MaskedLpLoss(i=slice_start, j=slice_end, d=2, p=2)
+    loss_fn = MaskedLpLoss(i=slice_start, j=slice_end, d=loss_d, p=loss_p)
 
     train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
     val_dataset = SphericalNODataset(
-        data_path, cr_val, scale_up=scale_up, v_min=train_dataset.v_min, v_max=train_dataset.v_max
+        data_path,
+        cr_val,
+        scale_up=scale_up,
+        v_min=train_dataset.v_min,
+        v_max=train_dataset.v_max,
     )
 
     out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_finetuned_{slice_start}-{slice_end}"
@@ -62,7 +80,9 @@ def main():
         "n_layers": n_layers,
         "scale_up": scale_up,
         "slice_start": slice_start,
-        "slice_end": slice_end
+        "slice_end": slice_end,
+        "loss_d": loss_d,
+        "loss_p": loss_p,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)

@@ -15,7 +15,8 @@ Main problem: predictions become worse as we go further.
 4. Enlarge MAS and capture more modes (exp 37)
 5. Slice-weighted loss function (exp 38)
 6. Fine-tuning further channels (exp 39)
-7. Higher norms for loss (2D L8) (exp 40)
+7. Train with higher norms for loss (2D L8) (exp 40)
+7. Fine tune with higher norms for loss (2D L8) (exp 41)
 8. Starting with lower n_modes and increasing it to max possible (not implemented in SFNO, opened an issue)
 9. HUX metrics and conclusion
 
