@@ -92,31 +92,27 @@ def train(
         running_msssim = 0.0
         running_acc = 0.0
         running_psnr = 0.0
-        for cube in tqdm(
-            train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False
-        ):
 
+        for cube in tqdm(train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False):
             pred = []
-            t = cube.shape[1] - 1
+            t = cube.shape[1]  # 140
 
-            x = cube[:, 0:1, :, :].to(device)
-            y = cube[:, 1 : buffer + 1, :, :].to(device)
+            # Use starting indices for x
+            x_indices = list(range(0, t - 1, buffer))  # [0, 20, 40, 60, 80, 100, 120]
 
-            pred_buf = model(x)
-            pred.append(pred_buf)
+            for i in trange(len(x_indices), leave=False):
+                x_idx = x_indices[i]
+                y_start = x_idx + 1
+                y_end = min(x_idx + buffer + 1, t)  # make sure we don't go out of bounds
 
-            optimizer.zero_grad()
-            loss = loss_fn(pred_buf, y)
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
-            running_loss += loss.item()
-
-            for i in trange(buffer - 1, t - 1, buffer, leave=False):
-                x = cube[:, i : i + 1, :, :].to(device)
-                y = cube[:, i + 1 : i + buffer + 1, :, :].to(device)
-
-                pred_buf = model(x)
+                x = cube[:, x_idx:x_idx+1, :, :].to(device)              # (B, 1, H, W)
+                y = cube[:, y_start:y_end, :, :].to(device)              # (B, <buffer>, H, W)
+                
+                pred_buf = model(x)[:, :y.shape[1], :, :]                                      # should return same shape as y
+                
+                # print(x_idx, x_idx+1, pred_buf.shape)
+                # print(y_start, y_end, y.shape)
+                
                 pred.append(pred_buf)
 
                 optimizer.zero_grad()
@@ -126,9 +122,11 @@ def train(
                 scaler.update()
                 running_loss += loss.item()
 
-            pred = torch.cat(pred, dim=1).squeeze(2)
-            pred = pred[:, :t, :, :]
-            y = cube[:, 1:, :, :].to(device)
+            # Concatenate predictions and evaluate metrics
+            pred = torch.cat(pred, dim=1)  # (B, T-1, H, W)
+            y = cube[:, 1:, :, :].to(device)  # ground truth full sequence
+            
+            # print(pred.shape, y.shape)
 
             running_rmse += rmse_score(y, pred)
             running_nnse += nnse_score(y, pred, climatology)
@@ -159,34 +157,35 @@ def train(
         running_msssim = 0.0
         running_acc = 0.0
         running_psnr = 0.0
+
         with torch.no_grad():
-            for cube in tqdm(
-                val_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Val]", leave=False
-            ):
-
+            for cube in tqdm(val_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Val]", leave=False):
+                t = cube.shape[1]  # 140
+                x = cube[:, 0:1, :, :].to(device)  # initial input
                 pred = []
-                t = cube.shape[1] - 1
-                x = cube[:, 0:1, :, :].to(device)
-                y = cube[:, 1 : buffer + 1, :, :].to(device)
 
-                pred_buf = model(x)
-                pred.append(pred_buf)
-                loss = loss_fn(pred_buf, y)
-                val_loss += loss.item()
-                
-                for i in trange(buffer - 1, t - 1, buffer, leave=False):
-                    x = pred_buf[:, -1:, :, :].to(device)
-                    y = cube[:, i + 1 : i + buffer + 1, :, :].to(device)
-                    pred_buf = model(x)
-                    loss = loss_fn(pred_buf, y)
-                    val_loss += loss.item()
+                # Step through time autoregressively
+                for i in trange(0, t - 1, buffer, leave=False):
+                    y_start = i + 1
+                    y_end = min(i + buffer + 1, t)
+
+                    y = cube[:, y_start:y_end, :, :].to(device)  # target: ground truth next slices
+                    
+                    # print(y_start, y_end, y.shape)
+                    pred_buf = model(x)[:, :y.shape[1], :, :]                          # model predicts next <buffer> steps
+
                     pred.append(pred_buf)
+                    val_loss += loss_fn(pred_buf, y).item()
 
-                pred = torch.cat(pred, dim=1).squeeze(2)
-                pred = pred[:, :t, :, :]
+                    # next input is last predicted frame (1-step only)
+                    x = pred_buf[:, -1:, :, :].detach()
+
+                # stack predictions and evaluate full metrics
+                pred = torch.cat(pred, dim=1)  # shape (B, T-1, H, W)
                 y = cube[:, 1:, :, :].to(device)
+                
+                # print(pred.shape, y.shape)
 
-                val_loss += loss_fn(pred, y).item() * len(pred)
                 running_rmse += rmse_score(y, pred)
                 running_nnse += nnse_score(y, pred, climatology)
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
