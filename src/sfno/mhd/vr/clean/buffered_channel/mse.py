@@ -81,10 +81,8 @@ def main():
                 x = pred_buf[:, -1:, :, :].detach()
 
             # stack predictions and evaluate full metrics
-            pred = torch.cat(pred, dim=1)  # shape (B, T-1, H, W)
-            y = cube[:, 1:, :, :].to(device)
-
-            cube = y
+            yhats = torch.cat(pred, dim=1)  # shape (B, T-1, H, W)
+            cube = cube[:, 1:, :, :].to(device)
 
             yhats = yhats * (cfg["v_max"] - cfg["v_min"]) + cfg["v_min"]
             cube = cube * (cfg["v_max"] - cfg["v_min"]) + cfg["v_min"]
