@@ -24,16 +24,16 @@ def main():
         data_path, cr_val, v_min=train_dataset.v_min, v_max=train_dataset.v_max
     )
 
+    cfg_path = os.path.join(result_path, "cfg.json")
+    with open(cfg_path, "r") as f:
+        cfg = json.load(f)
+
     val_loader = DataLoader(
         val_dataset,
         batch_size=cfg["batch_size"],
         shuffle=False,
         pin_memory=True,
     )
-
-    cfg_path = os.path.join(result_path, "cfg.json")
-    with open(cfg_path, "r") as f:
-        cfg = json.load(f)
 
     buffer = cfg["buffer"]
     model = SFNO(
