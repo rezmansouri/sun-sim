@@ -259,7 +259,6 @@ def mse_score_per_sample_masked(
     assert (
         y_true.shape == mask.shape
     ), f"Shape of mask ({mask.shape}) must match y_true ({y_true.shape})"
-    assert mask.dtype == torch.bool, "Mask tensor must be of boolean type."
     assert (
         y_true.ndim > 0
     ), "Input tensors must have at least one dimension (batch size)."
@@ -267,7 +266,7 @@ def mse_score_per_sample_masked(
     # Calculate squared error
     squared_error = (y_true - y_pred) ** 2
 
-    masked_squared_error = squared_error * mask.to(squared_error.dtype)
+    masked_squared_error = squared_error * mask
 
     reduce_dims = tuple(range(1, y_true.ndim))
     mse_per_sample = torch.mean(masked_squared_error, dim=reduce_dims)
