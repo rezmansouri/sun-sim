@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 
 
 def rmse_score(y_true: torch.Tensor, y_pred: torch.Tensor) -> float:
@@ -156,3 +157,118 @@ def mssim_score(mssim_module, y_true: torch.Tensor, y_pred: torch.Tensor) -> flo
 
     score = mssim_module(y_true_norm, y_pred_norm.to(y_true_norm.dtype))
     return float(score.item())
+
+
+def sobel_edge_map(batch_cube: torch.Tensor) -> torch.Tensor:
+    """
+    Apply Sobel edge detection on each (H, W) frame in a tensor of shape (B, C, H, W).
+    Returns a binary mask of shape (B, C, H, W) where edge pixels are 1.
+    """
+    # Sobel kernels
+    sobel_x = torch.tensor(
+        [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]],
+        dtype=batch_cube.dtype,
+        device=batch_cube.device,
+    ).view(1, 1, 3, 3)
+    sobel_y = torch.tensor(
+        [[-1, -2, -1], [0, 0, 0], [1, 2, 1]],
+        dtype=batch_cube.dtype,
+        device=batch_cube.device,
+    ).view(1, 1, 3, 3)
+
+    # Pad the images to preserve size
+    padded = F.pad(
+        batch_cube, (1, 1, 1, 1), mode="replicate"
+    )  # shape: (B, C, H+2, W+2)
+
+    # Apply Sobel filters per channel
+    dx = F.conv2d(
+        padded, sobel_x.repeat(batch_cube.shape[1], 1, 1, 1), groups=batch_cube.shape[1]
+    )
+    dy = F.conv2d(
+        padded, sobel_y.repeat(batch_cube.shape[1], 1, 1, 1), groups=batch_cube.shape[1]
+    )
+
+    # Compute gradient magnitude
+    grad_mag = torch.sqrt(dx**2 + dy**2)
+
+    # Normalize and threshold to get binary edge map
+    edge_mask = (grad_mag > grad_mag.mean(dim=(-2, -1), keepdim=True)).to(
+        batch_cube.dtype
+    )
+
+    return edge_mask
+
+
+def mse_score_per_sample(y_true: torch.Tensor, y_pred: torch.Tensor) -> torch.Tensor:
+    """
+    Compute Root Mean Squared Error (RMSE) for each sample in a batch
+    between y_true and y_pred.
+
+    Args:
+        y_true (torch.Tensor): Ground truth tensor, shape (B, ...)
+                               where B is the batch size.
+        y_pred (torch.Tensor): Predicted tensor, shape (B, ...)
+                               must match y_true.shape.
+
+    Returns:
+        torch.Tensor: A 1D tensor of RMSE values of shape (B,),
+                      containing the RMSE for each sample in the batch.
+    """
+    assert (
+        y_true.shape == y_pred.shape
+    ), f"Shapes of y_true ({y_true.shape}) and y_pred ({y_pred.shape}) must match"
+    assert (
+        y_true.ndim > 0
+    ), "Input tensors must have at least one dimension (batch size)."
+
+    # Calculate squared error
+    squared_error = (y_true - y_pred) ** 2
+
+    reduce_dims = tuple(range(1, y_true.ndim))
+    mse_per_sample = torch.mean(squared_error, dim=reduce_dims)
+
+    return mse_per_sample
+
+
+def mse_score_per_sample_masked(
+    y_true: torch.Tensor, y_pred: torch.Tensor, mask: torch.Tensor
+) -> torch.Tensor:
+    """
+    Compute Root Mean Squared Error (RMSE) for each sample in a batch
+    between y_true and y_pred, considering only masked regions.
+
+    Args:
+        y_true (torch.Tensor): Ground truth tensor, shape (B, ...)
+                               where B is the batch size.
+        y_pred (torch.Tensor): Predicted tensor, shape (B, ...)
+                               must match y_true.shape.
+        mask (torch.Tensor): Boolean mask tensor, shape (B, ...)
+                             must match y_true.shape. RMSE is computed
+                             only where mask is True.
+
+    Returns:
+        torch.Tensor: A 1D tensor of RMSE values of shape (B,),
+                      containing the RMSE for each sample in the batch.
+                      If a sample has no elements selected by its mask,
+                      its RMSE will be 0.0.
+    """
+    assert (
+        y_true.shape == y_pred.shape
+    ), f"Shapes of y_true ({y_true.shape}) and y_pred ({y_pred.shape}) must match"
+    assert (
+        y_true.shape == mask.shape
+    ), f"Shape of mask ({mask.shape}) must match y_true ({y_true.shape})"
+    assert (
+        y_true.ndim > 0
+    ), "Input tensors must have at least one dimension (batch size)."
+
+    # Calculate squared error
+    squared_error = (y_true - y_pred) ** 2
+
+    masked_squared_error = squared_error * mask
+
+    reduce_dims = tuple(range(1, y_true.ndim))
+    mse_per_sample = torch.mean(masked_squared_error, dim=reduce_dims)
+
+    return mse_per_sample
