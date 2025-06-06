@@ -106,4 +106,9 @@ Some more instances:
 
 MSE:
 
+$$
+\text{MSE} = \frac{1}{RHW} \sum_{r=1}^{R}
+\sum_{i=1}^{H} \sum_{j=1}^{W} \left| x_{bcrij} - y_{bcrij} \right|^2
+$$
+
 <img src="resources/week_23/mse.png">
