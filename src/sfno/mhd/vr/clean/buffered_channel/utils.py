@@ -110,6 +110,7 @@ class SphericalNODataset(Dataset):
     ):
         super().__init__()
         sim_paths = collect_sim_paths(data_path, cr_list, instruments)
+        self.sim_paths = sim_paths
         sims = get_sims(sim_paths)
         sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
@@ -117,7 +118,8 @@ class SphericalNODataset(Dataset):
 
     def __getitem__(self, index):
         cube = self.sims[index]
-        return torch.tensor(cube, dtype=torch.float32)
+        path = self.sim_paths[index]
+        return torch.tensor(cube, dtype=torch.float32), path
 
     def __len__(self):
         return len(self.sims)

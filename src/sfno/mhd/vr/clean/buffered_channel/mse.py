@@ -52,11 +52,12 @@ def main():
 
     mses = []
     masked_mses = []
+    final_paths = []
 
     model.eval()
 
     with torch.no_grad():
-        for cube in tqdm(val_loader, leave=False):
+        for cube, paths in tqdm(val_loader, leave=False):
             t = cube.shape[1]  # 140
             x = cube[:, 0:1, :, :].to(device)  # initial input
             pred = []
@@ -97,6 +98,8 @@ def main():
             mses.extend(mses_batch.detach().cpu().numpy().tolist())
             masked_mses.extend(mses_masked_batch.detach().cpu().numpy().tolist())
 
+            final_paths.extend(paths)
+
     mse = np.sum(mses) / len(val_dataset)
     masked_mse = np.sum(masked_mses) / len(val_dataset)
 
@@ -112,12 +115,7 @@ def main():
             indent=4,
         )
 
-    df = pd.DataFrame(
-        {
-            "mse": mses,
-            "masked_mse": masked_mses,
-        }
-    )
+    df = pd.DataFrame({"mse": mses, "masked_mse": masked_mses, "path": final_paths})
     df.to_csv(os.path.join(result_path, "evaluation_mse.csv"), index=False)
 
     print("Done!")
