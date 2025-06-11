@@ -43,7 +43,7 @@ def main():
     model = SFNO(
         n_modes=(110, 128),
         in_channels=1,
-        out_channels=139,
+        out_channels=buffer,
         hidden_channels=cfg["hidden_channels"],
         projection_channel_ratio=2,
         factorization="dense",
