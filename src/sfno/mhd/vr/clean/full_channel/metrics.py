@@ -130,6 +130,35 @@ def psnr_score(
     return float(psnr.mean().item())
 
 
+def psnr_score_per_sample(
+    y_true: torch.Tensor,
+    y_pred: torch.Tensor,
+    eps: float = 1e-10,
+) -> torch.Tensor:
+    """
+    Compute PSNR per sample for a batch of data.
+
+    Args:
+        y_true (torch.Tensor): Ground truth tensor of shape (B, ...)
+        y_pred (torch.Tensor): Predicted tensor of same shape
+        eps (float): Small value to avoid division by zero
+
+    Returns:
+        torch.Tensor: PSNR values for each sample, shape (B,)
+    """
+    assert y_true.shape == y_pred.shape, f"{y_true.shape} != {y_pred.shape}"
+    assert y_true.dtype == y_pred.dtype, f"{y_true.dtype} != {y_pred.dtype}"
+
+    B = y_true.shape[0]
+    # Flatten spatial dimensions per sample
+    mse = torch.mean((y_true - y_pred) ** 2, dim=(1, 2, 3))
+    max_vals = torch.amax(y_true, dim=(1, 2, 3))
+    print(mse.shape, max_vals.shape)
+    psnr = 10 * torch.log10((max_vals ** 2) / (mse + eps))
+    return psnr  # shape: (B,)
+
+
+
 def mssim_score(mssim_module, y_true: torch.Tensor, y_pred: torch.Tensor) -> float:
     eps = 1e-6
     B = y_true.shape[0]
