@@ -8,7 +8,7 @@ from tqdm import trange, tqdm
 from neuralop.models import SFNO
 from utils import get_cr_dirs, SphericalNODataset
 from torch.utils.data import DataLoader
-from metrics import psnr_score_per_sample
+from metrics import psnr_score_per_sample, psnr_score_per_sample_masked, sobel_edge_map
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -54,6 +54,7 @@ def main():
     model.load_state_dict(state)
 
     psnrs = []
+    masked_psnrs = []
 
     model.eval()
 
@@ -69,11 +70,15 @@ def main():
             yhats *= 481.3711
             cube *= 481.3711
 
+            mask = sobel_edge_map(cube)
             psnrs_batch = psnr_score_per_sample(cube, yhats)
+            masked_psnrs_batch = psnr_score_per_sample_masked(cube, yhats, mask)
 
             psnrs.extend(psnrs_batch.detach().cpu().numpy().tolist())
+            masked_psnrs.extend(masked_psnrs_batch.detach().cpu().numpy().tolist())
 
     psnr = np.sum(psnrs) / len(val_dataset)
+    masked_psnr = np.sum(masked_psnrs) / len(val_dataset)
 
     with open(
         os.path.join(result_path, "evaluation_psnr.json"), "w", encoding="utf-8"
@@ -81,12 +86,13 @@ def main():
         json.dump(
             {
                 "psnr": float(psnr),
+                "masked_psnr": float(masked_psnr),
             },
             f,
             indent=4,
         )
 
-    df = pd.DataFrame({"psnr": psnrs})
+    df = pd.DataFrame({"psnr": psnrs, "masked_psnr": masked_psnrs})
     df.to_csv(os.path.join(result_path, "evaluation_psnr.csv"), index=False)
 
     print("Done!")
