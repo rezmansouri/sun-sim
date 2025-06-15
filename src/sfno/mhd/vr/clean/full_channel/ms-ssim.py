@@ -8,18 +8,18 @@ from tqdm import trange, tqdm
 from neuralop.models import SFNO
 from utils import get_cr_dirs, SphericalNODataset
 from torch.utils.data import DataLoader
-from pytorch_msssim import SSIM
-from metrics import ssim_score_per_sample
+from pytorch_msssim import MS_SSIM
+from metrics import mssim_score_per_sample
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-SSSIM_MODULE = SSIM(
+MSSSIM_MODULE = MS_SSIM(
     data_range=1.0,
     size_average=False,
     channel=1,  # after unsqueeze(1)
     spatial_dims=3,  # 3D input
-    win_size=11,
-    win_sigma=1.5,
+    win_size=7,
+    win_sigma=1.0,
 )
 
 
@@ -79,27 +79,27 @@ def main():
             yhats *= 481.3711
             cube *= 481.3711
 
-            mses_batch = ssim_score_per_sample(SSSIM_MODULE, cube, yhats)
+            mses_batch = mssim_score_per_sample(MSSSIM_MODULE, cube, yhats)
 
             mses.extend(mses_batch.detach().cpu().numpy().tolist())
 
     mse = np.sum(mses) / len(val_dataset)
 
     with open(
-        os.path.join(result_path, "evaluation_ssim.json"), "w", encoding="utf-8"
+        os.path.join(result_path, "evaluation_msssim.json"), "w", encoding="utf-8"
     ) as f:
         json.dump(
-            {"ssim": float(mse)},
+            {"msssim": float(mse)},
             f,
             indent=4,
         )
 
     df = pd.DataFrame(
         {
-            "ssim": mses,
+            "msssim": mses,
         }
     )
-    df.to_csv(os.path.join(result_path, "evaluation_ssim.csv"), index=False)
+    df.to_csv(os.path.join(result_path, "evaluation_msssim.csv"), index=False)
 
     print("Done!")
 
