@@ -342,3 +342,65 @@ def mse_score_per_sample_masked(
     mse_per_sample = torch.mean(masked_squared_error, dim=reduce_dims)
 
     return mse_per_sample
+
+
+def mssim_score_per_sample(
+    mssim_module, y_true: torch.Tensor, y_pred: torch.Tensor
+) -> float:
+    eps = 1e-6
+    B = y_true.shape[0]
+
+    # Reshape: treat (139,111,128) as 3D volume with 1 channel
+    y_true = y_true.unsqueeze(1)  # (B, 1, 139, 111, 128)
+    y_pred = y_pred.unsqueeze(1)
+
+    # Min-max normalization
+    y_true_flat = y_true.reshape(B, -1)
+    y_pred_flat = y_pred.reshape(B, -1)
+
+    min_vals_true = y_true_flat.min(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+    max_vals_true = y_true_flat.max(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+
+    min_vals_pred = y_pred_flat.min(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+    max_vals_pred = y_pred_flat.max(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+
+    range_vals_true = (max_vals_true - min_vals_true).clamp(min=eps)
+
+    range_vals_pred = (max_vals_pred - min_vals_pred).clamp(min=eps)
+
+    y_true_norm = (y_true - min_vals_true) / range_vals_true
+    y_pred_norm = (y_pred - min_vals_pred) / range_vals_pred
+
+    score = mssim_module(y_true_norm, y_pred_norm.to(y_true_norm.dtype))
+    return score
+
+
+def ssim_score_per_sample(
+    ssim_module, y_true: torch.Tensor, y_pred: torch.Tensor
+) -> float:
+    eps = 1e-6
+    B = y_true.shape[0]
+
+    # Reshape: treat (139,111,128) as 3D volume with 1 channel
+    y_true = y_true.unsqueeze(1)  # (B, 1, 139, 111, 128)
+    y_pred = y_pred.unsqueeze(1)
+
+    # Min-max normalization
+    y_true_flat = y_true.reshape(B, -1)
+    y_pred_flat = y_pred.reshape(B, -1)
+
+    min_vals_true = y_true_flat.min(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+    max_vals_true = y_true_flat.max(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+
+    min_vals_pred = y_pred_flat.min(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+    max_vals_pred = y_pred_flat.max(dim=1, keepdim=True).values.view(B, 1, 1, 1, 1)
+
+    range_vals_true = (max_vals_true - min_vals_true).clamp(min=eps)
+
+    range_vals_pred = (max_vals_pred - min_vals_pred).clamp(min=eps)
+
+    y_true_norm = (y_true - min_vals_true) / range_vals_true
+    y_pred_norm = (y_pred - min_vals_pred) / range_vals_pred
+
+    score = ssim_module(y_true_norm, y_pred_norm.to(y_true_norm.dtype))
+    return score
