@@ -77,14 +77,16 @@ def main():
             mses.extend(mses_batch.detach().cpu().numpy().tolist())
             masked_mses.extend(mses_masked_batch.detach().cpu().numpy().tolist())
 
-    mse = np.sum(mses) / len(val_dataset)
-    masked_mse = np.sum(masked_mses) / len(val_dataset)
-    
     mses = np.mean(mses, axis=0)
     masked_mses = np.mean(masked_mses, axis=0)
 
+    mse = np.mean(mses, axis=0)
+    masked_mse = np.mean(masked_mses, axis=0)
+
     with open(
-        os.path.join(result_path, "evaluation_mse_per_slice.json"), "w", encoding="utf-8"
+        os.path.join(result_path, "evaluation_mse_per_slice.json"),
+        "w",
+        encoding="utf-8",
     ) as f:
         json.dump(
             {
