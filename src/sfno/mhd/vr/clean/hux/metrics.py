@@ -153,7 +153,7 @@ def psnr_score_per_sample(
     # Flatten spatial dimensions per sample
     mse = torch.mean((y_true - y_pred) ** 2, dim=(1, 2, 3))
     max_vals = torch.amax(y_true, dim=(1, 2, 3))
-    psnr = 10 * torch.log10((max_vals ** 2) / (mse + eps))
+    psnr = 10 * torch.log10((max_vals**2) / (mse + eps))
     return psnr  # shape: (B,)
 
 
@@ -174,8 +174,12 @@ def psnr_score_per_sample_masked(
     Returns:
         torch.Tensor: A 1D tensor of PSNR values of shape (B,)
     """
-    assert y_true.shape == y_pred.shape == mask.shape, "All inputs must have the same shape"
-    assert y_true.ndim > 0, "Input tensors must have at least one dimension (batch size)"
+    assert (
+        y_true.shape == y_pred.shape == mask.shape
+    ), "All inputs must have the same shape"
+    assert (
+        y_true.ndim > 0
+    ), "Input tensors must have at least one dimension (batch size)"
 
     squared_error = (y_true - y_pred) ** 2
     masked_squared_error = squared_error * mask
@@ -192,9 +196,8 @@ def psnr_score_per_sample_masked(
     y_true_masked = y_true * mask
     max_vals = torch.amax(y_true_masked, dim=reduce_dims)
 
-    psnr = 10 * torch.log10((max_vals ** 2) / (mse_per_sample + eps))
+    psnr = 10 * torch.log10((max_vals**2) / (mse_per_sample + eps))
     return psnr
-
 
 
 def mssim_score(mssim_module, y_true: torch.Tensor, y_pred: torch.Tensor) -> float:
@@ -337,5 +340,77 @@ def mse_score_per_sample_masked(
 
     reduce_dims = tuple(range(1, y_true.ndim))
     mse_per_sample = torch.mean(masked_squared_error, dim=reduce_dims)
+
+    return mse_per_sample
+
+
+def mse_score_per_slice(y_true: torch.Tensor, y_pred: torch.Tensor) -> torch.Tensor:
+    """
+    Compute Root Mean Squared Error (RMSE) for each sample in a batch
+    between y_true and y_pred.
+
+    Args:
+        y_true (torch.Tensor): Ground truth tensor, shape (B, ...)
+                               where B is the batch size.
+        y_pred (torch.Tensor): Predicted tensor, shape (B, ...)
+                               must match y_true.shape.
+
+    Returns:
+        torch.Tensor: A 1D tensor of RMSE values of shape (B,),
+                      containing the RMSE for each sample in the batch.
+    """
+    assert (
+        y_true.shape == y_pred.shape
+    ), f"Shapes of y_true ({y_true.shape}) and y_pred ({y_pred.shape}) must match"
+    assert (
+        y_true.ndim > 0
+    ), "Input tensors must have at least one dimension (batch size)."
+
+    # Calculate squared error
+    squared_error = (y_true - y_pred) ** 2
+
+    mse_per_sample = torch.mean(squared_error, dim=(2, 3))
+
+    return mse_per_sample
+
+
+def mse_score_per_slice_masked(
+    y_true: torch.Tensor, y_pred: torch.Tensor, mask: torch.Tensor
+) -> torch.Tensor:
+    """
+    Compute Root Mean Squared Error (RMSE) for each sample in a batch
+    between y_true and y_pred, considering only masked regions.
+
+    Args:
+        y_true (torch.Tensor): Ground truth tensor, shape (B, ...)
+                               where B is the batch size.
+        y_pred (torch.Tensor): Predicted tensor, shape (B, ...)
+                               must match y_true.shape.
+        mask (torch.Tensor): Boolean mask tensor, shape (B, ...)
+                             must match y_true.shape. RMSE is computed
+                             only where mask is True.
+
+    Returns:
+        torch.Tensor: A 1D tensor of RMSE values of shape (B,),
+                      containing the RMSE for each sample in the batch.
+                      If a sample has no elements selected by its mask,
+                      its RMSE will be 0.0.
+    """
+    assert (
+        y_true.shape == y_pred.shape
+    ), f"Shapes of y_true ({y_true.shape}) and y_pred ({y_pred.shape}) must match"
+    assert (
+        y_true.shape == mask.shape
+    ), f"Shape of mask ({mask.shape}) must match y_true ({y_true.shape})"
+    assert (
+        y_true.ndim > 0
+    ), "Input tensors must have at least one dimension (batch size)."
+
+    # Calculate squared error
+    squared_error = (y_true - y_pred) ** 2
+
+    masked_squared_error = squared_error * mask
+
+    mse_per_sample = torch.mean(masked_squared_error, dim=(2, 3))
 
     return mse_per_sample
