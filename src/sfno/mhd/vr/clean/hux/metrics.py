@@ -1,16 +1,28 @@
 import torch
 import numpy as np
-from sewar.full_ref import uqi as _uqi
 import torch.nn.functional as F
+from sewar.full_ref import uqi as __uqi
+from scipy.stats import wasserstein_distance_nd as __emv
+
+
+def emv_per_sample(y_true: torch.Tensor, y_pred: torch.Tensor):
+    assert y_true.ndim == 4 and y_pred.ndim == 4, "B, C, H, W shape required"
+    y_true = y_true.to("cpu").numpy()
+    y_pred = y_pred.to("cpu").numpy()
+    results = []
+    for i in range(y_true.shape[0]):
+        result = [__emv(y_true[i, j], y_pred[i, j]) for j in range(y_true.shape[1])]
+        result = np.mean(result)
+        results.append(result)
+    return results
 
 
 def uqi_per_sample(y_true: torch.Tensor, y_pred: torch.Tensor):
     assert y_true.ndim == 4 and y_pred.ndim == 4, "B, C, H, W shape required"
-    y_true = np.transpose(y_true.numpy(), (0, 2, 3, 1))
-    y_pred = np.transpose(y_pred.numpy(), (0, 2, 3, 1))
-    result = [_uqi(y_true[i], y_pred[i], ws=8) for i in range(y_true.shape[0])]
+    y_true = np.transpose(y_true.to("cpu").numpy(), (0, 2, 3, 1))
+    y_pred = np.transpose(y_pred.to("cpu").numpy(), (0, 2, 3, 1))
+    result = [__uqi(y_true[i], y_pred[i], ws=8) for i in range(y_true.shape[0])]
     return result
-
 
 
 def rmse_score(y_true: torch.Tensor, y_pred: torch.Tensor) -> float:
