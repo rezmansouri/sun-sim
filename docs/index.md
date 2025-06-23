@@ -53,3 +53,5 @@ layout: default
 [Week 24 - First paper 4](week_24.md)
 
 [Week 25 - First paper 5](week_25.md)
+
+[Week 26 - First paper 6](week_26.md)
