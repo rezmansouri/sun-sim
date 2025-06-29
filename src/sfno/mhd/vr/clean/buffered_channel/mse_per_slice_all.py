@@ -98,16 +98,15 @@ def main():
             masked_mses.extend(mses_masked_batch.detach().cpu().numpy().tolist())
 
     mses = np.array(mses)
-    mse_df_dict = {f"slice_{i}": mses[:, i] for i in range(1, mses.shape[1] + 1)}
+    mse_df_dict = {f"slice_{i+1}": mses[:, i] for i in range(mses.shape[1])}
     df = pd.DataFrame(mse_df_dict)
     df.to_csv(os.path.join(result_path, "mse_per_slice_all.csv"), index=False)
-
+    
     masked_mses = np.array(masked_mses)
-    masked_mse_df_dict = {
-        f"slice_{i}": masked_mses[:, i] for i in range(1, masked_mses.shape[1] + 1)
-    }
+    masked_mse_df_dict = {f"slice_{i+1}": masked_mses[:, i] for i in range(masked_mses.shape[1])}
     df = pd.DataFrame(masked_mse_df_dict)
     df.to_csv(os.path.join(result_path, "masked_mse_per_slice_all.csv"), index=False)
+
 
     print("Done!")
 
