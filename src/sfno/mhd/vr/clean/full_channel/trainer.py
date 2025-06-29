@@ -86,10 +86,15 @@ def train_cv(
             train_crs = [cr_dirs[i] for i in train_idx]
             val_crs = [cr_dirs[i] for i in val_idx]
 
-            train_dataset = SphericalNODataset(data_path, train_crs)
+            train_dataset = SphericalNODataset(data_path, train_crs, scale_up=1)
             val_dataset = SphericalNODataset(
-                data_path, val_crs, v_min=train_dataset.v_min, v_max=train_dataset.v_max
+                data_path,
+                val_crs,
+                v_min=train_dataset.v_min,
+                v_max=train_dataset.v_max,
+                scale_up=1,
             )
+            print(len(val_dataset))
 
             # Instantiate model using full param_dict
             model = SFNO(
@@ -128,7 +133,7 @@ def train_cv(
                 device=device,
                 lr=8e-4,
                 weight_decay=0.0,
-                verbose=False
+                verbose=False,
             )
 
             fold_val_losses.append(val_losses[best_epoch])
