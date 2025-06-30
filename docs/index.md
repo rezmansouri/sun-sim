@@ -6,6 +6,9 @@ layout: default
 #### Data Mining Laboratory @ Georgia State University
 
 ### Weekly Reports
+
+[Open Questions](ideas.md)
+
 [Week 1: 16 July - 23 July 2024](week_1.md)
 
 [Week 2 & 3: 23 July - 6 August 2024](week_3.md)
@@ -55,3 +58,5 @@ layout: default
 [Week 25 - First paper 5](week_25.md)
 
 [Week 26 - First paper 6](week_26.md)
+
+[Week 27 & 28 - First paper 7](week_27_28.md)
