@@ -9,7 +9,7 @@ from utils import SphericalNODataset
 from tqdm import tqdm
 from pytorch_msssim import MS_SSIM
 import torch.optim as optim
-from metrics import nnse_score, mssim_score, rmse_score, acc_score, psnr_score
+from metrics import mse_score_masked, mssim_score, mse_score, acc_score, psnr_score, sobel_edge_map
 
 
 MSSSIM_MODULE = MS_SSIM(
@@ -74,10 +74,10 @@ def train_cv(
         print(f"\n=== Training with hyperparameters: {param_dict} ===")
 
         fold_val_losses = []
-        fold_val_rmse = []
+        fold_val_mse = []
         fold_val_acc = []
         fold_val_psnr = []
-        fold_val_nnse = []
+        fold_val_mse_masked = []
         fold_val_msssim = []
 
         for fold, (train_idx, val_idx) in enumerate(kf.split(cr_dirs)):
@@ -111,10 +111,10 @@ def train_cv(
             (
                 train_losses,
                 val_losses,
-                train_rmse,
-                val_rmse,
-                train_nnse,
-                val_nnse,
+                train_mse,
+                val_mse,
+                train_mse_masked,
+                val_mse_masked,
                 train_msssim,
                 val_msssim,
                 train_acc,
@@ -137,20 +137,20 @@ def train_cv(
             )
 
             fold_val_losses.append(val_losses[best_epoch])
-            fold_val_rmse.append(val_rmse[best_epoch])
+            fold_val_mse.append(val_mse[best_epoch])
             fold_val_acc.append(val_acc[best_epoch])
             fold_val_psnr.append(val_psnr[best_epoch])
-            fold_val_nnse.append(val_nnse[best_epoch])
+            fold_val_mse_masked.append(val_mse_masked[best_epoch])
             fold_val_msssim.append(val_msssim[best_epoch])
 
         results.append(
             {
                 "hyperparameters": param_dict,
                 "val_loss": fold_val_losses,
-                "val_rmse": fold_val_rmse,
+                "val_mse": fold_val_mse,
                 "val_acc": fold_val_acc,
                 "val_psnr": fold_val_psnr,
-                "val_nnse": fold_val_nnse,
+                "val_mse_masked": fold_val_mse_masked,
                 "val_msssim": fold_val_msssim,
             }
         )
@@ -207,10 +207,10 @@ def train(
 
     train_losses = []
     val_losses = []
-    train_rmse = []
-    val_rmse = []
-    train_nnse = []
-    val_nnse = []
+    train_mse = []
+    val_mse = []
+    train_mse_masked = []
+    val_mse_masked = []
     train_msssim = []
     val_msssim = []
     train_acc = []
@@ -223,8 +223,8 @@ def train(
     for epoch in range(n_epochs):
         model.train()
         running_loss = 0.0
-        running_rmse = 0.0
-        running_nnse = 0.0
+        running_mse = 0.0
+        running_mse_masked = 0.0
         running_msssim = 0.0
         running_acc = 0.0
         running_psnr = 0.0
@@ -244,21 +244,21 @@ def train(
             scaler.update()
 
             running_loss += loss.item() * x.size(0)
-            running_rmse += rmse_score(y, pred)
-            running_nnse += nnse_score(y, pred, climatology)
+            running_mse += mse_score(y, pred)
+            running_mse_masked += mse_score_masked(y, pred, sobel_edge_map(y))
             running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
             running_acc += acc_score(y, pred, climatology)
             running_psnr += psnr_score(y, pred)
 
         epoch_train_loss = running_loss / len(train_loader.dataset)
-        epoch_train_rmse = running_rmse / len(train_loader)
-        epoch_train_nnse = running_nnse / len(train_loader)
+        epoch_train_mse = running_mse / len(train_loader)
+        epoch_train_mse_masked = running_mse_masked / len(train_loader)
         epoch_train_msssim = running_msssim / len(train_loader)
         epoch_train_acc = running_acc / len(train_loader)
         epoch_train_psnr = running_psnr / len(train_loader)
         train_losses.append(epoch_train_loss)
-        train_rmse.append(epoch_train_rmse)
-        train_nnse.append(epoch_train_nnse)
+        train_mse.append(epoch_train_mse)
+        train_mse_masked.append(epoch_train_mse_masked)
         train_msssim.append(epoch_train_msssim)
         train_acc.append(epoch_train_acc)
         train_psnr.append(epoch_train_psnr)
@@ -268,8 +268,8 @@ def train(
         # Validation
         model.eval()
         val_loss = 0.0
-        running_rmse = 0.0
-        running_nnse = 0.0
+        running_mse = 0.0
+        running_mse_masked = 0.0
         running_msssim = 0.0
         running_acc = 0.0
         running_psnr = 0.0
@@ -284,21 +284,21 @@ def train(
                 loss = loss_fn(pred, y)
 
                 val_loss += loss.item() * x.size(0)
-                running_rmse += rmse_score(y, pred)
-                running_nnse += nnse_score(y, pred, climatology)
+                running_mse += mse_score(y, pred)
+                running_mse_masked += mse_score_masked(y, pred, sobel_edge_map(y))
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
                 running_acc += acc_score(y, pred, climatology)
                 running_psnr += psnr_score(y, pred)
 
         epoch_val_loss = val_loss / len(val_loader.dataset)
-        epoch_val_rmse = running_rmse / len(val_loader)
-        epoch_val_nnse = running_nnse / len(val_loader)
+        epoch_val_mse = running_mse / len(val_loader)
+        epoch_val_mse_masked = running_mse_masked / len(val_loader)
         epoch_val_msssim = running_msssim / len(val_loader)
         epoch_val_acc = running_acc / len(val_loader)
         epoch_val_psnr = running_psnr / len(val_loader)
         val_losses.append(epoch_val_loss)
-        val_rmse.append(epoch_val_rmse)
-        val_nnse.append(epoch_val_nnse)
+        val_mse.append(epoch_val_mse)
+        val_mse_masked.append(epoch_val_mse_masked)
         val_msssim.append(epoch_val_msssim)
         val_acc.append(epoch_val_acc)
         val_psnr.append(epoch_val_psnr)
@@ -307,8 +307,8 @@ def train(
             print(
                 f"Epoch {epoch+1}:\n",
                 f"Train Loss = {epoch_train_loss:.6f} | Val Loss = {epoch_val_loss:.6f}\n",
-                f"Train RMSE = {epoch_train_rmse:.6f} | Val RMSE = {epoch_val_rmse:.6f}\n",
-                f"Train NNSE = {epoch_train_nnse:.6f} | Val NNSE = {epoch_val_nnse:.6f}\n",
+                f"Train MSE = {epoch_train_mse:.6f} | Val MSE = {epoch_val_mse:.6f}\n",
+                f"Train MSE MASKED = {epoch_train_mse_masked:.6f} | Val MSE MASKED = {epoch_val_mse_masked:.6f}\n",
                 f"Train MS-SSIM = {epoch_train_msssim:.6f} | Val MS-SSIM = {epoch_val_msssim:.6f}\n",
                 f"Train ACC = {epoch_train_acc:.6f} | Val ACC = {epoch_val_acc:.6f}\n",
                 f"Train PSNR = {epoch_train_psnr:.6f} | Val PSNR = {epoch_val_psnr:.6f}\n",
@@ -327,10 +327,10 @@ def train(
     return (
         train_losses,
         val_losses,
-        train_rmse,
-        val_rmse,
-        train_nnse,
-        val_nnse,
+        train_mse,
+        val_mse,
+        train_mse_masked,
+        val_mse_masked,
         train_msssim,
         val_msssim,
         train_acc,
