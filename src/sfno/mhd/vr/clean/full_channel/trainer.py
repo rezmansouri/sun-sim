@@ -244,8 +244,12 @@ def train(
             scaler.update()
 
             running_loss += loss.item() * x.size(0)
-            running_mse += mse_score(y, pred)
-            running_mse_masked += mse_score_masked(y, pred, sobel_edge_map(y))
+            real_y = y * (train_dataset.v_max - train_dataset.v_min) + train_dataset.v_min
+            real_y *= 481.3711
+            real_pred = pred * (train_dataset.v_max - train_dataset.v_min) + train_dataset.v_min
+            real_pred *= 481.3711
+            running_mse += mse_score(real_y, real_pred)
+            running_mse_masked += mse_score_masked(real_y, real_pred, sobel_edge_map(y))
             running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
             running_acc += acc_score(y, pred, climatology)
             running_psnr += psnr_score(y, pred)
@@ -284,8 +288,12 @@ def train(
                 loss = loss_fn(pred, y)
 
                 val_loss += loss.item() * x.size(0)
-                running_mse += mse_score(y, pred)
-                running_mse_masked += mse_score_masked(y, pred, sobel_edge_map(y))
+                real_y = y * (train_dataset.v_max - train_dataset.v_min) + train_dataset.v_min
+                real_y *= 481.3711
+                real_pred = pred * (train_dataset.v_max - train_dataset.v_min) + train_dataset.v_min
+                real_pred *= 481.3711
+                running_mse += mse_score(real_y, real_pred)
+                running_mse_masked += mse_score_masked(real_y, real_pred, sobel_edge_map(y))
                 running_msssim += mssim_score(MSSSIM_MODULE, y, pred)
                 running_acc += acc_score(y, pred, climatology)
                 running_psnr += psnr_score(y, pred)
