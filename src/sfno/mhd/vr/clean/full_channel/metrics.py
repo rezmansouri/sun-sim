@@ -379,7 +379,7 @@ def mse_score(y_true: torch.Tensor, y_pred: torch.Tensor) -> torch.Tensor:
     reduce_dims = tuple(range(1, y_true.ndim))
     mse_per_sample = torch.mean(squared_error, dim=reduce_dims)
 
-    return float(torch.mean(mse_per_sample))
+    return float(torch.sum(mse_per_sample))
 
 
 def mse_score_per_sample_masked(
@@ -465,7 +465,7 @@ def mse_score_masked(
     reduce_dims = tuple(range(1, y_true.ndim))
     mse_per_sample = torch.mean(masked_squared_error, dim=reduce_dims)
 
-    return float(torch.mean(mse_per_sample))
+    return float(torch.sum(mse_per_sample))
 
 
 def mssim_score_per_sample(
