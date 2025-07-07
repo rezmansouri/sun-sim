@@ -1,3 +1,6 @@
+import time
+import psutil
+import os
 import sys
 import numpy as np
 from psipy.model import MASOutput
@@ -40,8 +43,16 @@ def main():
     print("Theta dim: ", np.shape(f)[1])
     print("Radial dim: ", np.shape(f)[2])
     print("Velocity matrix dtype: ", f.dtype)
-
+    
+    process = psutil.Process(os.getpid())
+    mem_before = process.memory_info().rss / 1024**2  # in MB
+    start = time.perf_counter()
     solution = get_hux_f(f, r, p, t)
+    end = time.perf_counter()
+    mem_after = process.memory_info().rss / 1024**2  # in MB
+
+    print(f"Time elapsed: {end - start:.4f} seconds")
+    print(f"Memory used: {mem_after - mem_before:.2f} MB")
     
     print(solution.shape)
 
