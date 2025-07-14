@@ -60,3 +60,5 @@ layout: default
 [Week 26 - First paper 6](week_26.md)
 
 [Week 27 & 28 - First paper 7](week_27_28.md)
+
+[Week 30 - Next step](week_30.md)

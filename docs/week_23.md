@@ -89,6 +89,11 @@ Metrics (everywhere)
 | 139 Channels at once   | 0.9933   | 0.9942   | 0.9966   | 39.29  |
 | HUX    | 0.9149   | 0.9723   | 0.9584   | 27.82  |
 
+| Method | MSE $$\downarrow$$ | Masked MSE $$\downarrow$$ | MSSSIM $$\uparrow$$ | ACC $$\uparrow$$ | PSNR $$\uparrow$$ |
+|--------|----------|----------|----------|----------|----------|
+| SFNO   |195.5918691 |  161.9930172 | 0.9942   | 0.9966   | 39.29  |
+| HUX-f    |1721.489896 | 499.5348554  | 0.9723   | 0.9584   | 27.82  |
+
 
 <img src="resources/week_23/exp_43_metrics.png">
 
