@@ -27,13 +27,13 @@ $$
 
 ### Questions
 
-Are we sure $-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi}$ (time stationary flows) is not $-\Omega_{\text{rot}}\frac{\partial{v_\phi}}{\partial \phi}$ ?
+- Are we sure $$-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi}$$ (time stationary flows) is not $$-\Omega_{\text{rot}}\frac{\partial{v_\phi}}{\partial \phi}$$ ?
 
 
-Is $\Omega_{\text{rot}}=2.865\times10^{-6}\text{rad}$ a constant? is the value correct?
+- Is $$\Omega_{\text{rot}}=2.865\times10^{-6}\text{rad}$$ a constant? is the value correct?
 
 
-The derivatives are computed using fft. Should I do finite differences?
+- The derivatives are computed using fft. Should I do finite differences?
 
 
 
