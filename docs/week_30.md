@@ -31,9 +31,13 @@ $$
 
 - Is $\Omega_{\text{rot}}=2.865\times10^{-6}\text{rad}$ a constant? is the value correct?
 
+- The derivatives are computed using fft. Should I do finite differences?
+
 
 
 ### Next step
+
+0. Make sure the physics loss is correct. 0 on MAS.
 
 1. Two 140-channel SFNOs
     - One for velocity
