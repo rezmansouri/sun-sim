@@ -27,7 +27,7 @@ $$
 
 ### Questions
 
-- Are we sure $$-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi}$$ (time stationary flows) is not $$-\Omega_{\text{rot}}\frac{\partial{v_\phi}}{\partial \phi}$$ ?
+- Are we sure $$-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi}$$ (time stationary flows) is not $$-\Omega_{\text{rot}}\frac{\partial{v_\phi}}{\partial \phi}$$? If so, this is not a radial-only problem.
 
 
 - Is $$\Omega_{\text{rot}}=2.865\times10^{-6}\text{rad}$$ a constant? is the value correct?
@@ -42,13 +42,13 @@ $$
 0. Make sure the physics loss is correct. 0 on MAS.
 
 1. Two 140-channel SFNOs
-    - One for velocity
+    - One for radial velocity
     - One for density
 
 Train independently. Data loss only. Few epochs, small data.
 
 2. Two 140-channel SFNOs
-    - One for velocity
+    - One for radial velocity
     - One for density
 
 Train in parallel. Data + Physics loss. Few epochs, small data.
