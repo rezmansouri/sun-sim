@@ -39,18 +39,20 @@ $$
 
 ### Next step
 
-0. Make sure the physics loss is correct. 0 on MAS.
-
-1. Two 140-channel SFNOs
-    - One for radial velocity
-    - One for density
-
-Train independently. Data loss only. Few epochs, small data.
+1. Make sure the physics loss is correct. 0 on MAS.
 
 2. Two 140-channel SFNOs
     - One for radial velocity
     - One for density
 
+Train independently. Data loss only. Few epochs, small data.
+
+3. Two 140-channel SFNOs
+    - One for radial velocity
+    - One for density
+
 Train in parallel. Data + Physics loss. Few epochs, small data.
 
-if 2 > 1, its a win.
+if 3 > 2, its a win.
+
+- Density needs to become distance invariant. Normalized by $$R^2$$.
