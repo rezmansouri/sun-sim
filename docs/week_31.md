@@ -13,7 +13,7 @@ $$
 
 - $$\Omega_{\text{rot}}=2.47\times10^{-6}\ \text{rad}/\text{s}$$
 - Gradient w.r.t to R should not be FFT approximated since the domain is not periodic
-- Gradient w.r.t to $$\phi$$ cant be FFT approximated since the domain is periodic ($$[0, 2\pi]$$)
+- Gradient w.r.t to $$\phi$$ can be FFT approximated since the domain is periodic ($$[0, 2\pi]$$)
 - The sign for $$G\frac{M_s}{r^2}$$ in the equation above has been $$+$$ for the previous checks, i.e., wrong direction
 - Do we need to predict $$P$$ too, gas pressure? (3 SFNOS, $$v_r, rho, P$$)
 
