@@ -90,7 +90,7 @@ Residual value: 613.8207054426922
 ### 3. Eq. 3
 
 $$
--\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r}=-  \frac{1}{\rho}\frac{\partial P}{\partial r} \ (\text{Eq. 3}) \ (\text{Eq. 2})
+-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r}=-  \frac{1}{\rho}\frac{\partial P}{\partial r} \ (\text{Eq. 3})
 $$
 
 ```py
