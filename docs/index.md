@@ -61,4 +61,6 @@ layout: default
 
 [Week 27 & 28 - First paper 7](week_27_28.md)
 
-[Week 30 - Revisiting simplified Eq. 6 (Inviscid Burger's)](week_30.md)
+[Week 30 - Vr, $$\rho$$ Prediction, Physical Loss: Revisiting simplified Eq. 6](week_30.md)
+
+[Week 31 -Vr, $$\rho$$ Prediction, Physical Loss: Revisiting simplified Eq. 6 Pt.2](week_31.md)
