@@ -8,7 +8,7 @@ title: Revisiting simplified Eq. 6
 The physics loss we're trying to enforce for velocity, density, (and maybe pressure) prediction
 
 $$
--\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r} = -  \frac{1}{\rho}\frac{\partial P}{\partial r} -G\frac{M_s}{r^2} \ (\text{(Eq. 1)})
+-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r} = -  \frac{1}{\rho}\frac{\partial P}{\partial r} -G\frac{M_s}{r^2} \ \text{(Eq. 1)}
 $$
 
 - $$\Omega_{\text{rot}}=2.47\times10^{-6}\ \text{rad}/\text{s}$$
