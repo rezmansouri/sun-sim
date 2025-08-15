@@ -32,6 +32,8 @@ $$
 $$
 
 
+CR2234
+
 ## Checks for Loss(MAS) == 0
 
 ### 1. Eq. 1
@@ -110,3 +112,81 @@ Residual value: 613.8207054426916
 
 
 <img src="resources/week_31/3-loc.gif">
+
+
+CR2163
+
+## Checks for Loss(MAS) == 0
+
+### 1. Eq. 1
+
+$$
+-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r} = -  \frac{1}{\rho}\frac{\partial P}{\partial r} -G\frac{M_s}{r^2}
+$$
+
+```py
+
+```
+
+
+- Global Scale
+
+
+<img src="resources/week_31/1-glob-2.gif">
+
+- Per-radius Scale
+
+
+<img src="resources/week_31/1-loc-2.gif">
+
+
+
+### 2. Eq. 2
+This problem will be $$v_r$$ only. No need for multiple SFNOs etc.
+
+$$
+-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r}=0 \ (\text{Eq. 2})
+$$
+
+
+```py
+Periodic term (omega * dvr/dphi): 0.0005803060600831861
+Convective term (v * dv/dr): 681.9849823594548
+Residual value: 681.9844277668751
+```
+
+- Global Scale
+
+
+<img src="resources/week_31/2-glob-2.gif">
+
+- Per-radius Scale
+
+
+<img src="resources/week_31/2-loc-2.gif">
+
+
+### 3. Eq. 3
+
+$$
+-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi} +  v_r \frac{\partial v_r}{\partial r}=-  \frac{1}{\rho}\frac{\partial P}{\partial r} \ (\text{Eq. 3})
+$$
+
+```py
+Term magnitude means:
+Periodic term (omega * dvr/dphi): 0.0005803060600831861
+Convective term (v * dv/dr): 681.9849823594548
+Pressure gradient term (-1/rho*dp/dr): 4.732049372882709e-13
+Gravitational term (-GMs/r^2): 19560662.0
+Residual value: 19560902.561319876
+```
+
+- Global Scale
+
+
+<img src="resources/week_31/3-glob-2.gif">
+
+- Per-radius Scale
+
+
+<img src="resources/week_31/3-loc-2.gif">
