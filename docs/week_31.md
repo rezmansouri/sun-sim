@@ -125,7 +125,11 @@ $$
 $$
 
 ```py
-
+Periodic term (omega * dvr/dphi): 0.0005803060600831861
+Convective term (v * dv/dr): 681.9849823594548
+Pressure gradient term (-1/rho*dp/dr): 4.732049372882709e-13
+Gravitational term (-GMs/r^2): 19560662.0
+Residual value: 19560902.561319876
 ```
 
 
