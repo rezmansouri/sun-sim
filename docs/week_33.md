@@ -18,6 +18,28 @@ The new loss function should match the whole datacube with the ground truth at o
 
 ### 1. Earth Mover's Distance
 
+$$
+W_1(P, Q) \;=\; \int_{-\infty}^{\infty} \big| F_P(x) - F_Q(x) \big| \, dx
+$$
+
+- **$$W_1(P, Q)$$**  
+  The Earth Mover’s Distance between two 1D probability distributions \(P\) and \(Q\).
+
+- **$$F_P(x), F_Q(x)$$**  
+  The cumulative distribution functions (CDFs) of $$P$$ and $$Q$$:  
+  $$
+  F_P(x) = \int_{-\infty}^{x} p(t) \, dt, 
+  \quad 
+  F_Q(x) = \int_{-\infty}^{x} q(t) \, dt
+  $$
+
+- **$$|F_P(x) - F_Q(x)|$$**  
+  At position $$x$$, this represents the imbalance in total mass between the two distributions up to that point.
+
+- **The integral**  
+  Summing the absolute imbalance over the whole line gives the minimum “work” required to transform $$P$$ into $$Q$$.
+
+
 - Current open-source implementation is 2D
 - I took the mean across the $$r$$ dim for reports
 - 3D implementation required
