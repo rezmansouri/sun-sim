@@ -66,3 +66,5 @@ layout: default
 [Week 31 -Vr, $$\rho$$ Prediction, Physical Loss: Revisiting simplified Eq. 6 Pt.2](week_31.md)
 
 [Week 32 - SFNO is behind carrington rotation speed wise](week_32.md)
+
+[Week 33 - New loss functions](week_33.md)
