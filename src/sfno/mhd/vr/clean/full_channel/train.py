@@ -39,11 +39,6 @@ def main():
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    if loss_fn_str == 'l2':
-        loss_fn = LpLoss(d=2, p=2)
-    else:
-        loss_fn = H1Loss(d=3)
-
     train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
     val_dataset = SphericalNODataset(
         data_path,
@@ -53,7 +48,22 @@ def main():
         v_max=train_dataset.v_max,
     )
 
-    out_path = f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}"
+    if loss_fn_str == "l2":
+        loss_fn = LpLoss(d=2, p=2)
+    elif loss_fn_str == "h1":
+        loss_fn = H1Loss(
+            d=3,
+            measure=[float(207.94533), float(3.1704147), float(6.234098)],
+            fix_x_bnd=True,
+            fix_y_bnd=True,
+            fix_z_bnd=False,
+        )
+    else:
+        raise ValueError("unsupported loss function")
+
+    out_path = (
+        f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}"
+    )
     os.makedirs(
         out_path,
         exist_ok=True,
