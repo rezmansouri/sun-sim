@@ -5,7 +5,7 @@ import torch
 import json
 from trainer import train
 from neuralop.models import SFNO
-from neuralop.losses import LpLoss
+from neuralop.losses import LpLoss, H1Loss
 from utils import SphericalNODataset, get_cr_dirs
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -19,8 +19,7 @@ def main():
         hidden_channels,
         n_layers,
         scale_up,
-        loss_d,
-        loss_p,
+        loss_fn_str,
     ) = sys.argv[1:]
     (
         batch_size,
@@ -28,23 +27,22 @@ def main():
         hidden_channels,
         n_layers,
         scale_up,
-        loss_d,
-        loss_p,
     ) = (
         int(batch_size),
         int(n_epochs),
         int(hidden_channels),
         int(n_layers),
         int(scale_up),
-        int(loss_d),
-        int(loss_p),
     )
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    loss_fn = LpLoss(d=loss_d, p=loss_p)
+    if loss_fn_str == 'l2':
+        loss_fn = LpLoss(d=2, p=2)
+    else:
+        loss_fn = H1Loss(d=3)
 
     train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
     val_dataset = SphericalNODataset(
@@ -71,8 +69,7 @@ def main():
         "v_max": float(train_dataset.v_max),
         "hidden_channels": hidden_channels,
         "n_layers": n_layers,
-        "loss_d": loss_d,
-        "loss_p": loss_p,
+        "loss_fn": loss_fn_str,
         "scale_up": scale_up,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
