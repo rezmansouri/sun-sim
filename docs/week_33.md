@@ -14,6 +14,67 @@ Caused the SFNO to not match the rotation of the sun. Regardless of the pattern.
 
 The new loss function should match the whole datacube with the ground truth at once; i.e., no means across dims etc.
 
+## New Loss functions
+
+### 1. Sobolov H1 Loss (exp 45)
+
+8 x 256 139-Radius SFNO (ICMLA 2025 paper: 2D L2 Loss)
+
+#### CR 2271
+
+<img src="resources/week_33/cr2271.gif">
+
+At latitude = 0 degrees, middle.
+
+<img src="resources/week_33/cr2271-55.png">
+
+
+At latitude = 140 degrees. near north pole.
+
+<img src="resources/week_33/cr2271-10.png">
+
+
+At latitude = -140 degrees. near south pole.
+
+<img src="resources/week_33/cr2271-100.png">
+
+#### CR 2289
+
+<img src="resources/week_33/cr2289.gif">
+
+At latitude = 0 degrees, middle.
+
+<img src="resources/week_33/cr2289-55.png">
+
+
+At latitude = 140 degrees. near north pole.
+
+<img src="resources/week_33/cr2289-10.png">
+
+
+At latitude = -140 degrees. near south pole.
+
+<img src="resources/week_33/cr2289-100.png">
+
+#### CR 2291
+
+<img src="resources/week_33/cr2291.gif">
+
+At latitude = 0 degrees, middle.
+
+<img src="resources/week_33/cr2291-55.png">
+
+
+At latitude = 140 degrees. near north pole.
+
+<img src="resources/week_33/cr2291-10.png">
+
+
+At latitude = -140 degrees. near south pole.
+
+<img src="resources/week_33/cr2291-100.png">
+
+
 ## Metrics that we've seen -> Differentiable and Transformed into Distance Functions:
 
 ### 1. Earth Mover's Distance

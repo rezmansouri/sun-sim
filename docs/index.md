@@ -67,4 +67,4 @@ layout: default
 
 [Week 32 - SFNO is behind carrington rotation speed wise](week_32.md)
 
-[Week 33 - New loss functions](week_33.md)
+[Week 33 - New loss functions pt.1](week_33.md)
