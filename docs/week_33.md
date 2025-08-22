@@ -18,6 +18,72 @@ The new loss function should match the whole datacube with the ground truth at o
 
 ### 1. Sobolov H1 Loss (exp 45)
 
+H1 Norm:
+
+$$
+\|u\|_{H^1(\Omega)}^2
+= \int_\Omega \Big( |u(r,\theta,\phi)|^2 
++ |u_r(r,\theta,\phi)|^2 
++ |u_\theta(r,\theta,\phi)|^2 
++ |u_\phi(r,\theta,\phi)|^2 \Big)\, dr\, d\theta\, d\phi
+$$
+
+
+H1 Loss:
+
+$$
+\|x - y\|_{H^1(\Omega)} \;=\;
+\left(
+\int_\Omega
+\Big(
+|x(r,\theta,\phi) - y(r,\theta,\phi)|^2
++ |x_r - y_r|^2
++ |x_\theta - y_\theta|^2
++ |x_\phi - y_\phi|^2
+\Big)\, dr\, d\theta\, d\phi
+\right)^{1/2}
+$$
+
+Relative H1 Loss(normalized by the H1 norm of the ground truth):
+
+$$
+\frac{\|x - y\|_{H^1(\Omega)}}{\|y\|_{H^1(\Omega)}} \;=\;
+\frac{
+\left(
+\int_\Omega
+\big(
+|x - y|^2 + |x_r - y_r|^2 + |x_\theta - y_\theta|^2 + |x_\phi - y_\phi|^2
+\big)\, dr\, d\theta\, d\phi
+\right)^{1/2}
+}{
+\left(
+\int_\Omega
+\big(
+|y|^2 + |y_r|^2 + |y_\theta|^2 + |y_\phi|^2
+\big)\, dr\, d\theta\, d\phi
+\right)^{1/2}
+}
+$$
+
+- Derivatives are acquired via finite differences
+  - One cool thing: you can introduce the periodicity in $$\phi$$
+- Integrals are acquired by summing over the cube $$\times$$ the volume
+- <span style="color:red"> This is the equivalent of the loss in cartesian coordinates for $$(r, \theta, \phi)$$, i.e., the volume/area of slice 0=volume/area of slice 139. An $$r^2\sin\theta$$ term should be included:</span>
+  - <span style="color:red"> Abosulte form:
+  $$
+  \|x-y\|_{H^1}^2 
+  = \int_0^{R} \int_0^\pi \int_0^{2\pi} 
+  \Bigg[
+  |x(r,\theta,\phi) - y(r,\theta,\phi)|^2
+  + \left(\frac{\partial (x-y)}{\partial r}\right)^2
+  + \frac{1}{r^2}\left(\frac{\partial (x-y)}{\partial \theta}\right)^2
+  + \frac{1}{r^2 \sin^2 \theta}\left(\frac{\partial (x-y)}{\partial \phi}\right)^2
+  \Bigg]
+  \, r^2 \sin\theta \, dr\, d\theta\, d\phi
+  $$
+  TODO
+  </span>
+
 8 x 256 139-Radius SFNO (ICMLA 2025 paper: 2D L2 Loss)
 
 #### CR 2271
