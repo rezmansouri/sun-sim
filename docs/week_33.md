@@ -16,7 +16,7 @@ The new loss function should match the whole datacube with the ground truth at o
 
 ## New Loss functions
 
-### 1. Sobolov H1 Loss (exp 45)
+### 1. Sobolov H1 Loss
 
 H1 Norm:
 
@@ -69,22 +69,29 @@ $$
   - One cool thing: you can introduce the periodicity in $$\phi$$
 - Integrals are acquired by summing over the cube $$\times$$ the volume
 - <span style="color:red"> This is the equivalent of the loss in cartesian coordinates for $$(r, \theta, \phi)$$, i.e., the volume/area of slice 0=volume/area of slice 139. An $$r^2\sin\theta$$ term should be included:</span>
-  - <span style="color:red"> Abosulte form:
-  $$
-  \|x-y\|_{H^1}^2 
-  = \int_0^{R} \int_0^\pi \int_0^{2\pi} 
-  \Bigg[
-  |x(r,\theta,\phi) - y(r,\theta,\phi)|^2
-  + \left(\frac{\partial (x-y)}{\partial r}\right)^2
-  + \frac{1}{r^2}\left(\frac{\partial (x-y)}{\partial \theta}\right)^2
-  + \frac{1}{r^2 \sin^2 \theta}\left(\frac{\partial (x-y)}{\partial \phi}\right)^2
-  \Bigg]
-  \, r^2 \sin\theta \, dr\, d\theta\, d\phi
-  $$
-  TODO
-  </span>
+  - <span style="color:red"> Abosulte form:</span>
 
-8 x 256 139-Radius SFNO (ICMLA 2025 paper: 2D L2 Loss)
+$$
+\|x-y\|_{H^1}^2 
+= \int_0^{R} \int_0^\pi \int_0^{2\pi} 
+\Bigg[
+|x(r,\theta,\phi) - y(r,\theta,\phi)|^2
++ \left(\frac{\partial (x-y)}{\partial r}\right)^2
++ \frac{1}{r^2}\left(\frac{\partial (x-y)}{\partial \theta}\right)^2
++ \frac{1}{r^2 \sin^2 \theta}\left(\frac{\partial (x-y)}{\partial \phi}\right)^2
+\Bigg]
+\, r^2 \sin\theta \, dr\, d\theta\, d\phi
+$$
+
+Devided by $$\|y\|_{H^1(\Omega)}$$ for relative.
+
+<span style="color:red">TODO</span>
+
+### Exp 45
+
+- 8 x 256 139-Radius SFNO (ICMLA 2025 paper: 2D L2 Loss)
+
+- H1 Loss (In cartesian coords, all spheres have the same size...)
 
 #### CR 2271
 
