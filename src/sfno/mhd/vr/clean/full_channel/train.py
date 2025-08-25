@@ -5,8 +5,8 @@ import torch
 import json
 from trainer import train
 from neuralop.models import SFNO
-from neuralop.losses import LpLoss, H1Loss
-from utils import SphericalNODataset, get_cr_dirs
+from neuralop.losses import LpLoss
+from utils import SphericalNODataset, get_cr_dirs, H1LossSpherical
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -48,16 +48,12 @@ def main():
         v_max=train_dataset.v_max,
     )
 
+    radii, thetas, phis = train_dataset.get_grid_points()
+
     if loss_fn_str == "l2":
         loss_fn = LpLoss(d=2, p=2)
     elif loss_fn_str == "h1":
-        loss_fn = H1Loss(
-            d=3,
-            measure=[float(207.94533), float(3.1704147), float(6.234098)],
-            fix_x_bnd=True,
-            fix_y_bnd=True,
-            fix_z_bnd=False,
-        )
+        loss_fn = H1LossSpherical(r_grid=radii, theta_grid=thetas, phi_grid=phis)
     else:
         raise ValueError("unsupported loss function")
 

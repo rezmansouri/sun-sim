@@ -83,7 +83,7 @@ $$
 \, r^2 \sin\theta \, dr\, d\theta\, d\phi
 $$
 
-Devided by $$\|y\|_{H^1(\Omega)}$$ for relative.
+Divided by $$\|y\|_{H^1(\Omega)}$$ for relative.
 
 <span style="color:red">TODO</span>
 

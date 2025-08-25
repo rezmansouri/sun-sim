@@ -8,6 +8,7 @@ from os.path import join as path_join
 from neuralop import LpLoss
 from scipy.ndimage import zoom
 import os
+from neuralop.losses import H1Loss
 
 FILE_NAMES = ["vr002.hdf"]
 
@@ -27,6 +28,12 @@ def read_hdf(hdf_path, dataset_names):
     for dataset_name in dataset_names:
         datasets.append(f.select(dataset_name).get())
     return datasets
+
+
+def get_coords(sim_path):
+    (v_path,) = [path_join(sim_path, file_name) for file_name in FILE_NAMES]
+    radii, thetas, phis = read_hdf(v_path, ["fakeDim2", "fakeDim1", "fakeDim0"])
+    return radii, thetas, phis
 
 
 def get_sim(sim_path, scale_up):
@@ -128,8 +135,8 @@ class SphericalNODataset(Dataset):
         instruments=None,
     ):
         super().__init__()
-        sim_paths = collect_sim_paths(data_path, cr_list, instruments)
-        sims = get_sims(sim_paths, scale_up)
+        self.sim_paths = collect_sim_paths(data_path, cr_list, instruments)
+        sims = get_sims(self.sim_paths, scale_up)
         sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
         self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
@@ -146,6 +153,9 @@ class SphericalNODataset(Dataset):
 
     def get_min_max(self):
         return {"v_min": float(self.v_min), "v_max": float(self.v_max)}
+
+    def get_grid_points(self):
+        return get_coords(self.sim_paths[0])
 
 
 class AreaWeightedLpLoss(LpLoss):
@@ -218,16 +228,18 @@ class L1L2Loss:
         l1_loss = self.l1.rel(y_pred, y)
         l2_loss = self.l2.rel(y_pred, y)
         return self.alpha * l1_loss + self.beta * l2_loss
-    
-    
+
+
 class MaskedLpLoss(LpLoss):
-    def __init__(self, i: int, j: int, d: int = 2, p: int = 2, measure=1., reduction='sum'):
+    def __init__(
+        self, i: int, j: int, d: int = 2, p: int = 2, measure=1.0, reduction="sum"
+    ):
         super().__init__(d=d, p=p, measure=measure, reduction=reduction)
         self.i = i
         self.j = j
 
     def rel(self, x, y):
-        return super().rel(x[:, self.i:self.j], y[:, self.i:self.j])
+        return super().rel(x[:, self.i : self.j], y[:, self.i : self.j])
 
 
 class RadialLpLoss(LpLoss):
@@ -273,3 +285,84 @@ class RadialLpLoss(LpLoss):
 
         weighted_diff = w * (diff / ynorm)
         return self.reduce_all(weighted_diff).squeeze()
+
+
+class H1LossSpherical(H1Loss):
+    def __init__(
+        self,
+        r_grid,
+        theta_grid,
+        phi_grid,
+        reduction="sum",
+        fix_x_bnd=True,
+        fix_y_bnd=True,
+        fix_z_bnd=False,
+    ):
+        # spherical is always 3D
+        super().__init__(
+            d=3,
+            measure=[float(207.94533), float(3.1704147), float(6.234098)],
+            reduction=reduction,
+            fix_x_bnd=fix_x_bnd,
+            fix_y_bnd=fix_y_bnd,
+            fix_z_bnd=fix_z_bnd,
+        )
+
+        # Store coordinate grids (1D arrays of r, theta, phi)
+        self.r_grid = torch.tensor(r_grid, dtype=torch.float32)
+        self.theta_grid = torch.tensor(theta_grid, dtype=torch.float32)
+        self.phi_grid = torch.tensor(phi_grid, dtype=torch.float32)
+
+        # Build Jacobian weights r^2 sin(theta)
+        rr = self.r_grid.view(-1, 1, 1)  # shape (Nr,1,1)
+        tt = self.theta_grid.view(1, -1, 1)  # shape (1,Nθ,1)
+        pp = self.phi_grid.view(1, 1, -1)  # shape (1,1,Nφ)
+        self.jacobian = rr**2 * torch.sin(tt)  # broadcast to (Nr,Nθ,Nφ)
+
+    def abs(self, x, y, quadrature=None):
+        if quadrature is None:
+            quadrature = self.uniform_quadrature(x)
+        else:
+            if isinstance(quadrature, float):
+                quadrature = [quadrature] * self.d
+
+        dict_x, dict_y = self.compute_terms(x, y, quadrature)
+
+        # Differential cell volume = dr * dθ * dφ
+        const = math.prod(quadrature)
+
+        # Apply Jacobian pointwise
+        J = self.jacobian.to(x.device)
+
+        diff = (
+            const * torch.norm((dict_x[0] - dict_y[0]) * J.flatten(), p=2, dim=-1) ** 2
+        )
+        for j in range(1, self.d + 1):
+            diff += (
+                const
+                * torch.norm((dict_x[j] - dict_y[j]) * J.flatten(), p=2, dim=-1) ** 2
+            )
+
+        diff = diff**0.5
+        return self.reduce_all(diff).squeeze()
+
+    def rel(self, x, y, quadrature=None):
+        if quadrature is None:
+            quadrature = self.uniform_quadrature(x)
+        else:
+            if isinstance(quadrature, float):
+                quadrature = [quadrature] * self.d
+
+        dict_x, dict_y = self.compute_terms(x, y, quadrature)
+        const = math.prod(quadrature)
+        J = self.jacobian.to(x.device)
+
+        diff = torch.norm((dict_x[0] - dict_y[0]) * J.flatten(), p=2, dim=-1) ** 2
+        ynorm = torch.norm(dict_y[0] * J.flatten(), p=2, dim=-1) ** 2
+
+        for j in range(1, self.d + 1):
+            diff += torch.norm((dict_x[j] - dict_y[j]) * J.flatten(), p=2, dim=-1) ** 2
+            ynorm += torch.norm(dict_y[j] * J.flatten(), p=2, dim=-1) ** 2
+
+        diff = (diff**0.5) / (ynorm**0.5)
+        return self.reduce_all(diff).squeeze()
