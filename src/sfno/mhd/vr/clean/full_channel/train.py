@@ -53,7 +53,7 @@ def main():
     if loss_fn_str == "l2":
         loss_fn = LpLoss(d=2, p=2)
     elif loss_fn_str == "h1":
-        loss_fn = H1LossSpherical(r_grid=radii, theta_grid=thetas, phi_grid=phis)
+        loss_fn = H1LossSpherical(r_grid=radii[1:], theta_grid=thetas, phi_grid=phis)
     else:
         raise ValueError("unsupported loss function")
 
