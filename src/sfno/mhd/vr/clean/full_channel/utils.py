@@ -314,10 +314,8 @@ class H1LossSpherical(H1Loss):
         self.phi_grid = torch.tensor(phi_grid, dtype=torch.float32)
 
         # Build Jacobian weights r^2 sin(theta)
-        rr = self.r_grid.view(-1, 1, 1)  # shape (Nr,1,1)
-        tt = self.theta_grid.view(1, -1, 1)  # shape (1,Nθ,1)
-        pp = self.phi_grid.view(1, 1, -1)  # shape (1,1,Nφ)
-        self.jacobian = rr**2 * torch.sin(tt)  # broadcast to (Nr,Nθ,Nφ)
+        R, Theta, Phi = torch.meshgrid(r_grid, theta_grid, phi_grid, indexing="ij")
+        self.jacobian = (R**2) * torch.sin(Theta)
 
     def abs(self, x, y, quadrature=None):
         if quadrature is None:
