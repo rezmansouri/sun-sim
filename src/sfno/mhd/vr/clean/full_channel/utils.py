@@ -309,9 +309,9 @@ class H1LossSpherical(H1Loss):
         )
 
         # Store coordinate grids (1D arrays of r, theta, phi)
-        self.r_grid = torch.tensor(r_grid, dtype=torch.float32)
-        self.theta_grid = torch.tensor(theta_grid, dtype=torch.float32)
-        self.phi_grid = torch.tensor(phi_grid, dtype=torch.float32)
+        r_grid = torch.tensor(r_grid, dtype=torch.float32)
+        theta_grid = torch.tensor(theta_grid, dtype=torch.float32)
+        phi_grid = torch.tensor(phi_grid, dtype=torch.float32)
 
         # Build Jacobian weights r^2 sin(theta)
         R, Theta, Phi = torch.meshgrid(r_grid, theta_grid, phi_grid, indexing="ij")
