@@ -22,7 +22,7 @@ def main():
         int(n_layers),
         int(buffer),
     )
-
+    
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
@@ -69,6 +69,7 @@ def main():
         factorization="dense",
         projection_channel_ratio=2,
         n_layers=n_layers,
+        positonal_embedding=None # "grid is default"
     )
 
     (
