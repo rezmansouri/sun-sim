@@ -69,7 +69,7 @@ def main():
         factorization="dense",
         projection_channel_ratio=2,
         n_layers=n_layers,
-        positonal_embedding=None # "grid is default"
+        positional_embedding=None # "grid is default"
     )
 
     (
