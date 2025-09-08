@@ -364,3 +364,82 @@ class H1LossSpherical(H1Loss):
 
         diff = (diff**0.5) / (ynorm**0.5)
         return self.reduce_all(diff).squeeze()
+
+
+class H1LossSphericalMAE(H1Loss):
+    def __init__(
+        self,
+        r_grid,
+        theta_grid,
+        phi_grid,
+        reduction="sum",
+        fix_x_bnd=True,
+        fix_y_bnd=True,
+        fix_z_bnd=False,
+    ):
+        # spherical is always 3D
+        super().__init__(
+            d=3,
+            measure=[float(207.94533), float(3.1704147), float(6.234098)],
+            reduction=reduction,
+            fix_x_bnd=fix_x_bnd,
+            fix_y_bnd=fix_y_bnd,
+            fix_z_bnd=fix_z_bnd,
+        )
+
+        # Store coordinate grids (1D arrays of r, theta, phi)
+        r_grid = torch.tensor(r_grid, dtype=torch.float32)
+        theta_grid = torch.tensor(theta_grid, dtype=torch.float32)
+        phi_grid = torch.tensor(phi_grid, dtype=torch.float32)
+
+        # Build Jacobian weights r^2 sin(theta)
+        R, Theta, Phi = torch.meshgrid(r_grid, theta_grid, phi_grid, indexing="ij")
+        self.jacobian = (R**2) * torch.sin(Theta)  # shape (Nr, Nθ, Nφ)
+
+    def abs(self, x, y, quadrature=None):
+        if quadrature is None:
+            quadrature = self.uniform_quadrature(x)
+        else:
+            if isinstance(quadrature, float):
+                quadrature = [quadrature] * self.d
+
+        dict_x, dict_y = self.compute_terms(x, y, quadrature)
+
+        # Differential cell volume = dr * dθ * dφ
+        const = math.prod(quadrature)
+
+        # Jacobian with same shape as spatial grid
+        J = self.jacobian.to(x.device)
+        J_flat = J.reshape(-1)  # match flattened dict_x entries
+
+        # --- Absolute H1 loss with MAE ---
+        diff = const * torch.mean(torch.abs((dict_x[0] - dict_y[0]) * J_flat), dim=-1)
+
+        for j in range(1, self.d + 1):
+            diff += const * torch.mean(torch.abs((dict_x[j] - dict_y[j]) * J_flat), dim=-1)
+
+        return self.reduce_all(diff).squeeze()
+
+    def rel(self, x, y, quadrature=None):
+        if quadrature is None:
+            quadrature = self.uniform_quadrature(x)
+        else:
+            if isinstance(quadrature, float):
+                quadrature = [quadrature] * self.d
+
+        dict_x, dict_y = self.compute_terms(x, y, quadrature)
+        const = math.prod(quadrature)
+        J = self.jacobian.to(x.device)
+        J_flat = J.reshape(-1)
+
+        # numerator = MAE of difference
+        diff = torch.mean(torch.abs((dict_x[0] - dict_y[0]) * J_flat), dim=-1)
+        # denominator = MAE of target
+        ynorm = torch.mean(torch.abs(dict_y[0] * J_flat), dim=-1)
+
+        for j in range(1, self.d + 1):
+            diff += torch.mean(torch.abs((dict_x[j] - dict_y[j]) * J_flat), dim=-1)
+            ynorm += torch.mean(torch.abs(dict_y[j] * J_flat), dim=-1)
+
+        diff = (diff / ynorm) * const
+        return self.reduce_all(diff).squeeze()
