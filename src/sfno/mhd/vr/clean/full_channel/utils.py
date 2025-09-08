@@ -47,12 +47,39 @@ def get_sim(sim_path, scale_up):
     return v
 
 
-def get_sims(sim_paths, scale_up):
+def get_sims(sim_paths, scale_up, pos_emb):
     sims = []
+    radii, thetas, phis = get_coords(sim_paths[0])  # (140,), (111,), (128,)
+    
+    # Broadcast coordinate grids
+    R, T, P = np.meshgrid(radii, thetas, phis, indexing="ij")  # shapes (140, 111, 128)
+
+    # Normalize angles for embeddings
+    T_norm = T / np.pi       # θ ∈ [0, π] → [0,1]
+    P_cos = np.cos(P)        # periodic encoding
+    P_sin = np.sin(P)
+
     for sim_path in tqdm(sim_paths, desc="Loading simulations"):
-        sims.append(get_sim(sim_path, scale_up))
-    sims = np.stack(sims, axis=0)
-    return sims
+        sim = get_sim(sim_path, scale_up)  # (140, 111, 128)
+
+        if pos_emb == "pt":
+            # Embed only angular coords
+            # stack channels: [sim, θ, cos φ, sin φ]
+            sim_emb = np.stack([sim, T_norm, P_cos, P_sin], axis=0)  # (C=4, 140, 111, 128)
+
+        elif pos_emb == "ptr":
+            # Embed radius too
+            R_norm = (R - R.min()) / (R.max() - R.min())
+            sim_emb = np.stack([sim, R_norm, T_norm, P_cos, P_sin], axis=0)  # (C=5, 140, 111, 128)
+
+        else:
+            sim_emb = sim[None, ...]  # (1, 140, 111, 128)
+
+        sims.append(sim_emb)
+
+    sims = np.stack(sims, axis=0)  # (N, C, 140, 111, 128)
+    return sims, (radii, thetas, phis)
+
 
 
 def enlarge_cube(cube, scale):
@@ -133,10 +160,11 @@ class SphericalNODataset(Dataset):
         v_min=None,
         v_max=None,
         instruments=None,
+        positional_embedding=None
     ):
         super().__init__()
         self.sim_paths = collect_sim_paths(data_path, cr_list, instruments)
-        sims = get_sims(self.sim_paths, scale_up)
+        sims = get_sims(self.sim_paths, scale_up, positional_embedding)
         sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
         self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
@@ -144,8 +172,8 @@ class SphericalNODataset(Dataset):
     def __getitem__(self, index):
         cube = self.sims[index]
         return {
-            "x": torch.tensor(cube[0, :, :], dtype=torch.float32).unsqueeze(0),
-            "y": torch.tensor(cube[1:, :, :], dtype=torch.float32),
+            "x": torch.tensor(cube[:, 0, :, :], dtype=torch.float32),
+            "y": torch.tensor(cube[0, 1: :, :], dtype=torch.float32),
         }
 
     def __len__(self):

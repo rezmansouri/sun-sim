@@ -20,6 +20,7 @@ def main():
         n_layers,
         scale_up,
         loss_fn_str,
+        pos_embedding
     ) = sys.argv[1:]
     (
         batch_size,
@@ -34,18 +35,22 @@ def main():
         int(n_layers),
         int(scale_up),
     )
+    
+    if pos_embedding == 'none':
+        pos_embedding = None
 
     cr_dirs = get_cr_dirs(data_path)
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
-    train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up)
+    train_dataset = SphericalNODataset(data_path, cr_train, scale_up=scale_up, positional_embedding=pos_embedding)
     val_dataset = SphericalNODataset(
         data_path,
         cr_val,
         scale_up=scale_up,
         v_min=train_dataset.v_min,
         v_max=train_dataset.v_max,
+        positional_embedding=pos_embedding
     )
 
     radii, thetas, phis = train_dataset.get_grid_points()
@@ -60,7 +65,7 @@ def main():
         raise ValueError("unsupported loss function")
 
     out_path = (
-        f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}"
+        f"n_layers-{n_layers}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}_pos_{pos_embedding}"
     )
     os.makedirs(
         out_path,
@@ -82,10 +87,19 @@ def main():
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
+        
+    if pos_embedding == 'pt':
+        in_channels = 4
+    elif pos_embedding == 'ptr':
+        raise ValueError('radii embedding is the same in full channel and is not supported here')
+    elif pos_embedding is None:
+        in_channels = 1
+    else:
+        raise ValueError('wrong pos embedding')
 
     model = SFNO(
         n_modes=(110 * scale_up, 128 * scale_up),
-        in_channels=1,
+        in_channels=in_channels,
         out_channels=139,
         hidden_channels=hidden_channels,
         factorization="dense",
