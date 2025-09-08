@@ -96,11 +96,11 @@ def enlarge_cube(cube, scale):
     return zoom(cube, (1, scale, scale), order=1)
 
 
-def min_max_normalize(array, min_=None, max_=None, axis=1):
+def min_max_normalize(array, min_=None, max_=None):
     if min_ is None or max_ is None:
-        min_ = np.min(array, axis=axis, keepdims=True)
-        max_ = np.max(array, axis=axis, keepdims=True)
-    array = (array - min_) / (max_ - min_ + 1e-9)
+        min_ = np.min(array[:, 0, :, :, :])
+        max_ = np.max(array[:, 0, :, :, :])
+    array[:, 0, :, :, :] = (array[:, 0, :, :, :] - min_) / (max_ - min_ + 1e-9)
     return array, min_, max_
 
 
@@ -114,7 +114,7 @@ def compute_climatology(data: np.ndarray, scale_up) -> np.ndarray:
     Returns:
         np.ndarray: Climatology array of shape (139, 111, 128)
     """
-    assert data.ndim == 4 and data.shape[1:] == (
+    assert data.ndim == 5 and data.shape[2:] == (
         139,
         111 * scale_up,
         128 * scale_up,
