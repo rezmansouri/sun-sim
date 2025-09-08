@@ -168,7 +168,7 @@ class SphericalNODataset(Dataset):
         sims, _ = get_sims(self.sim_paths, scale_up, positional_embedding)
         sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
-        self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
+        self.climatology = compute_climatology(sims[:, 0, 1:, :, :], scale_up)
 
     def __getitem__(self, index):
         cube = self.sims[index]
