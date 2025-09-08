@@ -96,11 +96,11 @@ def enlarge_cube(cube, scale):
     return zoom(cube, (1, scale, scale), order=1)
 
 
-def min_max_normalize(array, min_=None, max_=None):
+def min_max_normalize(array, min_=None, max_=None, axis=1):
     if min_ is None or max_ is None:
-        min_ = np.min(array)
-        max_ = np.max(array)
-    array = (array - min_) / (max_ - min_)
+        min_ = np.min(array, axis=axis, keepdims=True)
+        max_ = np.max(array, axis=axis, keepdims=True)
+    array = (array - min_) / (max_ - min_ + 1e-9)
     return array, min_, max_
 
 
@@ -165,7 +165,7 @@ class SphericalNODataset(Dataset):
         super().__init__()
         self.sim_paths = collect_sim_paths(data_path, cr_list, instruments)
         sims, _ = get_sims(self.sim_paths, scale_up, positional_embedding)
-        sims, self.v_min, self.v_max = min_max_normalize(sims[:, 0, :, :, :], v_min, v_max)
+        sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
         self.sims = sims
         self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
 
