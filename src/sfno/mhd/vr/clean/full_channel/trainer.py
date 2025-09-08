@@ -235,7 +235,7 @@ def train(
             y = batch["y"].to(device)
 
             optimizer.zero_grad()
-
+            print(x.shape)
             pred = model(x)
             loss = loss_fn(pred, y)
 
