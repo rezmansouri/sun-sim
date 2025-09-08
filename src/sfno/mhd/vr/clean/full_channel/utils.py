@@ -172,8 +172,8 @@ class SphericalNODataset(Dataset):
     def __getitem__(self, index):
         cube = self.sims[index]
         return {
-            "x": torch.tensor(cube[:, 0, :, :], dtype=torch.float32),
-            "y": torch.tensor(cube[0, 1: :, :], dtype=torch.float32),
+            "x": torch.tensor(cube[0, :, :], dtype=torch.float32),
+            "y": torch.tensor(cube[1: :, :], dtype=torch.float32),
         }
 
     def __len__(self):
