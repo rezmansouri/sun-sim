@@ -236,7 +236,6 @@ def train(
 
             optimizer.zero_grad()
             pred = model(x)
-            print(pred.shape, y.shape)
             loss = loss_fn(pred, y)
 
             scaler.scale(loss).backward()
