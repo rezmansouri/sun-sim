@@ -114,6 +114,7 @@ def compute_climatology(data: np.ndarray, scale_up) -> np.ndarray:
     Returns:
         np.ndarray: Climatology array of shape (139, 111, 128)
     """
+    print(data.shape)
     assert data.ndim == 5 and data.shape[2:] == (
         139,
         111 * scale_up,
