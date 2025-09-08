@@ -235,8 +235,8 @@ def train(
             y = batch["y"].to(device)
 
             optimizer.zero_grad()
-            print(x.shape)
             pred = model(x)
+            print(pred.shape, y.shape)
             loss = loss_fn(pred, y)
 
             scaler.scale(loss).backward()
