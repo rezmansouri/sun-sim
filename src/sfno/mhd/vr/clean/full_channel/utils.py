@@ -165,7 +165,7 @@ class SphericalNODataset(Dataset):
         super().__init__()
         self.sim_paths = collect_sim_paths(data_path, cr_list, instruments)
         sims = get_sims(self.sim_paths, scale_up, positional_embedding)
-        sims, self.v_min, self.v_max = min_max_normalize(sims, v_min, v_max)
+        sims, self.v_min, self.v_max = min_max_normalize(sims[:, 0, :, :, :], v_min, v_max)
         self.sims = sims
         self.climatology = compute_climatology(sims[:, 1:, :, :], scale_up)
 
