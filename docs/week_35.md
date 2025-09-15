@@ -23,7 +23,7 @@ Could not find $$\nu$$. But it would not make that much of a difference. Set it 
 
 CR1833
 
-Error is |RHS - LHS|.
+Error is $$|RHS - LHS|$$.
 
 ```py
 Term magnitude means:
