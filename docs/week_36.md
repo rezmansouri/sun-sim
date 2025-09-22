@@ -35,6 +35,11 @@ Converted units and constants:
 
 
 $$
+\rho = n \cdot m_p = 1.0\times10^8 \cdot 1.6726219\times10^{-27}\ \mathrm{kg/cm^3}
+$$
+
+
+$$
 \nu = 0.005\ \mathrm{m^2/s} 
 \quad (\text{convert to km²/s: } 5\times10^{-9}\ \mathrm{km^2/s})
 $$
