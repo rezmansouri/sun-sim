@@ -72,3 +72,5 @@ layout: default
 [Week 34 - New loss functions pt.2 and positional embedding pt.1](week_34.md)
 
 [Week 35 - complete loss function pt. 1 and multi-output](week_35.md)
+
+[Week 36 - complete loss function pt. 2 and multi-output](week_36.md)
