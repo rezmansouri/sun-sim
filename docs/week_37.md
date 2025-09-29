@@ -44,6 +44,20 @@ We've done it before, not that appeasing (<a href="https://rezmansouri.github.io
 
 <hr/>
 
+## Normalization (Radius-invariance)
+
+### J
+
+<img src="resources/week_37/j.png">
+
+### P
+
+<img src="resources/week_37/p.png">
+
+### rho
+
+<img src="resources/week_37/rho.png">
+
 ## Next step
 
 Implement 4 with early results (full radii model - standard loss etc).
