@@ -70,7 +70,7 @@ $$
 
 CR1833
 
-Error is |RHS - LHS|.
+Error is \|RHS - LHS\|.
 
 ```py
 Term magnitude means:
