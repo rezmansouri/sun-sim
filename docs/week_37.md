@@ -9,13 +9,20 @@ title: multimodal approaches
 
 We've done it before, not that appeasing (<a href="https://rezmansouri.github.io/sun-sim/week_16.html" target="_blank">Week 16</a>).
 
+<hr/>
+
 ### 2. Additional encoder and decoder
 
 <img src="resources/week_37/2.jpg"/>
 
+<hr/>
+
 ### 3. Additional encoder and decoder(S)
 
 <img src="resources/week_37/3.jpg"/>
+
+<hr/>
+
 
 ### 4. Additional encoder(S) and decoder(S)
 
@@ -29,9 +36,13 @@ We've done it before, not that appeasing (<a href="https://rezmansouri.github.io
 
 <img src="resources/week_37/5-2.png"/>
 
+<hr/>
+
 ### 6. Conditional SFNO
 
 <img src="resources/week_37/6.jpg"/>
+
+<hr/>
 
 ## Next step
 
