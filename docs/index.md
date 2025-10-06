@@ -76,3 +76,5 @@ layout: default
 [Week 36 - complete loss function pt. 2 and multi-output](week_36.md)
 
 [Week 37 - multimodal approaches](week_37.md)
+
+[Week 38 - complete loss function pt. 3](week_38.md)
