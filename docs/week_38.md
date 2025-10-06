@@ -9,6 +9,8 @@ $$
 \rho\left(-\Omega_{\text{rot}}\frac{\partial{v_r}}{\partial \phi}+{v} \cdot \nabla {v}\right)=\frac{1}{c} {J} \times {B}-\nabla P+\rho {g}+\nabla \cdot(\nu \rho \nabla {v})
 $$
 
+<img src="resources/week_38/mas-guide.png"/>
+
 ## cgs system
 
 $$
