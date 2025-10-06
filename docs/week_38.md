@@ -85,6 +85,37 @@ Scale the error by shell:
 
 ## mks system
 
+### Possible mistake in MAS guide?
+
+<img src="resources/week_38/mas-guide.png"/>
+
+$$
+1~\text{statA} = 3.33564\times10^{-10}~\text{A},
+\qquad
+1~\text{cm}^2 = 10^{-4}~\text{m}^2,
+$$
+
+
+$$
+1~\text{statA}/\text{cm}^2
+= 3.33564\times10^{-6}~\text{A}/\text{m}^2.
+$$
+
+$$
+j_r^{(\text{cgs})} = j_r^{(\text{code})} \times 0.07558~(\text{statA}/\text{cm}^2),
+$$
+
+the corresponding MKS multiplier should be  
+
+$$
+j_r^{(\text{MKS})}
+= j_r^{(\text{code})} \times
+\big(0.07558 \times 3.33564\times10^{-6}\big)
+\simeq j_r^{(\text{code})} \times 2.52\times10^{-7}~(\text{A}/\text{m}^2).
+$$
+
+<hr/>
+
 $$
 r = r \times 6.96 \times 10^{8}\ \text{m}
 $$
@@ -102,7 +133,7 @@ p = p \times 0.03875717\ \text{Pa}
 $$
 
 $$
-j_r = j_r \times 2.520 \times 10^{-7}\ \text{A/m}^2
+j_r = j_r \times 2.52 \times 10^{-7}\ \text{A/m}^2
 $$
 
 $$
@@ -138,12 +169,12 @@ Error is \|RHS - LHS\|.
 Term magnitude means:
 rho * -omega * dv_r_dphi: 3.520882957278221e-20
 rho * vr * dv_r_dr: 7.400960662934856e-20
-jr / c * br: 1.744319903410166e-18
+jr / c * br: 1.9389881590620281e-29
 -d_p_dr: 5.957362802713479e-20
 rho * g: 9.010026337537412e-21
 viscosity term: 9.860310817019834e-38
 ------------------------------------------------
-Residual: 1.744812884334734e-18
+Residual: 1.8871003181009213e-20
 ```
 
 Scale the error globally:
