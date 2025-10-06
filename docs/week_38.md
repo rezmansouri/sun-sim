@@ -18,7 +18,7 @@ r = r \times 6.96 \times 10^{10}\ \text{cm}
 $$
 
 $$
-v_r = v_r \times 10^{5}\ \text{cm/s}
+v_r = v_r \times 481.3711 \times 10^{5}\ \text{cm/s}
 $$
 
 $$
@@ -64,13 +64,14 @@ Error is \|RHS - LHS\|.
 
 ```py
 Term magnitude means:
-rho * -omega * dv_r_dphi: 7.314280144551127e-24
-rho * vr * dv_r_dr: 3.1939503593471504e-26
+rho * -omega * dv_r_dphi: 3.520883078890735e-21
+rho * vr * dv_r_dr: 7.400962234736368e-21
 jr / c * br: 5.815425597694765e-22
 -d_p_dr: 5.957363762174241e-21
 rho * g: 9.010026400505447e-22
-viscosity term: 2.0483839798134562e-41
-Residual: 6.872233533690326e-21
+viscosity term: 9.860328495851813e-39
+------------------------------------------------
+Residual: 1.9419274516347666e-21
 ```
 
 Scale the error globally:
@@ -89,7 +90,7 @@ r = r \times 6.96 \times 10^{8}\ \text{m}
 $$
 
 $$
-v_r = v_r \times 10^{3}\ \text{m/s}
+v_r = v_r \times 481.3711 \times 10^{3}\ \text{m/s}
 $$
 
 $$
@@ -135,13 +136,14 @@ Error is \|RHS - LHS\|.
 
 ```py
 Term magnitude means:
-rho * -omega * dv_r_dphi: 7.314279891913371e-23
-rho * vr * dv_r_dr: 3.19394968102238e-25
+rho * -omega * dv_r_dphi: 3.520882957278221e-20
+rho * vr * dv_r_dr: 7.400960662934856e-20
 jr / c * br: 1.744319903410166e-18
 -d_p_dr: 5.957362802713479e-20
 rho * g: 9.010026337537412e-21
-viscosity term: 2.048380307214088e-40
-Residual: 1.7420455366339703e-18
+viscosity term: 9.860310817019834e-38
+------------------------------------------------
+Residual: 1.744812884334734e-18
 ```
 
 Scale the error globally:
