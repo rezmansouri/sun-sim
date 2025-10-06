@@ -152,3 +152,61 @@ Scale the error by shell:
 
 <img src="resources/week_38/cr1833-full-loss-local-mks.gif">
 
+
+## Questions
+
+### 1
+
+Equation 1:
+
+$$
+\nabla \times B = \frac{4\pi}{c}J
+$$
+
+Can I only use Br here? Curl of Br would be:
+
+$$
+(\nabla \times \mathbf{B})_r = \frac{1}{r \sin\theta}
+\left[
+\frac{\partial}{\partial \theta}(B_\phi \sin\theta)
+- \frac{\partial B_\theta}{\partial \phi}
+\right]
+$$
+
+$$
+(\nabla \times \mathbf{B})_\theta = \frac{1}{r}
+\left[
+\frac{1}{\sin\theta} \frac{\partial B_r}{\partial \phi}
+- \frac{\partial}{\partial r}(r B_\phi)
+\right]
+$$
+
+$$
+(\nabla \times \mathbf{B})_\phi = \frac{1}{r}
+\left[
+\frac{\partial}{\partial r}(r B_\theta)
+- \frac{\partial B_r}{\partial \theta}
+\right]
+$$
+
+---
+
+If $$ B_\theta = B_\phi = 0 $$, then:
+
+$$
+(\nabla \times \mathbf{B})_r = 0
+$$
+
+$$
+(\nabla \times \mathbf{B})_\theta = \frac{1}{r \sin\theta} 
+\frac{\partial B_r}{\partial \phi}
+$$
+
+$$
+(\nabla \times \mathbf{B})_\phi = -\frac{1}{r} 
+\frac{\partial B_r}{\partial \theta}
+$$
+
+### 2
+
+Where is E (electric field) in the simulations?
