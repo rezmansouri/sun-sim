@@ -208,7 +208,8 @@ $$
 \sqrt{\text{residual}_r^2 + \text{residual}_{\theta}^2 + \text{residual}_{\phi}^2}
 $$
 
-Which doesn't make sense?
+Which doesn't make sense? each term will be non zero...
+We'll need $$B_r, B_{\theta}, B_{\phi}, J_r, J_{\theta}, J_{\phi}$$.
 
 ## cgs system
 
