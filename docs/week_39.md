@@ -201,11 +201,19 @@ $$
 \frac{\partial B_r}{\partial \theta}
 $$
 
+
+Error is
+
+$$
+\sqrt{\text{residual}_r^2 + \text{residual}_{\theta}^2 + \text{residual}_{\phi}^2}
+$$
+
+Which doesn't make sense?
+
 ## cgs system
 
 CR1833
 
-Error is \|RHS - LHS\|.
 
 ```py
 Mean |lhs_r|: 0.000e+00
@@ -236,7 +244,7 @@ $$
 $$
 
 $$
-\mu_0 = 4 \pi \times 10^{-7} \text{Henry/m}
+\mu_0: \text{permeability of free space (vacuum)} = 4 \pi \times 10^{-7} \text{Henry/m or T.m/A}
 $$
 
 CR1833
