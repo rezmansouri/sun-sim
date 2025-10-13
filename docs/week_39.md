@@ -250,7 +250,9 @@ $$
 
 CR1833
 
-Error is \|RHS - LHS\|.
+$$
+\sqrt{\text{residual}_r^2 + \text{residual}_{\theta}^2 + \text{residual}_{\phi}^2}
+$$
 
 ```py
 Mean |lhs_r|: 0.000e+00
