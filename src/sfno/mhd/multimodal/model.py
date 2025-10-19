@@ -38,8 +38,8 @@ class MultiModalSFNO(nn.Module):
         ), f"Expected {self.in_comp} input components, got {len(comps)}"
         B, _, H, W = comps[0].shape
         
-        for comp in comps:
-            print(comp.shape)
+        # for comp in comps:
+        #     print(comp.shape)
 
         # --- Encode each component separately ---
         encoded = []

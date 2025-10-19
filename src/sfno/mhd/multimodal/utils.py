@@ -77,7 +77,6 @@ def get_sim(sim_path, scale_up, radii):
 def get_sims(sim_paths, scale_up):  # , pos_emb):
     vs = []
     js = []
-    print(sim_paths)
     radii, _, _ = get_coords(sim_paths[0])  # (140,), (111,), (128,)
 
     # # Broadcast coordinate grids
@@ -177,8 +176,6 @@ class SphericalNODataset(Dataset):
         v = self.vs[index]
         j = self.js[index]
         
-        print(f"v shape in dataset: {v.shape}")
-        print(f"j shape in dataset: {j.shape}")
         return {
             "vx": torch.tensor(v[0, :, :, :], dtype=torch.float32),
             "vy": torch.tensor(v[1:, :, :, :], dtype=torch.float32),
