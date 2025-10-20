@@ -401,6 +401,8 @@ No autoregression, all shells at once.
 }
 ```
 
+<img src="resources/week_39/exp50-loss.png">
+
 #### CR2240
 
 <img src="resources/week_39/exp50-cr2240.gif"/>
@@ -430,6 +432,8 @@ Final SFNO trunk architecture we used for the ICMLA paper.
   "loss_fn": "l2"
 }
 ```
+
+<img src="resources/week_39/exp51-loss.png">
 
 #### CR2240
 
