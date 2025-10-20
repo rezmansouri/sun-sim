@@ -160,7 +160,7 @@ Scale the error by shell:
 <img src="resources/week_39/eq6-cr1833-local-mks.gif">
 
 
-## Equation 1 in static state:
+## Equation 1 in static state (radial only):
 
 $$
 \nabla \times B = \frac{4\pi}{c}J
@@ -274,3 +274,167 @@ Scale the error globally:
 Scale the error by shell:
 
 <img src="resources/week_39/eq1-cr1833-local-mks.gif">
+
+## Equation 1 in static state (r, theta and phi):
+
+$$
+\nabla \times B = \frac{4\pi}{c}J
+$$
+
+
+
+$$
+(\nabla \times \mathbf{B})_r = \frac{1}{r \sin\theta}
+\left[
+\frac{\partial}{\partial \theta}(B_\phi \sin\theta)
+- \frac{\partial B_\theta}{\partial \phi}
+\right]
+$$
+
+$$
+(\nabla \times \mathbf{B})_\theta = \frac{1}{r}
+\left[
+\frac{1}{\sin\theta} \frac{\partial B_r}{\partial \phi}
+- \frac{\partial}{\partial r}(r B_\phi)
+\right]
+$$
+
+$$
+(\nabla \times \mathbf{B})_\phi = \frac{1}{r}
+\left[
+\frac{\partial}{\partial r}(r B_\theta)
+- \frac{\partial B_r}{\partial \theta}
+\right]
+$$
+
+
+Error is
+
+$$
+\sqrt{\text{residual}_r^2 + \text{residual}_{\theta}^2 + \text{residual}_{\phi}^2}
+$$
+
+## cgs system
+
+CR1833
+
+
+```py
+Mean |curl_r|: 1.621e-17
+Mean |curl_theta|: 2.660e-17
+Mean |curl_phi|: 3.975e-17
+Mean |rhs_r|: 1.984e-17
+Mean |rhs_theta|: 2.893e-17
+Mean |rhs_phi|: 4.113e-17
+Mean |residual_r|: 4.694e-18
+Mean |residual_theta|: 9.013e-18
+Mean |residual_phi|: 4.930e-18
+Mean |residual|: 1.403e-17
+```
+
+Scale the error globally:
+
+<img src="resources/week_39/eq1-full-cr1833-global-cgs.gif">
+
+Scale the error by shell:
+
+<img src="resources/week_39/eq1-full-cr1833-local-cgs.gif">
+
+
+## mks system
+
+$$
+\nabla \times B = \mu_0J
+$$
+
+$$
+\mu_0: \text{permeability of free space (vacuum)} = 4 \pi \times 10^{-7} \text{Henry/m or T.m/A}
+$$
+
+CR1833
+
+$$
+\sqrt{\text{residual}_r^2 + \text{residual}_{\theta}^2 + \text{residual}_{\phi}^2}
+$$
+
+```py
+Mean |curl_r|: 1.621e-19
+Mean |curl_theta|: 2.660e-19
+Mean |curl_phi|: 3.975e-19
+Mean |rhs_r|: 1.984e-19
+Mean |rhs_theta|: 2.891e-19
+Mean |rhs_phi|: 4.111e-19
+Mean |residual_r|: 4.688e-20
+Mean |residual_theta|: 9.011e-20
+Mean |residual_phi|: 4.923e-20
+Mean |residual|: 1.402e-19
+```
+
+Scale the error globally:
+
+<img src="resources/week_39/eq1-full-cr1833-global-mks.gif">
+
+Scale the error by shell:
+
+<img src="resources/week_39/eq1-full-cr1833-local-mks.gif">
+
+## Multimodal architecture check
+
+<img src="resources/week_37/4.jpg"/>
+
+### Exp 50
+
+$$V_r$$ and $$J_r$$
+
+All the data we had is used for train/test 80/20.
+
+No autoregression, all shells at once.
+
+```py
+{
+  "num_epochs": 100,
+  "batch_size": 32,
+  "hidden_channels": 64,
+  "encoder_hidden_channels": 64,
+  "n_layers": 4,
+  "loss_fn": "l2"
+}
+```
+
+#### CR2240
+
+<img src="resources/week_39/exp50-cr2240.gif"/>
+
+#### CR2284
+
+<img src="resources/week_39/exp50-cr2284.gif"/>
+
+### Exp 51
+
+$$V_r$$ and $$J_r$$
+
+All the data we had is used for train/test 80/20.
+
+No autoregression, all shells at once.
+
+Final SFNO trunk architecture we used for the ICMLA paper.
+
+
+```py
+{
+  "num_epochs": 100,
+  "batch_size": 32,
+  "hidden_channels": 256,
+  "encoder_hidden_channels": 64,
+  "n_layers": 8,
+  "loss_fn": "l2"
+}
+```
+
+#### CR2240
+
+<img src="resources/week_39/exp51-cr2240.gif"/>
+
+#### CR2284
+
+<img src="resources/week_39/exp51-cr2284.gif"/>
