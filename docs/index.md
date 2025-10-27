@@ -82,3 +82,5 @@ layout: default
 [Week 38 - complete loss function pt. 3](week_38.md)
 
 [Week 39 - eq. 6 and eq. 1 and multimodal](week_39.md)
+
+[Week 40 - eq. 6 and eq. 1](week_40.md)
