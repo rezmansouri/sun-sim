@@ -342,7 +342,7 @@ CR1833
 
 $$
 \begin{aligned}
-&\rho(-\omega \frac{\partial v_r}{\partial \phi}) &: 3.398 \times 10^{-20} \\
+&\rho(-\Omega \frac{\partial v_r}{\partial \phi}) &: 3.398 \times 10^{-20} \\
 &\rho v_r \frac{\partial v_r}{\partial r} &: 7.401 \times 10^{-20} \\
 &\frac{J_r B_r}{c} &: 1.939 \times 10^{-29} \\
 &-\frac{\partial p}{\partial r} &: 5.957 \times 10^{-20} \\
