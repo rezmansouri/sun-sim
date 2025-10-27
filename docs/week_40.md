@@ -56,21 +56,35 @@ $$
 CR1833
 
 $$
-\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-17}, \quad\\
-\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-17}, \quad\\
+\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-17}, \quad
+$$
+$$
+\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-17}, \quad
+$$
+$$
 \langle |\nabla \times B|_\phi \rangle = 3.975 \times 10^{-17}
 $$
 
 $$
-\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-17}, \quad\\
-\langle |\mu_0 J|_\theta \rangle = 2.893 \times 10^{-17}, \quad\\
+\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-17}, \quad
+$$
+$$
+\langle |\mu_0 J|_\theta \rangle = 2.893 \times 10^{-17}, \quad
+$$
+$$
 \langle |\mu_0 J|_\phi \rangle = 4.113 \times 10^{-17}\\
 $$
 
 $$
-\langle |R|_r \rangle = 1.709 \times 10^{-18}, \quad\\
-\langle |R|_\theta \rangle = 8.915 \times 10^{-18}, \quad\\
-\langle |R|_\phi \rangle = 4.930 \times 10^{-18}, \quad\\
+\langle |R|_r \rangle = 1.709 \times 10^{-18}, \quad
+$$
+$$
+\langle |R|_\theta \rangle = 8.915 \times 10^{-18}, \quad
+$$
+$$
+\langle |R|_\phi \rangle = 4.930 \times 10^{-18}, \quad
+$$
+$$
 \langle |R| \rangle = 1.241 \times 10^{-17}
 $$
 
@@ -91,10 +105,18 @@ $$
 $$
 
 $$
-\text{Relative residual distribution: } \\
-\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad\\
-\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad\\
-p_{90}(\text{rel-res}) = 2.671 \times 10^{-1}, \quad\\
+\text{Relative residual distribution: }
+$$
+$$
+\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad
+$$
+$$
+\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad
+$$
+$$
+p_{90}(\text{rel-res}) = 2.671 \times 10^{-1}, \quad
+$$
+$$
 p_{99}(\text{rel-res}) = 8.194 \times 10^{-1}
 $$
 
@@ -114,21 +136,35 @@ CR1833
 
 
 $$
-\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-19}, \quad\\
-\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-19}, \quad\\
+\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-19}, \quad
+$$
+$$
+\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-19}, \quad
+$$
+$$
 \langle |\nabla \times B|_\phi \rangle = 3.975 \times 10^{-19}
 $$
 
 $$
-\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-19}, \quad\\
-\langle |\mu_0 J|_\theta \rangle = 2.891 \times 10^{-19}, \quad\\
+\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-19}, \quad
+$$
+$$
+\langle |\mu_0 J|_\theta \rangle = 2.891 \times 10^{-19}, \quad
+$$
+$$
 \langle |\mu_0 J|_\phi \rangle = 4.111 \times 10^{-19}
 $$
 
 $$
-\langle |R|_r \rangle = 1.707 \times 10^{-20}, \quad\\
-\langle |R|_\theta \rangle = 8.912 \times 10^{-20}, \quad\\
-\langle |R|_\phi \rangle = 4.923 \times 10^{-20}, \quad\\
+\langle |R|_r \rangle = 1.707 \times 10^{-20}, \quad
+$$
+$$
+\langle |R|_\theta \rangle = 8.912 \times 10^{-20}, \quad
+$$
+$$
+\langle |R|_\phi \rangle = 4.923 \times 10^{-20}, \quad
+$$
+$$
 \langle |R| \rangle = 1.240 \times 10^{-19}
 $$
 
@@ -149,10 +185,18 @@ $$
 $$
 
 $$
-\text{Relative residual distribution: } \\
-\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad\\
-\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad\\
-p_{90}(\text{rel-res}) = 2.670 \times 10^{-1}, \quad\\
+\text{Relative residual distribution: } 
+$$
+$$
+\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad
+$$
+$$
+\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad
+$$
+$$
+p_{90}(\text{rel-res}) = 2.670 \times 10^{-1}, \quad
+$$
+$$
 p_{99}(\text{rel-res}) = 8.194 \times 10^{-1}
 $$
 
@@ -236,7 +280,7 @@ $$
 &\text{median(rel-res)} &: 1.305 \times 10^{-1} \\
 &\text{p90(rel-res)} &: 4.566 \times 10^{-1} \\
 &\text{p99(rel-res)} &: 1.132 \times 10^{0} \\
-&\text{→ Expect: mean(rel-res) ≲ 1e-2 for good physical match.}
+
 \end{aligned}
 $$
 
