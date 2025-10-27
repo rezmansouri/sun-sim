@@ -3,6 +3,11 @@ layout: default
 title: eq. 6 and eq. 1
 ---
 
+# Updates:
+
+- No fourier approximation for derivatives (in phis)
+- All derivatives are computed using <a href="https://www.ams.org/journals/mcom/1988-51-184/S0025-5718-1988-0935077-0/S0025-5718-1988-0935077-0.pdf">second-order central differences</a> using torch gradient
+
 ## Equation 1 in static state (r, theta and phi):
 
 $$
@@ -51,21 +56,21 @@ $$
 CR1833
 
 $$
-\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-17}, \quad
-\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-17}, \quad
+\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-17}, \quad\\
+\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-17}, \quad\\
 \langle |\nabla \times B|_\phi \rangle = 3.975 \times 10^{-17}
 $$
 
 $$
-\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-17}, \quad
-\langle |\mu_0 J|_\theta \rangle = 2.893 \times 10^{-17}, \quad
-\langle |\mu_0 J|_\phi \rangle = 4.113 \times 10^{-17}
+\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-17}, \quad\\
+\langle |\mu_0 J|_\theta \rangle = 2.893 \times 10^{-17}, \quad\\
+\langle |\mu_0 J|_\phi \rangle = 4.113 \times 10^{-17}\\
 $$
 
 $$
-\langle |R|_r \rangle = 1.709 \times 10^{-18}, \quad
-\langle |R|_\theta \rangle = 8.915 \times 10^{-18}, \quad
-\langle |R|_\phi \rangle = 4.930 \times 10^{-18}, \quad
+\langle |R|_r \rangle = 1.709 \times 10^{-18}, \quad\\
+\langle |R|_\theta \rangle = 8.915 \times 10^{-18}, \quad\\
+\langle |R|_\phi \rangle = 4.930 \times 10^{-18}, \quad\\
 \langle |R| \rangle = 1.241 \times 10^{-17}
 $$
 
@@ -80,17 +85,17 @@ $$
 $$
 
 $$
-\|\nabla \times B\|_\text{total} = 8.515 \times 10^{-17}, \quad
-\|\mu_0 J\|_\text{total} = 8.990 \times 10^{-17}, \quad
+\|\nabla \times B\|_\text{total} = 8.515 \times 10^{-17}, \quad\\
+\|\mu_0 J\|_\text{total} = 8.990 \times 10^{-17}, \quad\\
 \|R\|_\text{total} = 1.241 \times 10^{-17}
 $$
 
 $$
-\text{Relative residual distribution: } 
-\text{mean(rel\_res)} = 1.416 \times 10^{-1}, \quad
-\text{median(rel\_res)} = 1.052 \times 10^{-1}, \quad
-p_{90}(\text{rel\_res}) = 2.671 \times 10^{-1}, \quad
-p_{99}(\text{rel\_res}) = 8.194 \times 10^{-1}
+\text{Relative residual distribution: } \\
+\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad\\
+\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad\\
+p_{90}(\text{rel-res}) = 2.671 \times 10^{-1}, \quad\\
+p_{99}(\text{rel-res}) = 8.194 \times 10^{-1}
 $$
 
 
@@ -109,21 +114,21 @@ CR1833
 
 
 $$
-\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-19}, \quad
-\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-19}, \quad
+\langle |\nabla \times B|_r \rangle = 1.919 \times 10^{-19}, \quad\\
+\langle |\nabla \times B|_\theta \rangle = 2.621 \times 10^{-19}, \quad\\
 \langle |\nabla \times B|_\phi \rangle = 3.975 \times 10^{-19}
 $$
 
 $$
-\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-19}, \quad
-\langle |\mu_0 J|_\theta \rangle = 2.891 \times 10^{-19}, \quad
+\langle |\mu_0 J|_r \rangle = 1.984 \times 10^{-19}, \quad\\
+\langle |\mu_0 J|_\theta \rangle = 2.891 \times 10^{-19}, \quad\\
 \langle |\mu_0 J|_\phi \rangle = 4.111 \times 10^{-19}
 $$
 
 $$
-\langle |R|_r \rangle = 1.707 \times 10^{-20}, \quad
-\langle |R|_\theta \rangle = 8.912 \times 10^{-20}, \quad
-\langle |R|_\phi \rangle = 4.923 \times 10^{-20}, \quad
+\langle |R|_r \rangle = 1.707 \times 10^{-20}, \quad\\
+\langle |R|_\theta \rangle = 8.912 \times 10^{-20}, \quad\\
+\langle |R|_\phi \rangle = 4.923 \times 10^{-20}, \quad\\
 \langle |R| \rangle = 1.240 \times 10^{-19}
 $$
 
@@ -138,17 +143,17 @@ $$
 $$
 
 $$
-\|\nabla \times B\|_\text{total} = 8.515 \times 10^{-19}, \quad
-\|\mu_0 J\|_\text{total} = 8.986 \times 10^{-19}, \quad
+\|\nabla \times B\|_\text{total} = 8.515 \times 10^{-19}, \quad\\
+\|\mu_0 J\|_\text{total} = 8.986 \times 10^{-19}, \quad\\
 \|R\|_\text{total} = 1.240 \times 10^{-19}
 $$
 
 $$
-\text{Relative residual distribution: } 
-\text{mean(rel\_res)} = 1.416 \times 10^{-1}, \quad
-\text{median(rel\_res)} = 1.052 \times 10^{-1}, \quad
-p_{90}(\text{rel\_res}) = 2.670 \times 10^{-1}, \quad
-p_{99}(\text{rel\_res}) = 8.194 \times 10^{-1}
+\text{Relative residual distribution: } \\
+\text{mean(rel-res)} = 1.416 \times 10^{-1}, \quad\\
+\text{median(rel-res)} = 1.052 \times 10^{-1}, \quad\\
+p_{90}(\text{rel-res}) = 2.670 \times 10^{-1}, \quad\\
+p_{99}(\text{rel-res}) = 8.194 \times 10^{-1}
 $$
 
 
@@ -213,25 +218,25 @@ Error is \|RHS - LHS\|.
 
 $$
 \begin{aligned}
-&\rho(-\omega \frac{\partial v_r}{\partial \phi}) &: 3.398 \times 10^{-21} \\
+&\rho(-\Omega \frac{\partial v_r}{\partial \phi}) &: 3.398 \times 10^{-21} \\
 &\rho v_r \frac{\partial v_r}{\partial r} &: 7.401 \times 10^{-21} \\
 &\frac{J_r B_r}{c} &: 5.815 \times 10^{-22} \\
 &-\frac{\partial p}{\partial r} &: 5.957 \times 10^{-21} \\
 &\rho g &: 9.010 \times 10^{-22} \\
 &\text{Viscous} &: 3.304 \times 10^{-24} \\
 &\text{Residual mean} &: 1.998 \times 10^{-21} \\
-&\text{Residual ratio} &: 1.096 \times 10^{-1} \quad (\text{significant mismatch; check derivatives or scaling})
+&\text{Residual ratio} &: 1.096 \times 10^{-1} \quad 
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
 &\text{Relative residual distribution:} \\
-&\text{mean(rel\_res)} &: 2.035 \times 10^{-1} \\
-&\text{median(rel\_res)} &: 1.305 \times 10^{-1} \\
-&\text{p90(rel\_res)} &: 4.566 \times 10^{-1} \\
-&\text{p99(rel\_res)} &: 1.132 \times 10^{0} \\
-&\text{→ Expect: mean(rel\_res) ≲ 1e-2 for good physical match.}
+&\text{mean(rel-res)} &: 2.035 \times 10^{-1} \\
+&\text{median(rel-res)} &: 1.305 \times 10^{-1} \\
+&\text{p90(rel-res)} &: 4.566 \times 10^{-1} \\
+&\text{p99(rel-res)} &: 1.132 \times 10^{0} \\
+&\text{→ Expect: mean(rel-res) ≲ 1e-2 for good physical match.}
 \end{aligned}
 $$
 
@@ -300,17 +305,16 @@ $$
 &\rho g &: 9.010 \times 10^{-21} \\
 &\text{Viscous} &: 3.304 \times 10^{-23} \\
 &\text{Residual mean} &: 1.943 \times 10^{-20} \\
-&\text{Residual ratio} &: 1.100 \times 10^{-1} \quad (\text{significant mismatch; check derivatives or scaling})
+&\text{Residual ratio} &: 1.100 \times 10^{-1} \quad 
 \end{aligned}
 $$
 
 $$
 \begin{aligned}
 &\text{Relative residual distribution:} \\
-&\text{mean(rel\_res)} &: 2.032 \times 10^{-1} \\
-&\text{median(rel\_res)} &: 1.277 \times 10^{-1} \\
-&\text{p90(rel\_res)} &: 4.482 \times 10^{-1} \\
-&\text{p99(rel\_res)} &: 1.100 \times 10^{0} \\
-&\text{→ Expect: mean(rel\_res) ≲ 1e-2 for good physical match.}
+&\text{mean(rel-res)} &: 2.032 \times 10^{-1} \\
+&\text{median(rel-res)} &: 1.277 \times 10^{-1} \\
+&\text{p90(rel-res)} &: 4.482 \times 10^{-1} \\
+&\text{p99(rel-res)} &: 1.100 \times 10^{0} \\
 \end{aligned}
 $$
