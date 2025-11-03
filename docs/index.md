@@ -84,3 +84,5 @@ layout: default
 [Week 39 - eq. 6 and eq. 1 and multimodal](week_39.md)
 
 [Week 40 - eq. 6 and eq. 1](week_40.md)
+
+[Week 41 - eq. 6 and eq. 1 - update](week_41.md)
