@@ -86,3 +86,5 @@ layout: default
 [Week 40 - eq. 6 and eq. 1](week_40.md)
 
 [Week 41 - eq. 6 and eq. 1 - update](week_41.md)
+
+[NSF - Cybersec Inf. Elements Proposal](week_42.md)
