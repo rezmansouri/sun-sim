@@ -5,7 +5,7 @@ layout: default
 #### By Reza Mansouri under the supervision of Dr. Rafal Angryk
 #### Data Mining Laboratory @ Georgia State University
 
-### <a href="https://docs.google.com/drawings/d/1eZLxlbz-VQgnnEHm8smMkCGEgGxvJ0yM_SaU8LnyhRY/edit?usp=sharing" target="_blank">RoadMap</a>
+### <a href="https://docs.google.com/drawings/d/1ho__f4HRzsVkksztQeyVr5SiASi9D35MC0VU1P-MH1U/edit?usp=sharing" target="_blank">RoadMap</a>
 
 ### Weekly Reports
 
