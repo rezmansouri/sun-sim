@@ -178,9 +178,9 @@ class SphericalNODataset(Dataset):
         
         return {
             "vx": torch.tensor(v[0, :, :, :], dtype=torch.float32),
-            "vy": torch.tensor(v[1:, :, :, :], dtype=torch.float32),
+            "vy": torch.tensor(v[1:, 0, :, :], dtype=torch.float32),
             "jx": torch.tensor(j[0, :, :, :], dtype=torch.float32),
-            "jy": torch.tensor(j[1:, :, :, :], dtype=torch.float32),
+            "jy": torch.tensor(j[1:, 0, :, :], dtype=torch.float32),
         }
 
     def __len__(self):

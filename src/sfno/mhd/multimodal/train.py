@@ -22,7 +22,7 @@ def main():
         n_layers,
         scale_up,
         loss_fn_str,
-        # pos_embedding
+        attention,
     ) = sys.argv[1:]
     (
         batch_size,
@@ -31,6 +31,7 @@ def main():
         hidden_channels,
         n_layers,
         scale_up,
+        attention,
     ) = (
         int(batch_size),
         int(n_epochs),
@@ -38,6 +39,7 @@ def main():
         int(hidden_channels),
         int(n_layers),
         int(scale_up),
+        int(attention) == 1,
     )
 
     # if pos_embedding == 'none':
@@ -93,6 +95,7 @@ def main():
         "n_layers": n_layers,
         "loss_fn": loss_fn_str,
         "scale_up": scale_up,
+        "attention": attention,
     }
     with open(os.path.join(out_path, "cfg.json"), "w", encoding="utf-8") as f:
         json.dump(cfg, f)
@@ -118,7 +121,12 @@ def main():
     )
 
     model = MultiModalSFNO(
-        in_comp=2, out_comp=2, n_radii=139, d_hidden=encoder_hidden_channels, sfno=sfno
+        in_comp=2,
+        out_comp=2,
+        n_radii=139,
+        d_hidden=encoder_hidden_channels,
+        sfno=sfno,
+        use_attention=attention,
     ).to(device)
 
     (
