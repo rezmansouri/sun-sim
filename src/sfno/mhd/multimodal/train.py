@@ -74,7 +74,7 @@ def main():
     else:
         raise ValueError("unsupported loss function")
 
-    out_path = f"jr_vr_n_layers-{n_layers}_encoder_hidden_channels-{encoder_hidden_channels}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}"
+    out_path = f"jr_vr_n_layers-{n_layers}_encoder_hidden_channels-{encoder_hidden_channels}_hidden_channels-{hidden_channels}_loss-{loss_fn_str}_attn-{attention}"
     os.makedirs(
         out_path,
         exist_ok=True,
