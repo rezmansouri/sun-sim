@@ -4,6 +4,7 @@ from neuralop.models import SFNO
 import torch
 import torch.nn as nn
 
+
 class ComponentAttention(nn.Module):
     def __init__(self, n_comp, d_hidden, n_heads=4):
         super().__init__()
@@ -13,19 +14,29 @@ class ComponentAttention(nn.Module):
 
     def forward(self, comps):
         """
-        comps: list of (B, d_hidden, H, W)
-        return: same shapes after attention
+        comps: list of tensors shaped (B, C, H, W)
+        returns: list of length n_comp, each (B, C, H, W)
         """
         B, C, H, W = comps[0].shape
+        n_comp = len(comps)
 
-        x = torch.stack(comps, dim=1)  # (B, n_comp, d_hidden, H, W)
-        x = x.permute(0, 3, 4, 1, 2).reshape(B*H*W, self.n_comp, C)
+        # (B, n_comp, C, H, W)
+        x = torch.stack(comps, dim=1)
 
+        # (B*H*W, n_comp, C)
+        x = x.permute(0, 3, 4, 1, 2).reshape(B * H * W, n_comp, C)
+
+        # Self-attention across component dimension
         out, _ = self.attn(x, x, x)
 
-        out = out.reshape(B, H, W, self.n_comp, C).permute(0, 3, 4, 1, 2)
-        return list(out)
+        # Back to (B, H, W, n_comp, C)
+        out = out.reshape(B, H, W, n_comp, C)
 
+        # Move n_comp to the front → (n_comp, B, C, H, W)
+        out = out.permute(3, 0, 4, 1, 2)
+
+        # Return list of components: [tensor(B, C, H, W), ...]
+        return [out[i].contiguous() for i in range(n_comp)]
 
 
 class MultiModalSFNO(nn.Module):
@@ -36,20 +47,20 @@ class MultiModalSFNO(nn.Module):
         n_radii=139,
         d_hidden=64,
         sfno=None,
-        use_attention=True,     # <---- add switch
-        n_heads=4
+        use_attention=True,  # <---- add switch
+        n_heads=4,
     ):
         super().__init__()
         self.in_comp = in_comp
         self.out_comp = out_comp
         self.n_radii = n_radii
         self.d_hidden = d_hidden
-        self.use_attention = use_attention   # <---- store it
+        self.use_attention = use_attention  # <---- store it
 
         # 1) Per-component encoders
-        self.encoders = nn.ModuleList([
-            nn.Conv1d(1, d_hidden, kernel_size=1) for _ in range(in_comp)
-        ])
+        self.encoders = nn.ModuleList(
+            [nn.Conv1d(1, d_hidden, kernel_size=1) for _ in range(in_comp)]
+        )
 
         # 2) Cross-component attention block (may be bypassed)
         self.comp_attn = ComponentAttention(in_comp, d_hidden, n_heads)
@@ -58,9 +69,9 @@ class MultiModalSFNO(nn.Module):
         self.sfno = sfno
 
         # 4) Per-component output heads
-        self.heads = nn.ModuleList([
-            nn.Conv1d(d_hidden, n_radii, kernel_size=1) for _ in range(out_comp)
-        ])
+        self.heads = nn.ModuleList(
+            [nn.Conv1d(d_hidden, n_radii, kernel_size=1) for _ in range(out_comp)]
+        )
 
     def forward(self, comps):
         B, _, H, W = comps[0].shape
