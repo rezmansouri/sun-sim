@@ -88,3 +88,5 @@ layout: default
 [Week 41 - eq. 6 and eq. 1 - update](week_41.md)
 
 [NSF - Cybersec Inf. Elements Proposal](week_42.md)
+
+[Failed attention enhanced multimodal sfno](week_43.md)
