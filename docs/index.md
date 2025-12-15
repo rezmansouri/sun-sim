@@ -90,3 +90,5 @@ layout: default
 [NSF - Cybersec Inf. Elements Proposal](week_42.md)
 
 [Failed attention enhanced multimodal sfno](week_43.md)
+
+[Other grants part 1 and CAIG proposal part 1](week_44.md)
