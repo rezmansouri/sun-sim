@@ -213,11 +213,11 @@ title: Other grants part 1 and CAIG proposal part 1
 - Deadline: 15 Aug to 17 Nov every year (?)
 - <a href="https://ndseg.sysplus.com/">Application</a>
 - Research areas:
-  1. Astrodynamics and Orbital Mechanics
-  2. Space Domain Awareness and Tracking
-  3. Astronomy and Astrophysical Observation
-  4. Atmospheric Physics for Space and Upper Atmosphere Regimes
-  5. Solar Physics and Space Weather Prediction
+  1. ### Astrodynamics and Orbital Mechanics
+  2. ### Space Domain Awareness and Tracking
+  3. ### Astronomy and Astrophysical Observation
+  4. ### Atmospheric Physics for Space and Upper Atmosphere Regimes
+  5. ### Solar Physics and Space Weather Prediction
   6. Imaging Physics for Space-Based Sensing
   7. Space Photonics and Optical Systems
   8. Space Power Generation, Storage, and Propulsion
@@ -225,12 +225,12 @@ title: Other grants part 1 and CAIG proposal part 1
   10. Spacecraft Robotics and Autonomous Systems
   11. Materials for Extreme Space Environments
   12. Quantum Science for Space Applications
-  13. Artificial Intelligence and Machine Learning for Space Systems
+  13. ### Artificial Intelligence and Machine Learning for Space Systems
   14. Cyber Science for Space and Ground Networks
   15. Electrical and Electronic Systems for Space Platforms
   16. Mechanical Engineering of Spacecraft and Structures
   17. Aeronautical and Astronautical Engineering
-  18. Space Physics and Plasma Environments
+  18. ### Space Physics and Plasma Environments
   19. Geosciences for Terrain, Atmosphere, and Space-Earth Coupling
   20. Computer and Computational Sciences for Space Operations
   21. Mathematics for Modeling, Control, and Optimization of Space Systems
