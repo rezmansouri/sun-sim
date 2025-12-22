@@ -92,3 +92,5 @@ layout: default
 [Failed attention enhanced multimodal sfno](week_43.md)
 
 [Other grants part 1 and CAIG proposal part 1](week_44.md)
+
+[Multimodal SFNO with/without Physics loss Part 1 and NASA/NSF Grants](week_45.md)
