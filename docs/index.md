@@ -13,10 +13,13 @@ layout: default
 
 ---
 
-## Chapter 1
+## Chapter 2
 
-<details>
-<summary><strong>Click to expand weekly reports</strong></summary>
+- [2026 NSF CAIG Ideas Pt. 1](chapter_2/1.md)
+
+---
+
+## Chapter 1
 
 - [Week 1: 16 July – 23 July 2024](chapter_1/week_1.md)
 - [Week 2 & 3: 23 July – 6 August 2024](chapter_1/week_3.md)
@@ -60,11 +63,3 @@ layout: default
 - [Failed attention-enhanced multimodal SFNO](chapter_1/week_43.md)
 - [Other grants & CAIG proposal pt.1](chapter_1/week_44.md)
 - [Multimodal SFNO w/wo physics loss + NASA/NSF grants](chapter_1/week_45.md)
-
-</details>
-
----
-
-## Chapter 2
-
-- [2026 NSF CAIG Ideas Pt. 1](chapter_2/1.md)
