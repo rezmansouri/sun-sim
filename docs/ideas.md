@@ -9,3 +9,9 @@ title: Open Questions
 4. feed the model slice 0 of the current CR and the last slice of the previous CR (interpolation problem?)
 5. multihead model (global and local)
 6. correct positional encoding for input? (the assumption is equiangular)
+
+
+Prateek Mayank Papers
+
+1. https://iopscience.iop.org/article/10.3847/2041-8213/ae1735
+2. https://arxiv.org/pdf/2512.06950
