@@ -66,3 +66,5 @@ layout: default
 ---
 
 ## Chapter 2
+
+- [2026 NSF CAIG Ideas Pt. 1](chapter_2/1.md)
