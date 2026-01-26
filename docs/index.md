@@ -19,6 +19,8 @@ layout: default
 
 - [Equation 6 True Calculation Part 1](chapter_2/2.md)
 
+- [2026 NSF CAIG Ideas Pt. 2](chapter_2/3.md)
+
 ---
 
 ## Chapter 1
