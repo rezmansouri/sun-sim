@@ -15,13 +15,15 @@ layout: default
 
 ## Chapter 2
 
-- [2026 NSF CAIG Ideas Pt. 1](chapter_2/1.md)
+1. [2026 NSF CAIG Ideas Pt. 1](chapter_2/1.md)
 
-- [Equation 6 True Calculation Part 1](chapter_2/2.md)
+2. [Equation 6 True Calculation Part 1](chapter_2/2.md)
 
-- [2026 NSF CAIG Ideas Pt. 2](chapter_2/3.md)
+3. [2026 NSF CAIG Ideas Pt. 2](chapter_2/3.md)
 
-- [Equation 6 True Calculation Part 2](chapter_2/4-1.md)
+4. [Equation 6 True Calculation Part 2](chapter_2/4.md)
+
+5. [Equation 6 Alternative Calculation Part 1 (Based on MAS.F90 code + ChatGPT)](chapter_2/5.md)
 
 ---
 
