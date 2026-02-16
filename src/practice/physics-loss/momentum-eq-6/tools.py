@@ -309,7 +309,7 @@ def make_residual_gif(
         frames.append(imageio.imread(buf))
         plt.close(fig)
 
-    with imageio.get_writer(output_filename, fps=fps) as writer:
+    with imageio.get_writer(output_filename, fps=fps, loop=0) as writer:
         for f in frames:
             writer.append_data(f)
 
@@ -370,7 +370,7 @@ def make_lhs_rhs_residual_gif(
         frames.append(imageio.imread(buf))
         plt.close(fig)
 
-    with imageio.get_writer(output_filename, fps=fps) as writer:
+    with imageio.get_writer(output_filename, fps=fps, loop=0) as writer:
         for f in frames:
             writer.append_data(f)
 
