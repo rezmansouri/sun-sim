@@ -25,6 +25,8 @@ layout: default
 
 5. [Equation 6 Alternative Calculation Part 1 (Based on MAS.F90 code + ChatGPT)](chapter_2/5.md)
 
+6. [Equation 1 True Calculation Pt. 1](chapter_2/6.md)
+
 ---
 
 ## Chapter 1
