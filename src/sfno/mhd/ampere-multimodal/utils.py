@@ -69,7 +69,7 @@ def read_sim(sim_path):
             "jp": {"data": jp, "theta": jp_theta, "r": jp_r},
         },
         bp_r,
-        bt_theta,
+        br_theta,
         br_phi,
     )  # {data}, new_r, new_theta, phi
 
@@ -102,7 +102,6 @@ def get_sim(sim_path, radii):
         )
         data_new = interpolate_cube(data_old, phi, y_old, z_old, phi, theta, r)
         data_new = np.transpose(data_new, (2, 1, 0))  # (r, theta, phi)
-        print(f"{component} shape after interpolation and transpose: ", data_new.shape)
         final[component] = data_new
 
     broadcasted_radii = np.broadcast_to(
