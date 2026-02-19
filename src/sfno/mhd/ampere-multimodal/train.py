@@ -109,11 +109,7 @@ def main():
     )
 
     model = MultiModalSFNO(
-        in_comp=6,
-        out_comp=6,
-        n_radii=139,
-        d_hidden=encoder_hidden_channels,
-        sfno=sfno
+        in_comp=6, out_comp=6, n_radii=139, d_hidden=encoder_hidden_channels, sfno=sfno
     ).to(device)
 
     (
@@ -143,6 +139,7 @@ def main():
         device=device,
         lr=8e-4,
         weight_decay=0.0,
+        physics_informed=physics_loss,
     )
 
     torch.save(best_state_dict, os.path.join(out_path, "model.pt"))
