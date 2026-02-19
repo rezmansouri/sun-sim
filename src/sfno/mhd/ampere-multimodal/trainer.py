@@ -436,6 +436,8 @@ def train(
     return (
         train_losses,
         val_losses,
+        train_physics_loss,
+        val_physics_loss,
         # train_mse,
         # val_mse,
         # train_mse_masked,

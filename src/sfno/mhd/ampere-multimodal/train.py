@@ -119,6 +119,8 @@ def main():
     (
         train_losses,
         val_losses,
+        train_physics_loss,
+        val_physics_loss,
         # train_mse,
         # val_mse,
         # train_mse_masked,
@@ -150,6 +152,8 @@ def main():
         f.write(f"best_epoch: {best_epoch}")
     np.save(os.path.join(out_path, "train_losses.npy"), train_losses)
     np.save(os.path.join(out_path, "val_losses.npy"), val_losses)
+    np.save(os.path.join(out_path, "train_physics_loss.npy"), train_physics_loss)
+    np.save(os.path.join(out_path, "val_physics_loss.npy"), val_physics_loss)
     # np.save(os.path.join(out_path, "train_rmse.npy"), train_rmse)
     # np.save(os.path.join(out_path, "val_rmse.npy"), val_rmse)
     # np.save(os.path.join(out_path, "train_nnse.npy"), train_nnse)
