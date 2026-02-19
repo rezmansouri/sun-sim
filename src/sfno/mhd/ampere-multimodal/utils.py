@@ -105,7 +105,7 @@ def get_sim(sim_path, radii):
         final[component] = data_new
 
     broadcasted_radii = np.broadcast_to(
-        radii[:, np.newaxis, np.newaxis], (140, 111, 128)
+        radii[:, np.newaxis, np.newaxis], (140, 110, 128)
     )
     br = final["br"] * (broadcasted_radii**2)
     bt = final["bt"] * (broadcasted_radii**2)
