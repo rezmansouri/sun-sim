@@ -261,10 +261,16 @@ class SphericalNODataset(Dataset):
         return {
             "brx": torch.tensor(br[0, :, :, :], dtype=torch.float32),
             "bry": torch.tensor(bt[1:, 0, :, :], dtype=torch.float32),
-            "brz": torch.tensor(bp[2:, 0, :, :], dtype=torch.float32),
+            "btx": torch.tensor(bt[0, :, :, :], dtype=torch.float32),
+            "bty": torch.tensor(bp[1:, 0, :, :], dtype=torch.float32),
+            "bpx": torch.tensor(bp[0, :, :, :], dtype=torch.float32),
+            "bpy": torch.tensor(br[1:, 0, :, :], dtype=torch.float32),
             "jrx": torch.tensor(jr[0, :, :, :], dtype=torch.float32),
-            "jty": torch.tensor(jt[1:, 0, :, :], dtype=torch.float32),
-            "jtz": torch.tensor(jp[2:, 0, :, :], dtype=torch.float32),
+            "jry": torch.tensor(jt[1:, 0, :, :], dtype=torch.float32),
+            "jtx": torch.tensor(jt[0, :, :, :], dtype=torch.float32),
+            "jty": torch.tensor(jp[1:, 0, :, :], dtype=torch.float32),
+            "jpx": torch.tensor(jp[0, :, :, :], dtype=torch.float32),
+            "jpy": torch.tensor(jr[1:, 0, :, :], dtype=torch.float32),
         }
 
     def __len__(self):
