@@ -41,7 +41,7 @@ class PhysicsLoss(torch.nn.Module):
         self.jp_max = jp_max
         self.c = c
         self.r_cube = torch.broadcast_to(
-            self.r[:, torch.newaxis, torch.newaxis], (139, 110, 128)
+            self.r[1:, torch.newaxis, torch.newaxis], (139, 110, 128)
         )
 
     def forward(self, br, bt, bp, jr, jt, jp):
