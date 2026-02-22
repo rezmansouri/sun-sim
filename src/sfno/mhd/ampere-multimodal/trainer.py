@@ -238,6 +238,7 @@ def train(
             jr_max=train_dataset.jr_max,
             jt_max=train_dataset.jt_max,
             jp_max=train_dataset.jp_max,
+            device=device,
         ).to(device)
     # train_mse = []
     # val_mse = []
