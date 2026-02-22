@@ -230,9 +230,9 @@ class SphericalNODataset(Dataset):
             self.sim_paths
         )  # , positional_embedding)
         _, _, _, _, _, _, (r, theta, phi) = get_sim(self.sim_paths[0])
-        self.r = r
-        self.theta = theta
-        self.phi = phi
+        self.r = torch.tensor(r, dtype=torch.float32)
+        self.theta = torch.tensor(theta, dtype=torch.float32)
+        self.phi = torch.tensor(phi, dtype=torch.float32)
         brs, self.br_min, self.br_max = min_max_normalize(brs, br_min, br_max)
         bts, self.bt_min, self.bt_max = min_max_normalize(bts, bt_min, bt_max)
         bps, self.bp_min, self.bp_max = min_max_normalize(bps, bp_min, bp_max)
