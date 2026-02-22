@@ -19,9 +19,11 @@ class PhysicsLoss(torch.nn.Module):
         jr_max,
         jt_max,
         jp_max,
+        device,
         c=2.99792458e10,
     ):
         super().__init__()
+        self.device = device
         self.r = r
         self.theta = theta
         self.dr = r[1] - r[0]
@@ -42,7 +44,7 @@ class PhysicsLoss(torch.nn.Module):
         self.c = c
         self.r_cube = torch.broadcast_to(
             self.r[1:, torch.newaxis, torch.newaxis], (139, 110, 128)
-        )
+        ).to(self.device)
 
     def forward(self, br, bt, bp, jr, jt, jp):
 
