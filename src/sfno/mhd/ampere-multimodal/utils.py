@@ -34,11 +34,6 @@ def read_hdf(hdf_path, dataset_names):
     return datasets
 
 
-def get_coords(sim_path):
-    _, r, theta, phi = read_sim(sim_path)
-    return r, theta, phi
-
-
 def read_sim(sim_path):
     dataset_names = ["Data-Set-2", "fakeDim0", "fakeDim1", "fakeDim2"]
     br, br_phi, br_theta, br_r = read_hdf(
@@ -89,7 +84,7 @@ def interpolate_cube(data, x_old, y_old, z_old, x_new, y_new, z_new):
     return data_new
 
 
-def get_sim(sim_path, radii):
+def get_sim(sim_path):
 
     out, r, theta, phi = read_sim(sim_path)
 
@@ -104,9 +99,7 @@ def get_sim(sim_path, radii):
         data_new = np.transpose(data_new, (2, 1, 0))  # (r, theta, phi)
         final[component] = data_new
 
-    broadcasted_radii = np.broadcast_to(
-        radii[:, np.newaxis, np.newaxis], (140, 110, 128)
-    )
+    broadcasted_radii = np.broadcast_to(r[:, np.newaxis, np.newaxis], (140, 110, 128))
     br = final["br"] * (broadcasted_radii**2)
     bt = final["bt"] * (broadcasted_radii**2)
     bp = final["bp"] * (broadcasted_radii**2)
@@ -121,7 +114,7 @@ def get_sim(sim_path, radii):
     jt = np.expand_dims(jt, axis=1)  # (140, 1, H, W)
     jp = np.expand_dims(jp, axis=1)  # (140, 1, H, W)
 
-    return jr, jt, jp, br, bt, bp
+    return jr, jt, jp, br, bt, bp, (r, theta, phi)
 
 
 def get_sims(sim_paths):  # , pos_emb):
@@ -131,7 +124,6 @@ def get_sims(sim_paths):  # , pos_emb):
     jrs = []
     jts = []
     jps = []
-    radii, _, _ = get_coords(sim_paths[0])  # (140,), (111,), (128,)
 
     # # Broadcast coordinate grids
     # R, T, P = np.meshgrid(radii, thetas, phis, indexing="ij")  # shapes (140, 111, 128)
@@ -142,7 +134,7 @@ def get_sims(sim_paths):  # , pos_emb):
     # P_sin = np.sin(P)
 
     for sim_path in tqdm(sim_paths, desc="Loading simulations"):
-        jr, jt, jp, br, bt, bp = get_sim(sim_path, radii)  # (140, 111, 128)
+        jr, jt, jp, br, bt, bp, _ = get_sim(sim_path)  # (140, 111, 128)
 
         # if pos_emb == "pt":
         #     # Embed only angular coords
@@ -237,6 +229,10 @@ class SphericalNODataset(Dataset):
         brs, bts, bps, jrs, jts, jps = get_sims(
             self.sim_paths
         )  # , positional_embedding)
+        _, _, _, _, _, _, (r, theta, phi) = get_sim(self.sim_paths[0])
+        self.r = r
+        self.theta = theta
+        self.phi = phi
         brs, self.br_min, self.br_max = min_max_normalize(brs, br_min, br_max)
         bts, self.bt_min, self.bt_max = min_max_normalize(bts, bt_min, bt_max)
         bps, self.bp_min, self.bp_max = min_max_normalize(bps, bp_min, bp_max)
@@ -260,17 +256,17 @@ class SphericalNODataset(Dataset):
 
         return {
             "brx": torch.tensor(br[0, :, :, :], dtype=torch.float32),
-            "bry": torch.tensor(bt[1:, 0, :, :], dtype=torch.float32),
+            "bry": torch.tensor(br[1:, 0, :, :], dtype=torch.float32),
             "btx": torch.tensor(bt[0, :, :, :], dtype=torch.float32),
-            "bty": torch.tensor(bp[1:, 0, :, :], dtype=torch.float32),
+            "bty": torch.tensor(bt[1:, 0, :, :], dtype=torch.float32),
             "bpx": torch.tensor(bp[0, :, :, :], dtype=torch.float32),
-            "bpy": torch.tensor(br[1:, 0, :, :], dtype=torch.float32),
+            "bpy": torch.tensor(bp[1:, 0, :, :], dtype=torch.float32),
             "jrx": torch.tensor(jr[0, :, :, :], dtype=torch.float32),
-            "jry": torch.tensor(jt[1:, 0, :, :], dtype=torch.float32),
+            "jry": torch.tensor(jr[1:, 0, :, :], dtype=torch.float32),
             "jtx": torch.tensor(jt[0, :, :, :], dtype=torch.float32),
-            "jty": torch.tensor(jp[1:, 0, :, :], dtype=torch.float32),
+            "jty": torch.tensor(jt[1:, 0, :, :], dtype=torch.float32),
             "jpx": torch.tensor(jp[0, :, :, :], dtype=torch.float32),
-            "jpy": torch.tensor(jr[1:, 0, :, :], dtype=torch.float32),
+            "jpy": torch.tensor(jp[1:, 0, :, :], dtype=torch.float32),
         }
 
     def __len__(self):
@@ -291,6 +287,3 @@ class SphericalNODataset(Dataset):
             "jp_min": float(self.jp_min),
             "jp_max": float(self.jp_max),
         }
-
-    def get_grid_points(self):
-        return get_coords(self.sim_paths[0])

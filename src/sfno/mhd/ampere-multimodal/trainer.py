@@ -225,9 +225,7 @@ def train(
         physics_loss = PhysicsLoss(
             r=train_dataset.r,
             theta=train_dataset.theta,
-            dr=train_dataset.dr,
-            dtheta=train_dataset.dtheta,
-            dphi=train_dataset.dphi,
+            phi=train_dataset.phi,
             br_min=train_dataset.br_min,
             bt_min=train_dataset.bt_min,
             bp_min=train_dataset.bp_min,

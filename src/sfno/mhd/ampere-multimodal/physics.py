@@ -6,9 +6,7 @@ class PhysicsLoss(torch.nn.Module):
         self,
         r,
         theta,
-        dr,
-        dtheta,
-        dphi,
+        phi,
         br_min,
         bt_min,
         bp_min,
@@ -26,9 +24,9 @@ class PhysicsLoss(torch.nn.Module):
         super().__init__()
         self.r = r
         self.theta = theta
-        self.dr = dr
-        self.dtheta = dtheta
-        self.dphi = dphi
+        self.dr = r[1] - r[0]
+        self.dtheta = theta[1] - theta[0]
+        self.dphi = phi[1] - phi[0]
         self.br_min = br_min
         self.bt_min = bt_min
         self.bp_min = bp_min

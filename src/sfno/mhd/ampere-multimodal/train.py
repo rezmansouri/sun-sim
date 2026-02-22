@@ -21,6 +21,7 @@ def main():
         hidden_channels,
         n_layers,
         physics_loss,
+        cr_size,
     ) = sys.argv[1:]
     (
         batch_size,
@@ -29,6 +30,7 @@ def main():
         hidden_channels,
         n_layers,
         physics_loss,
+        cr_size,
     ) = (
         int(batch_size),
         int(n_epochs),
@@ -36,12 +38,15 @@ def main():
         int(hidden_channels),
         int(n_layers),
         int(physics_loss) == 1,
+        int(cr_size),
     )
 
     # if pos_embedding == 'none':
     #     pos_embedding = None
 
     cr_dirs = get_cr_dirs(data_path)
+    if cr_size != -1:
+        cr_dirs = cr_dirs[:cr_size]
     split_ix = int(len(cr_dirs) * 0.8)
     cr_train, cr_val = cr_dirs[:split_ix], cr_dirs[split_ix:]
 
@@ -62,8 +67,6 @@ def main():
         jp_max=train_dataset.jp_max,
         jp_min=train_dataset.jp_min,
     )
-
-    radii, thetas, phis = train_dataset.get_grid_points()
 
     loss_fn = LpLoss(d=2, p=2)
 
