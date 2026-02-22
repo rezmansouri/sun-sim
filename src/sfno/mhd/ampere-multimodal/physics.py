@@ -74,11 +74,11 @@ class PhysicsLoss(torch.nn.Module):
         bt = bt * 2.2068908
         bp = bp * 2.2068908
 
-        R = r.view(-1, 1, 1)
-        T = self.theta.view(1, -1, 1)
+        R = r.view(-1, 1, 1).to(self.device)
+        T = self.theta.view(1, -1, 1).to(self.device)
 
-        sinT = torch.sin(T)
-        sinT_safe = torch.clamp(sinT, min=1e-12)
+        sinT = torch.sin(T).to(self.device)
+        sinT_safe = torch.clamp(sinT, min=1e-12).to(self.device)
 
         # ----- derivatives -----
         d_bp_sin_dtheta = torch.gradient(bp * sinT, spacing=self.dtheta, dim=1)[0]
