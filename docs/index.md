@@ -27,6 +27,8 @@ layout: default
 
 6. [Equation 1 True Calculation Pt. 1](chapter_2/6.md)
 
+7. [Equation 1 Multimodal Prediction and Staggered Mesh Solution](chapter_2/7.md)
+
 ---
 
 ## Chapter 1
