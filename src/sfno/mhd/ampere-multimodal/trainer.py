@@ -417,7 +417,7 @@ def train(
             )
             if physics_informed:
                 print(
-                    f"Train Physics Loss = {epoch_train_physics_loss:.6f} | Val Physics Loss = {epoch_val_physics_loss:.6f}"
+                    f"Log Train Physics Loss = {torch.log10(epoch_train_physics_loss + 1e-12):.6f} | Log Val Physics Loss = {torch.log10(epoch_val_physics_loss + 1e-12):.6f}"
                 )
             print(
                 "================================================================================================",
