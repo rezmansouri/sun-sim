@@ -81,15 +81,15 @@ class PhysicsLoss(torch.nn.Module):
         sinT_safe = torch.clamp(sinT, min=1e-12).to(self.device)
 
         # ----- derivatives -----
-        d_bp_sin_dtheta = torch.gradient(bp * sinT, spacing=self.dtheta, dim=1)[0]
-        d_bt_dphi = torch.gradient(bt, spacing=self.dphi, dim=2)[0]
+        d_bp_sin_dtheta = torch.gradient(bp * sinT, spacing=self.dtheta, dim=2)[0]
+        d_bt_dphi = torch.gradient(bt, spacing=self.dphi, dim=3)[0]
 
-        d_br_dphi = torch.gradient(br, spacing=self.dphi, dim=2)[0]
-        print((R * bp).shape)
-        d_rbp_dr = torch.gradient(R * bp, spacing=dr, dim=0)[0]
+        d_br_dphi = torch.gradient(br, spacing=self.dphi, dim=3)[0]
 
-        d_rbt_dr = torch.gradient(R * bt, spacing=dr, dim=0)[0]
-        d_br_dtheta = torch.gradient(br, spacing=self.dtheta, dim=1)[0]
+        d_rbp_dr = torch.gradient(R * bp, spacing=dr, dim=1)[0]
+        d_rbt_dr = torch.gradient(R * bt, spacing=dr, dim=1)[0]
+
+        d_br_dtheta = torch.gradient(br, spacing=self.dtheta, dim=2)[0]
 
         # ----- curl(B) -----
         curl_r = (1.0 / (R * sinT_safe)) * (d_bp_sin_dtheta - d_bt_dphi)
