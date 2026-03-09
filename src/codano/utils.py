@@ -254,7 +254,7 @@ class CODANODataset(Dataset):
         jt = torch.tensor(self.jts[index], dtype=torch.float32)
         jp = torch.tensor(self.jps[index], dtype=torch.float32)
 
-        x = torch.stack(
+        x = torch.cat(
             [
                 br[0, :, :, :],
                 bt[0, :, :, :],
@@ -263,7 +263,7 @@ class CODANODataset(Dataset):
                 jt[0, :, :, :],
                 jp[0, :, :, :],
             ],
-            dim=1,
+            dim=0,
         )
 
         y = torch.stack(

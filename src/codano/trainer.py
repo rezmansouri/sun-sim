@@ -87,8 +87,8 @@ def train_cv(
             train_crs = [cr_dirs[i] for i in train_idx]
             val_crs = [cr_dirs[i] for i in val_idx]
 
-            train_dataset = SphericalNODataset(data_path, train_crs)
-            val_dataset = SphericalNODataset(
+            train_dataset = CODANODataset(data_path, train_crs)
+            val_dataset = CODANODataset(
                 data_path,
                 val_crs,
                 br_min=train_dataset.br_min,
@@ -210,7 +210,7 @@ def train(
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer)
 
     autocast_device_type = "cuda" if "cuda" in device else "cpu"
-    scaler = torch.amp.GradScaler(device=autocast_device_type)
+    scaler = torch.amp.GradScaler(device=autocast_device_type, enabled=False)
 
     best_val_loss = float("inf")
     best_epoch = -1
@@ -266,11 +266,10 @@ def train(
         for x, y in tqdm(
             train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False
         ):
-
-            print(x.shape, y.shape)
-            print("=" * 10)
             optimizer.zero_grad()
             pred = model(x.to(device))
+            
+            pred = pred.view(*y.shape)
 
             data_loss = loss_fn(pred, y.to(device))
 
@@ -337,6 +336,8 @@ def train(
                 val_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Val]", leave=False
             ):
                 pred = model(x.to(device))
+                
+                pred = pred.view(*y.shape)
 
                 data_loss = loss_fn(pred, y.to(device))
 
