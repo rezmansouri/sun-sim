@@ -107,7 +107,7 @@ def main():
     # else:
     #     raise ValueError('wrong pos embedding')
     
-    n_modes = [[110, 65]] * n_layers
+    n_modes = [[110, 128]] * n_layers
 
     model = CODANO(
         n_layers=n_layers,
