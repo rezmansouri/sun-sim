@@ -122,7 +122,7 @@ def main():
         variable_ids=None,
         per_layer_scaling_factors=[[1] * len(n_modes[0])] * n_layers,
         n_heads=[1] * n_layers,
-        attention_scaling_factors=None,
+        attention_scaling_factors=[1] * n_layers,
         conv_module=conv_module,
         nonlinear_attention=False,
         non_linearity=F.gelu,
