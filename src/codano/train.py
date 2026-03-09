@@ -108,7 +108,7 @@ def main():
 
     model = CODANO(
         n_layers=n_layers,
-        n_modes=[[110, 128] * n_layers],
+        n_modes=[[[110, 128]] * n_layers],
         output_variable_codimension=139,
         lifting_channels=64,
         hidden_variable_codimension=hidden_channels,
