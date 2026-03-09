@@ -90,6 +90,7 @@ def main():
         "train_files": cr_train,
         "val_files": cr_val,
         **train_dataset.get_min_max(),
+        "convolution": conv,
         "hidden_channels": hidden_channels,
         "n_layers": n_layers,
         "physics_loss": physics_loss,
