@@ -29,6 +29,8 @@ layout: default
 
 7. [Equation 1 Multimodal Prediction and Staggered Mesh Solution](chapter_2/7.md)
 
+8. [Equation 1 Multimodal Prediction With CODANO](chapter_2/8.md)
+
 ---
 
 ## Chapter 1
