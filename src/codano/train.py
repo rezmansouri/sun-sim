@@ -105,10 +105,12 @@ def main():
     #     in_channels = 1
     # else:
     #     raise ValueError('wrong pos embedding')
+    
+    n_modes = [[110, 128]] * n_layers
 
     model = CODANO(
         n_layers=n_layers,
-        n_modes=[[110, 128]] * n_layers,
+        n_modes=n_modes,
         output_variable_codimension=139,
         lifting_channels=64,
         hidden_variable_codimension=hidden_channels,
@@ -118,7 +120,7 @@ def main():
         positional_encoding_modes=None,
         static_channel_dim=0,
         variable_ids=None,
-        per_layer_scaling_factors=[[1] * self.n_dim] * n_layers,
+        per_layer_scaling_factors=[[1] * len(n_modes[0])] * n_layers,
         n_heads=[1] * n_layers,
         attention_scaling_factors=None,
         conv_module=conv_module,
