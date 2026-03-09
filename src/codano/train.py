@@ -119,7 +119,7 @@ def main():
         static_channel_dim=0,
         variable_ids=None,
         per_layer_scaling_factors=None,
-        n_heads=None,
+        n_heads=[1] * n_layers,
         attention_scaling_factors=None,
         conv_module=conv_module,
         nonlinear_attention=False,
