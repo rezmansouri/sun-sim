@@ -267,6 +267,8 @@ def train(
             train_loader, desc=f"Epoch {epoch+1}/{n_epochs} [Train]", leave=False
         ):
 
+            print(x.shape, y.shape)
+            print("=" * 10)
             optimizer.zero_grad()
             pred = model(x.to(device))
 
