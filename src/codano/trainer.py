@@ -5,7 +5,7 @@ from neuralop.models import SFNO
 import torch
 from copy import deepcopy
 import torch.nn as nn
-from utils import SphericalNODataset
+from utils import CODANODataset
 from tqdm import tqdm
 from pytorch_msssim import MS_SSIM
 import torch.optim as optim
