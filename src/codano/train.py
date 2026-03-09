@@ -118,7 +118,7 @@ def main():
         positional_encoding_modes=None,
         static_channel_dim=0,
         variable_ids=None,
-        per_layer_scaling_factors=None,
+        per_layer_scaling_factors=[[1] * self.n_dim] * n_layers,
         n_heads=[1] * n_layers,
         attention_scaling_factors=None,
         conv_module=conv_module,
