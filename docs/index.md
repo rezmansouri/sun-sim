@@ -31,6 +31,8 @@ layout: default
 
 8. [Equation 1 Multimodal Prediction With CODANO](chapter_2/8.md)
 
+10. [Ideal Hydrodynamics Solutions pt.1](chapter_2/9.md)
+
 ---
 
 ## Chapter 1
